@@ -34,3 +34,13 @@ CREATE TABLE Journeys
     Covered_distance int,
     Duration int
 )
+
+ALTER TABLE Journeys
+ADD CONSTRAINT FK_departure_id
+FOREIGN KEY (Departure_station_id)
+REFERENCES Stations (Id)
+
+ALTER TABLE Journeys
+ADD CONSTRAINT FK_return_id
+FOREIGN KEY (Return_station_id)
+REFERENCES Stations (Id)
