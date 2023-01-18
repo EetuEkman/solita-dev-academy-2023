@@ -1,6 +1,6 @@
 USE master
 
-DROP DATABASE Citybikes
+DROP DATABASE IF EXISTS Citybikes
 
 CREATE DATABASE Citybikes
 
