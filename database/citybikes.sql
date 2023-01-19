@@ -4,6 +4,8 @@ DROP DATABASE IF EXISTS Citybikes
 
 CREATE DATABASE Citybikes
 
+GO
+
 USE Citybikes
 
 CREATE TABLE Stations
@@ -35,6 +37,8 @@ CREATE TABLE Journeys
     Duration int
 )
 
+GO
+
 ALTER TABLE Journeys
 ADD CONSTRAINT FK_departure_id
 FOREIGN KEY (Departure_station_id)
@@ -44,3 +48,26 @@ ALTER TABLE Journeys
 ADD CONSTRAINT FK_return_id
 FOREIGN KEY (Return_station_id)
 REFERENCES Stations (Id)
+
+GO
+
+DROP TABLE IF EXISTS StationsStaging
+
+CREATE TABLE StationsStaging
+(
+    FID nvarchar(64),
+    ID nvarchar(64),
+    Nimi nvarchar(64),
+    Namn nvarchar(64),
+    [Name] nvarchar(64),
+    Osoite nvarchar(64),
+    Adress nvarchar(64),
+    Kaupunki nvarchar(64),
+    Stad nvarchar(64),
+    Operaattor nvarchar(64),
+    Kapasiteet nvarchar(64),
+    x nvarchar(64),
+    y nvarchar(64)
+)
+
+GO
