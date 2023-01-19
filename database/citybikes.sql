@@ -1,5 +1,7 @@
 USE master
 
+GO
+
 DROP DATABASE IF EXISTS Citybikes
 
 CREATE DATABASE Citybikes
@@ -7,6 +9,8 @@ CREATE DATABASE Citybikes
 GO
 
 USE Citybikes
+
+GO
 
 CREATE TABLE Stations
 (
@@ -51,8 +55,6 @@ REFERENCES Stations (Id)
 
 GO
 
-DROP TABLE IF EXISTS StationsStaging
-
 CREATE TABLE StationsStaging
 (
     FID nvarchar(64),
@@ -66,8 +68,8 @@ CREATE TABLE StationsStaging
     Stad nvarchar(64),
     Operaattor nvarchar(64),
     Kapasiteet nvarchar(64),
-    x nvarchar(64),
-    y nvarchar(64)
+    X nvarchar(64),
+    Y nvarchar(64)
 )
 
 GO
@@ -84,3 +86,9 @@ WITH
 	ROWTERMINATOR = '0x0a',
 	FIELDQUOTE = '"'
 )
+
+GO
+
+INSERT INTO Stations (Id, Name_fi, Namn_se, Name_en, Address_fi, Address_se, City_fi, City_se, Operator, Capacity, X, Y)
+SELECT ID, Nimi, Namn, [Name], Osoite, Adress, Kaupunki, Stad, Operaattor, Kapasiteet, X, Y
+FROM StationsStaging
