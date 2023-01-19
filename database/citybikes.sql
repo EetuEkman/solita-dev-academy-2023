@@ -2,7 +2,14 @@ USE master
 
 GO
 
-DROP DATABASE IF EXISTS Citybikes
+IF DB_ID('Citybikes') IS NOT NULL
+BEGIN
+    ALTER DATABASE Citybikes SET SINGLE_USER WITH ROLLBACK IMMEDIATE
+
+    DROP DATABASE Citybikes
+END
+
+GO
 
 CREATE DATABASE Citybikes
 
@@ -24,8 +31,8 @@ CREATE TABLE Stations
     City_se nvarchar(64),
     Operator nvarchar(64),
     Capacity int,
-    X numeric,
-    Y numeric
+    X varchar(32),
+    Y varchar(32)
 )
 
 CREATE TABLE Journeys
@@ -92,3 +99,5 @@ GO
 INSERT INTO Stations (Id, Name_fi, Namn_se, Name_en, Address_fi, Address_se, City_fi, City_se, Operator, Capacity, X, Y)
 SELECT ID, Nimi, Namn, [Name], Osoite, Adress, Kaupunki, Stad, Operaattor, Kapasiteet, X, Y
 FROM StationsStaging
+
+GO
