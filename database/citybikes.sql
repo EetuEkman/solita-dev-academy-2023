@@ -71,3 +71,16 @@ CREATE TABLE StationsStaging
 )
 
 GO
+
+BULK INSERT StationsStaging
+FROM 'C:\temp\Helsingin_ja_Espoon_kaupunkipyB6rA4asemat_avoin.csv'
+WITH
+(
+	FORMAT = 'CSV',
+	CODEPAGE = '65001',
+	DATAFILETYPE='char',
+    FIRSTROW = 2,
+	FIELDTERMINATOR = ',',
+	ROWTERMINATOR = '0x0a',
+	FIELDQUOTE = '"'
+)
