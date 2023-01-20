@@ -62,7 +62,9 @@ REFERENCES Stations (Id)
 
 GO
 
-CREATE TABLE StationsStaging
+-- Temporary table for station information
+
+CREATE TABLE #Stations
 (
     FID nvarchar(64),
     ID nvarchar(64),
@@ -81,7 +83,7 @@ CREATE TABLE StationsStaging
 
 GO
 
-BULK INSERT StationsStaging
+BULK INSERT #Stations
 FROM 'C:\temp\Helsingin_ja_Espoon_kaupunkipyB6rA4asemat_avoin.csv'
 WITH
 (
@@ -98,6 +100,6 @@ GO
 
 INSERT INTO Stations (Id, Name_fi, Namn_se, Name_en, Address_fi, Address_se, City_fi, City_se, Operator, Capacity, X, Y)
 SELECT ID, Nimi, Namn, [Name], Osoite, Adress, Kaupunki, Stad, Operaattor, Kapasiteet, X, Y
-FROM StationsStaging
+FROM #Stations
 
 GO
