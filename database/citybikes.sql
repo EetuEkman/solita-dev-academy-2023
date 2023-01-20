@@ -31,8 +31,8 @@ CREATE TABLE Stations
     City_se nvarchar(64),
     Operator nvarchar(64),
     Capacity int,
-    X varchar(32),
-    Y varchar(32)
+    X DECIMAL(16, 13),
+    Y DECIMAL(16, 13)
 )
 
 CREATE TABLE Journeys
@@ -75,8 +75,8 @@ CREATE TABLE StationsStaging
     Stad nvarchar(64),
     Operaattor nvarchar(64),
     Kapasiteet nvarchar(64),
-    X nvarchar(64),
-    Y nvarchar(64)
+    X DECIMAL(16, 13),
+    Y DECIMAL(16, 13)
 )
 
 GO
