@@ -44,8 +44,8 @@ CREATE TABLE Journeys
     Departure_station_name nvarchar(64),
     Return_station_id varchar(3),
     Return_station_name nvarchar(64),
-    Covered_distance int,
-    Duration int
+    Covered_distance float,
+    Duration float
 )
 
 GO
@@ -62,7 +62,7 @@ REFERENCES Stations (Id)
 
 GO
 
--- Temporary table for station information
+-- Temporary table for the station information.
 
 CREATE TABLE #Stations
 (
@@ -104,7 +104,7 @@ FROM #Stations
 
 GO
 
--- Temporary table for journey information
+-- Temporary table for journey information.
 
 IF OBJECT_ID(N'tempdb..#Journeys') IS NOT NULL
 BEGIN
@@ -140,8 +140,6 @@ WITH
 	FIELDQUOTE = '"'
 )
 
-GO
-
 BULK INSERT #Journeys
 FROM 'C:\temp\2021-06.csv'
 WITH
@@ -154,8 +152,6 @@ WITH
 	ROWTERMINATOR = '0x0a',
 	FIELDQUOTE = '"'
 )
-
-GO
 
 BULK INSERT #Journeys
 FROM 'C:\temp\2021-07.csv'
@@ -171,3 +167,37 @@ WITH
 )
 
 GO
+
+-- The stations table is missing referenced stations.
+
+-- Get missing station ids and insert missing stations into the station table.
+
+INSERT INTO Stations (Id, Name_fi, Name_en)
+SELECT DISTINCT Departure_station_id, Departure_station_name, Departure_station_name
+FROM #Journeys
+WHERE NOT EXISTS
+(
+	SELECT Id
+	FROM Stations
+	WHERE Stations.Id = #Journeys.Departure_station_id
+)
+ORDER BY Departure_station_id ASC
+
+INSERT INTO Stations (Id, Name_fi, Name_en)
+SELECT DISTINCT Return_station_id, Return_station_name, Return_station_name
+FROM #Journeys
+WHERE NOT EXISTS
+(
+	SELECT Id
+	FROM Stations
+	WHERE Stations.Id = #Journeys.Return_station_id
+)
+ORDER BY Return_station_id ASC
+
+GO
+
+INSERT INTO Journeys (Departure, [Return], Departure_station_id, Departure_station_name, Return_station_id, Return_station_name, Covered_distance, Duration)
+SELECT Departure, [Return], Departure_station_id, Departure_station_name, Return_station_id, Return_station_name, Covered_distance, Duration
+FROM #Journeys
+WHERE NOT Duration < 10
+AND NOT Covered_distance < 10
