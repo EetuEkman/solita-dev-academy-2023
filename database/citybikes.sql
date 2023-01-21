@@ -103,3 +103,71 @@ SELECT ID, Nimi, Namn, [Name], Osoite, Adress, Kaupunki, Stad, Operaattor, Kapas
 FROM #Stations
 
 GO
+
+-- Temporary table for journey information
+
+IF OBJECT_ID(N'tempdb..#Journeys') IS NOT NULL
+BEGIN
+    DROP TABLE #Journeys
+END
+
+GO
+
+CREATE TABLE #Journeys
+(
+    Departure smalldatetime,
+    [Return] smalldatetime,
+    Departure_station_id nvarchar(4),
+    Departure_station_name nvarchar(64),
+    Return_station_id nvarchar(4),
+    Return_station_name nvarchar(64),
+    Covered_distance float,
+    Duration float
+)
+
+GO
+
+BULK INSERT #Journeys
+FROM 'C:\temp\2021-05.csv'
+WITH
+(
+	FORMAT = 'CSV',
+	CODEPAGE = '65001',
+	DATAFILETYPE='char',
+    FIRSTROW = 2,
+	FIELDTERMINATOR = ',',
+	ROWTERMINATOR = '0x0a',
+	FIELDQUOTE = '"'
+)
+
+GO
+
+BULK INSERT #Journeys
+FROM 'C:\temp\2021-06.csv'
+WITH
+(
+	FORMAT = 'CSV',
+	CODEPAGE = '65001',
+	DATAFILETYPE='char',
+    FIRSTROW = 2,
+	FIELDTERMINATOR = ',',
+	ROWTERMINATOR = '0x0a',
+	FIELDQUOTE = '"'
+)
+
+GO
+
+BULK INSERT #Journeys
+FROM 'C:\temp\2021-07.csv'
+WITH
+(
+	FORMAT = 'CSV',
+	CODEPAGE = '65001',
+	DATAFILETYPE='char',
+    FIRSTROW = 2,
+	FIELDTERMINATOR = ',',
+	ROWTERMINATOR = '0x0a',
+	FIELDQUOTE = '"'
+)
+
+GO
