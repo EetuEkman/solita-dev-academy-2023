@@ -201,3 +201,9 @@ SELECT Departure, [Return], Departure_station_id, Departure_station_name, Return
 FROM #Journeys
 WHERE NOT Duration < 10
 AND NOT Covered_distance < 10
+
+GO
+
+CREATE USER Citybikes_user WITH PASSWORD = N'lPMOwK3bPm'
+
+GO
