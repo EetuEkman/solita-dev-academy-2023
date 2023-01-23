@@ -2,6 +2,30 @@ USE master
 
 GO
 
+sp_configure 'show advanced options', 1
+
+GO
+
+RECONFIGURE
+
+GO
+
+sp_configure 'CONTAINED DATABASE AUTHENTICATION', 1
+
+GO
+
+RECONFIGURE
+
+GO
+
+sp_configure 'show advanced options', 0
+
+GO
+
+RECONFIGURE
+
+GO
+
 IF DB_ID('Citybikes') IS NOT NULL
 BEGIN
     ALTER DATABASE Citybikes SET SINGLE_USER WITH ROLLBACK IMMEDIATE
@@ -12,6 +36,7 @@ END
 GO
 
 CREATE DATABASE Citybikes
+CONTAINMENT = PARTIAL
 
 GO
 
