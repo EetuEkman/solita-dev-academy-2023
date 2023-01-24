@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using solita_dev_academy_2023_server.Models;
+using System.Data;
+using System.Text.Json;
 
 namespace solita_dev_academy_2023_server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    
+
     public class StationController : Controller
     {
         private readonly IConfiguration configuration;
@@ -14,12 +17,14 @@ namespace solita_dev_academy_2023_server.Controllers
             this.configuration = configuration;
         }
         [HttpGet]
-        [Produces("text/plain")]
+        [Produces("application/json")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> Index()
         {
             var connectionString = configuration.GetValue<string>("ConnectionStrings:Citybikes");
+
+            List<Station> stations = new();
 
             try
             {
@@ -36,7 +41,21 @@ namespace solita_dev_academy_2023_server.Controllers
                         {
                             while (reader.Read())
                             {
-                                    
+                                var station = new Station
+                                {
+                                    Id = reader["Id"] as string,
+                                    Name_fi = reader["Name_fi"] as string,
+                                    Name_se = reader["Name_se"] as string,
+                                    Name_en = reader["Name_en"] as string,
+                                    Address_fi = reader["Address_fi"] as string,
+                                    Address_se = reader["Address_se"] as string,
+                                    Operator = reader["Operator"] as string,
+                                    Capacity = reader["Capacity"] as int?,
+                                    X = reader["X"] == DBNull.Value ? null : reader.GetDecimal("X"),
+                                    Y = reader["Y"] == DBNull.Value ? null : reader.GetDecimal("Y")
+                                };
+
+                                stations.Add(station);
                             }
                         }
                     }
@@ -49,9 +68,8 @@ namespace solita_dev_academy_2023_server.Controllers
 
                 return StatusCode(500);
             }
-            
 
-            return Content("List of bike stations.");
+            return Json(stations);
         }
     }
 }

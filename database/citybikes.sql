@@ -48,7 +48,7 @@ CREATE TABLE Stations
 (
     Id varchar(3) PRIMARY KEY NOT NULL,
     Name_fi nvarchar(64),
-    Namn_se nvarchar(64),
+    Name_se nvarchar(64),
     Name_en nvarchar(64),
     Address_fi nvarchar(64),
     Address_se nvarchar(64),
@@ -123,7 +123,7 @@ WITH
 
 GO
 
-INSERT INTO Stations (Id, Name_fi, Namn_se, Name_en, Address_fi, Address_se, City_fi, City_se, Operator, Capacity, X, Y)
+INSERT INTO Stations (Id, Name_fi, Name_se, Name_en, Address_fi, Address_se, City_fi, City_se, Operator, Capacity, X, Y)
 SELECT ID, Nimi, Namn, [Name], Osoite, Adress, Kaupunki, Stad, Operaattor, Kapasiteet, X, Y
 FROM #Stations
 
