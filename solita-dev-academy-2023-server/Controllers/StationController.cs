@@ -9,17 +9,17 @@ namespace solita_dev_academy_2023_server.Controllers
     public class StationQueryParameters
     {
         [FromQuery(Name = "name_fi")]
-        public string NameFi { get; set; }
+        public string? NameFi { get; set; }
         [FromQuery(Name = "name_se")]
-        public string NameSe { get; set; }
+        public string? NameSe { get; set; }
         [FromQuery(Name = "name_en")]
-        public string NameEn { get; set; }
+        public string? NameEn { get; set; }
         [FromQuery(Name = "address_fi")]
-        public string AddressFi { get; set; }
+        public string? AddressFi { get; set; }
         [FromQuery(Name = "address_se")]
-        public string AddressSe { get; set; }
+        public string? AddressSe { get; set; }
         [FromQuery(Name = "capacity")]
-        public int Capacity { get; set; }
+        public int? Capacity { get; set; }
     }
 
     [ApiController]
@@ -47,8 +47,12 @@ namespace solita_dev_academy_2023_server.Controllers
                 {
                     connection.Open();
 
+                    var query = "EXEC SelectAlLStations";
+
+                    /*
                     var query = "SELECT *" +
                         "FROM [dbo].[Stations]";
+                    */
 
                     using (var command = new SqlCommand(query, connection))
                     {

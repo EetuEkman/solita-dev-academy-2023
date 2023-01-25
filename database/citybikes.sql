@@ -234,3 +234,11 @@ CREATE USER Citybikes_user WITH PASSWORD = N'lPMOwK3bPm'
 GO
 
 GRANT SELECT, INSERT TO Citybikes_user
+
+GO
+
+CREATE PROCEDURE SelectAllStations
+AS
+SELECT * FROM Stations
+
+GO
