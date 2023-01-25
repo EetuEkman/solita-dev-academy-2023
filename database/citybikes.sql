@@ -233,7 +233,7 @@ CREATE USER Citybikes_user WITH PASSWORD = N'lPMOwK3bPm'
 
 GO
 
-GRANT SELECT, INSERT TO Citybikes_user
+GRANT SELECT, INSERT, EXECUTE TO Citybikes_user
 
 GO
 
