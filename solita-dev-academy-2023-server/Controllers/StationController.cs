@@ -6,9 +6,24 @@ using System.Text.Json;
 
 namespace solita_dev_academy_2023_server.Controllers
 {
+    public class StationQueryParameters
+    {
+        [FromQuery(Name = "name_fi")]
+        public string NameFi { get; set; }
+        [FromQuery(Name = "name_se")]
+        public string NameSe { get; set; }
+        [FromQuery(Name = "name_en")]
+        public string NameEn { get; set; }
+        [FromQuery(Name = "address_fi")]
+        public string AddressFi { get; set; }
+        [FromQuery(Name = "address_se")]
+        public string AddressSe { get; set; }
+        [FromQuery(Name = "capacity")]
+        public int Capacity { get; set; }
+    }
+
     [ApiController]
     [Route("api/[controller]")]
-
     public class StationController : Controller
     {
         private readonly IConfiguration configuration;
@@ -20,7 +35,7 @@ namespace solita_dev_academy_2023_server.Controllers
         [Produces("application/json")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery]StationQueryParameters parameters)
         {
             var connectionString = configuration.GetValue<string>("ConnectionStrings:Citybikes");
 
