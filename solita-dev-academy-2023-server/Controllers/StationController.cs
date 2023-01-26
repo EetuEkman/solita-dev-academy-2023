@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Dapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using solita_dev_academy_2023_server.Models;
 using System.Data;
@@ -35,17 +36,17 @@ namespace solita_dev_academy_2023_server.Controllers
         [Produces("application/json")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> Index([FromQuery]StationQueryParameters parameters)
+        public async Task<IActionResult> Index([FromQuery] StationQueryParameters parameters)
         {
             var connectionString = configuration.GetValue<string>("ConnectionStrings:Citybikes");
 
-            List<Station> stations = new();
+            List<Station> stations;
 
             var query = "EXEC SelectAllStations";
 
             if (parameters.NameFi != null)
             {
-                query = "EXEC SelectStationsByNameFi @Name_fi = '" + parameters.NameFi + "'"; 
+                query = "EXEC SelectStationsByNameFi @Name_fi = '" + parameters.NameFi + "'";
             }
 
             if (parameters.NameSe != null)
@@ -74,10 +75,17 @@ namespace solita_dev_academy_2023_server.Controllers
                 {
                     connection.Open();
 
+                    stations = connection.Query<Station>(query).ToList();
+
+                    // Moved from the pure ADO.NET to Dapper.
+
+                    /*
+
                     using (var command = new SqlCommand(query, connection))
                     {
                         using (var reader = command.ExecuteReader())
                         {
+
                             while (reader.Read())
                             {
                                 var station = new Station
@@ -96,8 +104,12 @@ namespace solita_dev_academy_2023_server.Controllers
 
                                 stations.Add(station);
                             }
+
                         }
                     }
+
+                    */
+
                 }
             }
 
