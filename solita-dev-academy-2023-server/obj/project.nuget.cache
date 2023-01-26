@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "gNxryWgjqXKaEEncUz89Gl+YfwYP8i779ERdrOGad5ul6BFxms3MawipwUWdixBX7wTpiMi5BlbJWZ0pOCbvzQ==",
+  "dgSpecHash": "vRcCYyCjuDSVlZj8tZ5nlwjKXUe9TJeEeTGLbFgzf9ysspfAbXG4hVNk3zMk/WGPVjZoqUGe9mdi4uXjocnFzw==",
   "success": true,
   "projectFilePath": "F:\\general-projects\\solita-dev-academy-2023\\solita-dev-academy-2023-server\\solita-dev-academy-2023-server.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\eetue\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\eetue\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
+    "C:\\Users\\eetue\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
     "C:\\Users\\eetue\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\eetue\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.0\\microsoft.aspnetcore.openapi.7.0.0.nupkg.sha512",
     "C:\\Users\\eetue\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
