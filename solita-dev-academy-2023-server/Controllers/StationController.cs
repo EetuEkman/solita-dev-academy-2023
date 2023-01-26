@@ -41,18 +41,38 @@ namespace solita_dev_academy_2023_server.Controllers
 
             List<Station> stations = new();
 
+            var query = "EXEC SelectAllStations";
+
+            if (parameters.NameFi != null)
+            {
+                query = "EXEC SelectStationsByNameFi @Name_fi = '" + parameters.NameFi + "'"; 
+            }
+
+            if (parameters.NameSe != null)
+            {
+                query = "EXEC SelectAllStations";
+            }
+
+            if (parameters.NameEn != null)
+            {
+                query = "EXEC SelectAllStations";
+            }
+
+            if (parameters.AddressFi != null)
+            {
+                query = "EXEC SelectAllStations";
+            }
+
+            if (parameters.AddressSe != null)
+            {
+                query = "EXEC SelectAllStations";
+            }
+
             try
             {
                 using (var connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-
-                    var query = "EXEC SelectAlLStations";
-
-                    /*
-                    var query = "SELECT *" +
-                        "FROM [dbo].[Stations]";
-                    */
 
                     using (var command = new SqlCommand(query, connection))
                     {

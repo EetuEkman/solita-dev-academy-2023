@@ -242,3 +242,10 @@ AS
 SELECT * FROM Stations
 
 GO
+
+CREATE PROCEDURE SelectStationsByNameFi @Name_fi nvarchar(64)
+AS
+SELECT * FROM Stations
+WHERE Name_fi LIKE '%' + @Name_fi + '%'
+
+GO
