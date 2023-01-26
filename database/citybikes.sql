@@ -249,3 +249,31 @@ SELECT * FROM Stations
 WHERE Name_fi LIKE '%' + @Name_fi + '%'
 
 GO
+
+CREATE PROCEDURE SelectStationsByNameSe @Name_se nvarchar(64)
+AS
+SELECT * FROM Stations
+WHERE Name_se LIKE '%' + @Name_se + '%'
+
+GO
+
+CREATE PROCEDURE SelectStationsByNameEn @Name_en nvarchar(64)
+AS
+SELECT * FROM Stations
+WHERE Name_en LIKE '%' + @Name_en + '%'
+
+GO
+
+CREATE PROCEDURE SelectStationsByAddressFi @Address_fi nvarchar(64)
+AS
+SELECT * FROM Stations
+WHERE Address_fi LIKE '%' + @Address_fi + '%'
+
+GO
+
+CREATE PROCEDURE SelectStationsByAddressSe @Address_se nvarchar(64)
+AS
+SELECT * FROM Stations
+WHERE Address_se LIKE '%' + @Address_se + '%'
+
+GO

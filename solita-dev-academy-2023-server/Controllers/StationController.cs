@@ -42,31 +42,31 @@ namespace solita_dev_academy_2023_server.Controllers
 
             List<Station> stations;
 
-            var query = "EXEC SelectAllStations";
+            var query = "SELECT * FROM Stations WHERE 1=1";
 
             if (parameters.NameFi != null)
             {
-                query = "EXEC SelectStationsByNameFi @Name_fi = '" + parameters.NameFi + "'";
+                query += $" AND Name_fi LIKE '%{parameters.NameFi}%'"; 
             }
 
             if (parameters.NameSe != null)
             {
-                query = "EXEC SelectAllStations";
+                query += $" AND Name_se LIKE '%{parameters.NameSe}%'";
             }
 
             if (parameters.NameEn != null)
             {
-                query = "EXEC SelectAllStations";
+                query += $" AND Name_en LIKE '%{parameters.NameEn}%'"; 
             }
 
             if (parameters.AddressFi != null)
             {
-                query = "EXEC SelectAllStations";
+                query += $" AND Address_fi LIKE '%{parameters.AddressFi}%'"; 
             }
 
             if (parameters.AddressSe != null)
             {
-                query = "EXEC SelectAllStations";
+                query += $" AND Address_se LIKE '%{parameters.AddressSe}%'"; 
             }
 
             try
