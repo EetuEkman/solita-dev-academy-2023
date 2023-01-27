@@ -42,52 +42,49 @@ namespace solita_dev_academy_2023_server.Controllers
         {
             // Dictionary for building dynamic parameters.
 
-            var dictionary = new Dictionary<string, object>();
-
-            // Build query.
-
-            var query = "SELECT * " +
-                "FROM Stations " +
-                "WHERE 1=1";
+            var dictionary = new Dictionary<string, Object>()
+            {
+                { "@Name_fi", "%" },
+                { "@Name_se", "%" },
+                { "@Name_en", "%" },
+                { "@Address_fi", "%" },
+                { "@Address_se", "%" },
+            };
 
             if (queryParameters.NameFi != null)
             {
-                dictionary.Add("@Name_fi", "%" + queryParameters.NameFi + "%");
-
-                query += " AND Name_fi LIKE @Name_fi";
+                dictionary["@Name_fi"] = "%" + queryParameters.NameFi + "%";
             }
 
             if (queryParameters.NameSe != null)
             {
-                dictionary.Add("@Name_se", "%" + queryParameters.NameSe + "%");
-
-                query += " AND Name_se LIKE @Name_se";
+                dictionary["@Name_se"] = "%" + queryParameters.NameSe + "%";
             }
 
             if (queryParameters.NameEn != null)
             {
-                dictionary.Add("@Name_en", "%" + queryParameters.NameEn + "%");
-
-                query += " AND Name_en LIKE @Name_en";
+                dictionary["@Name_en"] = "%" + queryParameters.NameEn + "%";
             }
 
             if (queryParameters.AddressFi != null)
             {
-                dictionary.Add("@Address_fi", "%" + queryParameters.AddressFi + "%");
-
-                query += " AND Address_fi LIKE @Address_fi";
+                dictionary["@Address_fi"] = "%" + queryParameters.AddressFi + "%";
             }
 
             if (queryParameters.AddressSe != null)
             {
-                dictionary.Add("@Address_se", "%" + queryParameters.AddressSe + "%");
-
-                query += " AND Address_se LIKE @Address_se";
+                dictionary["@Address_se"] = "%" + queryParameters.AddressSe + "%";
             }
 
-            // Dapper parameters.
-
             var parameters = new DynamicParameters(dictionary);
+
+            var query = "SELECT *" +
+                " FROM Stations" +
+                " WHERE Name_fi LIKE @Name_fi" +
+                " AND Name_se LIKE @Name_se" +
+                " AND Name_en LIKE @Name_en" +
+                " AND Address_fi LIKE @Address_fi" +
+                " AND Address_se LIKE @Address_se";
 
             List<Station> stations;
 
@@ -139,8 +136,6 @@ namespace solita_dev_academy_2023_server.Controllers
 
             catch (Exception exception)
             {
-                Console.WriteLine(exception.ToString());
-
                 return StatusCode(500);
             }
 
