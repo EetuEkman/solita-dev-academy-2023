@@ -46,8 +46,8 @@ namespace solita_dev_academy_2023_server.Controllers
                 " DS.Name_fi, DS.Name_se, DS.Name_en, DS.Address_fi, DS.Address_se," +
                 " RS.Name_fi, RS.Name_se, RS.Name_en, RS.Address_fi, RS.Address_se" +
                 " FROM Journeys AS J" +
-                " INNER JOIN Stations AS DS ON J.Departure_station_id = S.Id" +
-                " INNER JOIN AS RS ON J.Return_station_id = S.Id" +
+                " INNER JOIN Stations AS DS ON J.Departure_station_id = DS.Id" +
+                " INNER JOIN AS RS ON J.Return_station_id = RS.Id" +
                 " ORDER BY J.Departure DESC, J.Return DESC" +
                 " OFFSET @Offset";
 
