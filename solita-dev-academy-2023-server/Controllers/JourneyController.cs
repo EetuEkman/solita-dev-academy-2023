@@ -24,6 +24,13 @@ namespace solita_dev_academy_2023_server.Controllers
     [Route("api/[controller]")]
     public class JourneyController : Controller
     {
+        private readonly IConfiguration configuration;
+
+        public JourneyController(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(200)]
