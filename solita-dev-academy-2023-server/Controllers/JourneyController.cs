@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using solita_dev_academy_2023_server.Models;
 using System.Text.Json;
 
@@ -49,14 +50,14 @@ namespace solita_dev_academy_2023_server.Controllers
                 { "@ReturnStationName", "%" }
            };
 
-            var query = "SELECT J.Departure, J.Return, J.Covered_distance, J.Duration," +
-                " DS.Name_fi, DS.Name_se, DS.Name_en, DS.Address_fi, DS.Address_se," +
-                " RS.Name_fi, RS.Name_se, RS.Name_en, RS.Address_fi, RS.Address_se" +
+            var query = "SELECT J.Departure, J.[Return], J.Covered_distance, J.Duration," +
+                " DS.Name_fi AS Departure_station_name_fi, DS.Name_se AS Departure_station_name_se, DS.Name_en AS Departure_station_name_en, DS.Address_fi AS Departure_station_address_fi, DS.Address_se AS Departure_station_address_se," +
+                " RS.Name_fi AS Return_station_name_fi, RS.Name_se AS Return_station_name_se, RS.Name_en AS Return_station_name_en, RS.Address_fi AS Return_station_address_fi, RS.Address_se AS Return_station_address_se" +
                 " FROM Journeys AS J" +
                 " INNER JOIN Stations AS DS ON J.Departure_station_id = DS.Id" +
-                " INNER JOIN AS RS ON J.Return_station_id = RS.Id" +
-                " ORDER BY J.Departure DESC, J.Return DESC" +
-                " OFFSET @Offset";
+                " INNER JOIN Stations AS RS ON J.Return_station_id = RS.Id" +
+                " ORDER BY J.Departure DESC, J.[Return] DESC" +
+                " OFFSET @Offset ROWS";
 
             // Limit the number of rows returned by the query.
 
@@ -66,22 +67,38 @@ namespace solita_dev_academy_2023_server.Controllers
             {
                 offset = ((int)queryParameters.Page * 20) + 1;
 
-                query += "FETCH NEXT 20 ROWS ONLY";
+                query += " FETCH NEXT 20 ROWS ONLY";
             }
             else
             {
-                query += "FETCH FIRST 20 ROWS ONLY";
+                query += " FETCH FIRST 20 ROWS ONLY";
             }
 
             dictionary.Add("@Offset", offset);
 
             var parameters = new DynamicParameters(dictionary);
 
+            List<Journey> journeys;
+
+            try
+            {
+                var connectionString = configuration.GetValue<string>("ConnectionStrings:Citybikes");
+
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    journeys = connection.Query<Journey>(query, parameters).ToList();
+                }
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500);
+            }
+
             var result = new JourneyResult();
 
-            List<Journey> Journeys = new();
-
-            result.Journeys = Journeys;
+            result.Journeys = journeys;
 
             return Json(result);
         }
