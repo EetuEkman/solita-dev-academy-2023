@@ -1,12 +1,15 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Data.SqlClient;
 using solita_dev_academy_2023_server.Models;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 
 namespace solita_dev_academy_2023_server.Controllers
 {
+    [Serializable]
     public class JourneyQueryParameters
     {
         public string? DateFrom { get; set; }
@@ -99,6 +102,42 @@ namespace solita_dev_academy_2023_server.Controllers
             var result = new JourneyResult();
 
             result.Journeys = journeys;
+
+            // For building the absolute url.
+
+            var scheme = Url.ActionContext.HttpContext.Request.Scheme;
+
+            // Build the url to the previous page.
+
+            string? previous = null;
+
+            if (queryParameters.Page > 1)
+            {
+                // Deep copy using System.Text.Json.
+
+                var qp = JsonSerializer.Deserialize<JourneyQueryParameters>(JsonSerializer.Serialize(queryParameters));
+
+                qp.Page -= 1;
+
+                previous = Url.Action("Index", "Journey", qp, scheme);
+            }
+
+            // Build the url for the next page.
+
+            string? next = null;
+
+            if (queryParameters.Page is null)
+            {
+                queryParameters.Page = 1;
+            }
+
+            queryParameters.Page += 1;
+
+            next = Url.Action("Index", "Journey", queryParameters, scheme);
+
+            result.Previous = previous;
+
+            result.Next = next;
 
             return Json(result);
         }
