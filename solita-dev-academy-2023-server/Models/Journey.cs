@@ -15,6 +15,6 @@
         public string? Return_station_address_fi { get; set; }
         public string? Return_station_address_se { get; set; }
         public double? Covered_distance { get; set; }
-        public double? Duration { get; set; }
+        public float? Duration { get; set; }
     }
 }
