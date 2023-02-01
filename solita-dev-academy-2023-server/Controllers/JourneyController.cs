@@ -286,35 +286,56 @@ namespace solita_dev_academy_2023_server.Controllers
 
             var scheme = Url.ActionContext.HttpContext.Request.Scheme;
 
+            // Current page is by default 1.
+
+            int currentPage = 1;
+
             // Build the url to the previous page.
 
             string? previous = null;
 
             if (queryParameters.Page > 1)
             {
-                // Deep copy using System.Text.Json.
+                currentPage = (int)queryParameters.Page;
 
-                var qp = JsonSerializer.Deserialize<JourneyQueryParameters>(JsonSerializer.Serialize(queryParameters));
+                queryParameters.Page = currentPage - 1;
 
-                qp.Page -= 1;
-
-                previous = Url.Action("Index", "Journey", qp, scheme);
+                previous = Url.Action("Index", "Journey", queryParameters, scheme);
             }
+
+            result.Previous = previous;
+
+            result.CurrentPage = currentPage;
 
             // Build the url for the next page.
 
             string? next = null;
 
-            if (queryParameters.Page is null)
+            // 21 rows, 20 per page. We're on page 1.
+            // 21 / 20 = 1.05 => 2 pages.
+            // If results / results per page > current page, there's another page.
+            // Build the url for that page.
+
+            // 20 rows, 20 per page. We're on page 1.
+            // 20 / 20 = 1 => 1 page.
+            // 1 page == current page 1, There are no more pages,
+            // keep the next null.
+
+            // 448 results, 20 per page. We're on page 10.
+            // 448 / 20 = 22.4 => 23 pages.
+            // 23 > current page 10, build url for the next page.
+
+            // 448 results, 20 per page. We're on page 23.
+            // 448 / 20 = 22.4 => 23 pages.
+            // 23 pages == current page 23. There are no more pages,
+            // keep the next null.
+
+            if ((int)Math.Ceiling((double)(count / 20)) > currentPage)
             {
-                queryParameters.Page = 1;
+                queryParameters.Page = currentPage + 1;
             }
 
-            queryParameters.Page += 1;
-
             next = Url.Action("Index", "Journey", queryParameters, scheme);
-
-            result.Previous = previous;
 
             result.Next = next;
 
