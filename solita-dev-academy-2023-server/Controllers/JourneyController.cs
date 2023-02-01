@@ -12,10 +12,10 @@ namespace solita_dev_academy_2023_server.Controllers
     [Serializable]
     public class JourneyQueryParameters
     {
-        public string? DepartureDateFrom { get; set; }
-        public string? DepartureDateTo { get; set; }
-        public string? ReturnDateFrom { get; set; }
-        public string? ReturnDateTo { get; set; }
+        public DateTime? DepartureDateFrom { get; set; }
+        public DateTime? DepartureDateTo { get; set; }
+        public DateTime? ReturnDateFrom { get; set; }
+        public DateTime? ReturnDateTo { get; set; }
         public int? CoveredDistanceFrom { get; set; }
         public int? CoveredDistanceTo { get; set; }
         public double? DurationFrom { get; set; }
@@ -43,9 +43,15 @@ namespace solita_dev_academy_2023_server.Controllers
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> Index([FromQuery]JourneyQueryParameters queryParameters)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             // For building dynamic parameters.
 
             var dictionary = new Dictionary<string, object>()
@@ -88,7 +94,7 @@ namespace solita_dev_academy_2023_server.Controllers
 
             // Departure datetime.
 
-            if (String.IsNullOrWhiteSpace(queryParameters.DepartureDateFrom) == false)
+            if (queryParameters.DepartureDateFrom is not null)
             {
                 query += " AND J.Departure >= @DepartureDateFrom";
 
@@ -97,7 +103,7 @@ namespace solita_dev_academy_2023_server.Controllers
                 dictionary.Add("@DepartureDateFrom", queryParameters.DepartureDateFrom);
             }
 
-            if (String.IsNullOrWhiteSpace(queryParameters.DepartureDateTo) == false)
+            if (queryParameters.DepartureDateTo is not null)
             {
                 query += " AND J.Departure <= @DepartureDateTo";
                 
@@ -108,7 +114,7 @@ namespace solita_dev_academy_2023_server.Controllers
 
             // Return datetime.
 
-            if (String.IsNullOrWhiteSpace(queryParameters.ReturnDateFrom) == false)
+            if (queryParameters.ReturnDateFrom is not null)
             {
                 query += " AND J.[Return] >= @ReturnDateFrom";
                 
@@ -117,7 +123,7 @@ namespace solita_dev_academy_2023_server.Controllers
                 dictionary.Add("@ReturnDateFrom", queryParameters.ReturnDateFrom);
             }
 
-            if (String.IsNullOrWhiteSpace(queryParameters.ReturnDateTo) == false)
+            if (queryParameters.ReturnDateTo is not null)
             {
                 query += " AND J.[Return] <= @ReturnDateTo";
 
