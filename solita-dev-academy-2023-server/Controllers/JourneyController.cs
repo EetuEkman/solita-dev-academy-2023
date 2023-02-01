@@ -73,68 +73,89 @@ namespace solita_dev_academy_2023_server.Controllers
                 " AND RS.Name_se LIKE @ReturnStationNameSe" +
                 " AND RS.Name_en LIKE @ReturnStationNameEn";
 
+            // Result count.
+
+            var countQuery = " SELECT COUNT(*)" +
+                " FROM Journeys AS J" +
+                " INNER JOIN Stations AS DS ON J.Departure_station_id = DS.Id" +
+                " INNER JOIN Stations AS RS ON J.Return_station_id = RS.Id" +
+                " WHERE DS.Name_fi LIKE @DepartureStationNameFi" +
+                " AND DS.Name_se LIKE @DepartureStationNameSe" +
+                " AND DS.Name_en LIKE @DepartureStationNameEn" +
+                " AND RS.Name_fi LIKE @ReturnStationNameFi" +
+                " AND RS.Name_se LIKE @ReturnStationNameSe" +
+                " AND RS.Name_en LIKE @ReturnStationNameEn";
+
             // Departure datetime.
 
-            if (queryParameters.DepartureDateFrom is not null)
+            if (String.IsNullOrWhiteSpace(queryParameters.DepartureDateFrom) == false)
             {
                 query += " AND J.Departure >= @DepartureDateFrom";
+
+                countQuery += " AND J.Departure >= @DepartureDateFrom";
 
                 dictionary.Add("@DepartureDateFrom", queryParameters.DepartureDateFrom);
             }
 
-            if (queryParameters.DepartureDateTo is not null)
+            if (String.IsNullOrWhiteSpace(queryParameters.DepartureDateTo) == false)
             {
                 query += " AND J.Departure <= @DepartureDateTo";
+                
+                countQuery += " AND J.Departure <= @DepartureDateTo";
 
                 dictionary.Add("@DepartureDateTo", queryParameters.DepartureDateTo);
             }
 
             // Return datetime.
 
-            if (queryParameters.ReturnDateFrom is not null)
+            if (String.IsNullOrWhiteSpace(queryParameters.ReturnDateFrom) == false)
             {
                 query += " AND J.[Return] >= @ReturnDateFrom";
+                
+                countQuery += " AND J.[Return] >= @ReturnDateFrom";
 
                 dictionary.Add("@ReturnDateFrom", queryParameters.ReturnDateFrom);
             }
 
-            if (queryParameters.ReturnDateTo is not null)
+            if (String.IsNullOrWhiteSpace(queryParameters.ReturnDateTo) == false)
             {
                 query += " AND J.[Return] <= @ReturnDateTo";
+
+                countQuery += " AND J.[Return] <= @ReturnDateTo";
 
                 dictionary.Add("@ReturnDateTo", queryParameters.ReturnDateTo);
             }
 
             // Departure station names.
 
-            if (queryParameters.DepartureStationNameFi is not null)
+            if (String.IsNullOrWhiteSpace(queryParameters.DepartureStationNameFi) == false)
             {
                 dictionary["@DepartureStationNameFi"] = "%" + queryParameters.DepartureStationNameFi + "%";
             }
 
-            if (queryParameters.DepartureStationNameSe is not null)
+            if (String.IsNullOrWhiteSpace(queryParameters.DepartureStationNameSe) == false)
             {
                 dictionary["@DepartureStationNameSe"] = "%" + queryParameters.DepartureStationNameSe + "%";
             }
 
-            if (queryParameters.DepartureStationNameEn is not null)
+            if (String.IsNullOrWhiteSpace(queryParameters.DepartureStationNameEn) == false)
             {
                 dictionary["@DepartureStationNameEn"] = "%" + queryParameters.DepartureStationNameEn + "%";
             }
 
             // Return station names.
 
-            if (queryParameters.ReturnStationNameFi is not null)
+            if (String.IsNullOrWhiteSpace(queryParameters.ReturnStationNameFi) == false)
             {
                 dictionary["@ReturnStationNameFi"] = "%" + queryParameters.ReturnStationNameFi + "%";
             }
 
-            if (queryParameters.ReturnStationNameSe is not null)
+            if (String.IsNullOrWhiteSpace(queryParameters.ReturnStationNameSe) == false)
             {
                 dictionary["@ReturnStationNameSe"] = "%" + queryParameters.ReturnStationNameSe + "%";
             }
 
-            if (queryParameters.ReturnStationNameEn is not null)
+            if (String.IsNullOrWhiteSpace(queryParameters.ReturnStationNameEn) == false)
             {
                 dictionary["@ReturnStationNameEn"] = "%" + queryParameters.ReturnStationNameEn + "%";
             }
@@ -143,7 +164,9 @@ namespace solita_dev_academy_2023_server.Controllers
 
             if (queryParameters.DurationFrom is not null && queryParameters.DurationTo is not null)
             {
-                query += "AND J.Duration BETWEEN @DurationFrom AND @DurationTo";
+                query += " AND J.Duration BETWEEN @DurationFrom AND @DurationTo";
+
+                countQuery += " AND J.Duration BETWEEN @DurationFrom AND @DurationTo";
 
                 dictionary.Add("@DurationFrom", queryParameters.DurationFrom);
 
@@ -151,13 +174,17 @@ namespace solita_dev_academy_2023_server.Controllers
             }
             else if (queryParameters.DurationFrom is not null && queryParameters.DurationTo is null)
             {
-                query += "AND J.Duration >= @DurationFrom";
+                query += " AND J.Duration >= @DurationFrom";
+                
+                countQuery += " AND J.Duration >= @DurationFrom";
 
                 dictionary.Add("@DurationFrom", queryParameters.DurationFrom);
             }
-            else if (queryParameters.DurationTo is not null && queryParameters.DurationFrom is null)
+            else if (queryParameters.DurationFrom is null && queryParameters.DurationTo is not null)
             {
-                query += "AND J.Duration <= @DurationTo";
+                query += " AND J.Duration <= @DurationTo";
+
+                countQuery += " AND J.Duration <= @DurationTo";
 
                 dictionary.Add("@DurationTo", queryParameters.DurationTo);
             }
@@ -166,21 +193,27 @@ namespace solita_dev_academy_2023_server.Controllers
 
             if (queryParameters.CoveredDistanceFrom is not null && queryParameters.CoveredDistanceTo is not null)
             {
-                query += "AND J.Covered_distance BETWEEN @CoveredDistanceFrom AND @CoveredDistanceTo";
+                query += " AND J.Covered_distance BETWEEN @CoveredDistanceFrom AND @CoveredDistanceTo";
+
+                countQuery += " AND J.Covered_distance BETWEEN @CoveredDistanceFrom AND @CoveredDistanceTo";
 
                 dictionary.Add("@CoveredDistanceFrom", queryParameters.CoveredDistanceFrom);
 
                 dictionary.Add("@CoveredDistanceTo", queryParameters.CoveredDistanceTo);
             }
-            else if (queryParameters.CoveredDistanceFrom is not null)
+            else if (queryParameters.CoveredDistanceFrom is not null && queryParameters.CoveredDistanceTo is null)
             {
-                query += "AND J.Covered_distance >= @CoveredDistanceFrom";
+                query += " AND J.Covered_distance >= @CoveredDistanceFrom";
+
+                countQuery += " AND J.Covered_distance >= @CoveredDistanceFrom";
 
                 dictionary.Add("@CoveredDistanceFrom", queryParameters.CoveredDistanceFrom);
             }
-            else if (queryParameters.CoveredDistanceTo is not null)
+            else if (queryParameters.CoveredDistanceFrom is null && queryParameters.CoveredDistanceTo is not null)
             {
-                query += "AND J.CoveredDistance <= @CoveredDistanceTo";
+                query += " AND J.CoveredDistance <= @CoveredDistanceTo";
+
+                countQuery += " AND J.CoveredDistance <= @CoveredDistanceTo";
 
                 dictionary.Add("@Covered_distanceTo", queryParameters.CoveredDistanceTo);
             }
@@ -198,18 +231,24 @@ namespace solita_dev_academy_2023_server.Controllers
             {
                 offset = ((int)queryParameters.Page * 20) + 1;
 
-                query += " FETCH NEXT 20 ROWS ONLY";
+                query += " FETCH NEXT 20 ROWS ONLY;";
             }
             else
             {
-                query += " FETCH FIRST 20 ROWS ONLY";
+                query += " FETCH FIRST 20 ROWS ONLY;";
             }
+
+            // Combine the two queries.
+
+            query += countQuery;
 
             dictionary.Add("@Offset", offset);
 
             var parameters = new DynamicParameters(dictionary);
 
             List<Journey> journeys;
+
+            var count = 0;
 
             try
             {
@@ -219,7 +258,11 @@ namespace solita_dev_academy_2023_server.Controllers
                 {
                     connection.Open();
 
-                    journeys = connection.Query<Journey>(query, parameters).ToList();
+                    var reader = connection.QueryMultiple(query, parameters);
+
+                    journeys = reader.Read<Journey>().ToList();
+
+                    count = reader.Read<int>().Single();
                 }
             }
             catch(Exception ex)
@@ -230,6 +273,8 @@ namespace solita_dev_academy_2023_server.Controllers
             var result = new JourneyResult();
 
             result.Journeys = journeys;
+
+            result.Count = count;
 
             // For building the absolute url.
 
