@@ -1,6 +1,6 @@
 ﻿namespace solita_dev_academy_2023_server.Models
 {
-    public class JourneyResult
+    public class JourneyPage
     {
         public List<Journey> Journeys { get; set; }
         public string? Next { get; set; }

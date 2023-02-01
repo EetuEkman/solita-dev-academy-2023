@@ -276,7 +276,7 @@ namespace solita_dev_academy_2023_server.Controllers
                 return StatusCode(500);
             }
 
-            var result = new JourneyResult();
+            var result = new JourneyPage();
 
             result.Journeys = journeys;
 
