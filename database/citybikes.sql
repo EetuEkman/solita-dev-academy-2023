@@ -63,8 +63,8 @@ CREATE TABLE Stations
 CREATE TABLE Journeys
 (
     Id bigint PRIMARY KEY IDENTITY NOT NULL,
-    Departure smalldatetime,
-    [Return] smalldatetime,
+    Departure datetime2(0),
+    [Return] datetime2(0),
     Departure_station_id varchar(3),
     Departure_station_name nvarchar(64),
     Return_station_id varchar(3),
@@ -140,8 +140,8 @@ GO
 
 CREATE TABLE #Journeys
 (
-    Departure smalldatetime,
-    [Return] smalldatetime,
+    Departure datetime2(0),
+    [Return] datetime2(0),
     Departure_station_id nvarchar(4),
     Departure_station_name nvarchar(64),
     Return_station_id nvarchar(4),
