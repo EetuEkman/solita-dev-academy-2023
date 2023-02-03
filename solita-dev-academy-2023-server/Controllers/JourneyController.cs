@@ -1,11 +1,8 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Data.SqlClient;
 using solita_dev_academy_2023_server.Models;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-
 
 namespace solita_dev_academy_2023_server.Controllers
 {
@@ -339,7 +336,9 @@ namespace solita_dev_academy_2023_server.Controllers
 
             result.Next = next;
 
-            return Json(result);
+            var page = JsonSerializer.Serialize(result);
+
+            return Content(page, "application/json", System.Text.Encoding.UTF8);
         }
     }
 }

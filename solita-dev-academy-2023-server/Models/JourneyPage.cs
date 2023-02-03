@@ -1,5 +1,6 @@
 ﻿namespace solita_dev_academy_2023_server.Models
 {
+    [Serializable]
     public class JourneyPage
     {
         public List<Journey> Journeys { get; set; }

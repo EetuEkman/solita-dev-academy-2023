@@ -5,9 +5,7 @@ export default async function FetchJourneys(url: URL) {
 
     const json = await response.json();
 
-    console.log(JSON.stringify(json, null, 2));
-
-    const journeys = JSON.parse(json) as JourneyPage;
+    const journeys = json as JourneyPage;
 
     return journeys;
 }
