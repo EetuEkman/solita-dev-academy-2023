@@ -1,9 +1,9 @@
 import Journey from "./Journey";
 
 export default interface JourneyPage {
-    Journeys: Journey[];
-    Count: number;
-    Previous: string;
-    CurrentPage: number;
-    Next: string;
+    journeys: Journey[];
+    count: number;
+    previous: string;
+    currentPage: number;
+    next: string;
 }

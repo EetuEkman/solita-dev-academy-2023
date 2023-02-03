@@ -1,4 +1,3 @@
-
 namespace solita_dev_academy_2023_server
 {
     public class Program
@@ -14,6 +13,25 @@ namespace solita_dev_academy_2023_server
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // API is public, enable Cross Origin Resource Sharing.
+
+            builder.Services.AddCors(options =>
+            {
+                // Policy to allow all origins.
+
+                options.AddPolicy("AnyOrigin", policy =>
+                {
+                    policy.AllowAnyOrigin();
+                });
+
+                // Add default policy to allow localhost origins.
+
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+                });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -27,6 +45,7 @@ namespace solita_dev_academy_2023_server
 
             app.UseAuthorization();
 
+            app.UseCors();
 
             app.MapControllers();
 
