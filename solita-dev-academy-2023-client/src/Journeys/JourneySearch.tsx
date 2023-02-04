@@ -1,5 +1,7 @@
 import React from "react";
+import SearchOptionNames from "../Constants/SearchOptionNames";
 import SearchOptions from "../Models/SearchOptions";
+import DatePicker from "./DatePicker";
 
 interface Props {
     searchOptions: SearchOptions;
@@ -8,34 +10,6 @@ interface Props {
 }
 
 export default function JourneySearch(props: Props) {
-
-    function onDateChange(event: React.FormEvent<HTMLInputElement>) {
-        let value = event.currentTarget.value;
-
-        let id = event.currentTarget.id;
-
-        let searchOptions = { ...props.searchOptions } as SearchOptions;
-
-        switch (id) {
-            case "departure_date_from":
-                searchOptions.DepartureDateFrom = new Date(value);
-                break;
-            case "departure_date_to":
-                searchOptions.DepartureDateTo = new Date(value);
-                break;
-            case "return_date_from":
-                searchOptions.ReturnDateFrom = new Date(value);
-                break;
-            case "return_date_to":
-                searchOptions.ReturnDateTo = new Date(value);
-                break;
-            default:
-                return;
-        }
-
-        props.setSearchOptions(so => searchOptions);
-    }
-
     function onTextChange(event: React.FormEvent<HTMLInputElement>) { 
         let value = event.currentTarget.value;
 
@@ -44,17 +18,17 @@ export default function JourneySearch(props: Props) {
         let searchOptions = { ...props.searchOptions } as SearchOptions;
 
         switch (id) {
-            case "departure_date_from":
-                searchOptions.DepartureDateFrom = new Date(value);
+            case SearchOptionNames.CoveredDistanceFrom:
+                searchOptions.CoveredDistanceFrom = "";
                 break;
-            case "departure_date_to":
-                searchOptions.DepartureDateTo = new Date(value);
+            case SearchOptionNames.CoveredDistanceTo:
+                searchOptions.CoveredDistanceTo = "";
                 break;
-            case "return_date_from":
-                searchOptions.ReturnDateFrom = new Date(value);
+            case SearchOptionNames.DurationFrom:
+                searchOptions.CoveredDistanceFrom = "";
                 break;
-            case "return_date_to":
-                searchOptions.ReturnDateTo = new Date(value);
+            case SearchOptionNames.DurationTo:
+                searchOptions.CoveredDistanceTo = "";
                 break;
             default:
                 return;
@@ -66,17 +40,13 @@ export default function JourneySearch(props: Props) {
     return (
         <div className="search">
             <div>
-                <label htmlFor="departure_date_from">Departure from</label>
-                <input onChange={onDateChange} value={props.searchOptions.DepartureDateFrom?.toISOString().split("T")[0]} type="date" id="departure_date_from"></input>
-                <label htmlFor="departure_date_to">Departure to</label>
-                <input onChange={onDateChange} value={props.searchOptions.DepartureDateTo?.toISOString().split("T")[0]} type="date" id="departure_date_to"></input>
+                <DatePicker name={SearchOptionNames.DepartureDateFrom} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></DatePicker>
+                <DatePicker name={SearchOptionNames.DepartureDateTo} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></DatePicker>
             </div>
 
             <div>
-                <label htmlFor="return_date_from">Return date from</label>
-                <input value={props.searchOptions.ReturnDateFrom?.toISOString().split("T")[0]} type="date" id="return_date_from"></input>
-                <label htmlFor="return_date_to">Return date to</label>
-                <input value={props.searchOptions.ReturnDateTo?.toISOString().split("T")[0]} type="date" id="return_date_to"></input>
+                <DatePicker name={SearchOptionNames.ReturnDateFrom} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></DatePicker>
+                <DatePicker name={SearchOptionNames.ReturnDateTo} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></DatePicker>
             </div>
 
             <div>
