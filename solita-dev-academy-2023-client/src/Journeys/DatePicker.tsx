@@ -3,7 +3,8 @@ import SearchOptionNames from "../Constants/SearchOptionNames";
 import SearchOptions from "../Models/SearchOptions";
 
 interface Props {
-    name: string;
+    date: Date | null;
+    option: string;
     searchOptions: SearchOptions;
     setSearchOptions: React.Dispatch<React.SetStateAction<SearchOptions>>;
 }
@@ -12,7 +13,7 @@ export default function DatePicker(props: Props) {
     function onChange(event: React.FormEvent<HTMLInputElement>) {
         let value = event.currentTarget.value;
 
-        let name = event.currentTarget.getAttribute("data-name");
+        let name = event.currentTarget.getAttribute("data-option");
 
         let searchOptions = { ...props.searchOptions } as SearchOptions;
 
@@ -36,10 +37,18 @@ export default function DatePicker(props: Props) {
         props.setSearchOptions(so => searchOptions);
     }
 
+    function getValue(date: Date | null): string {
+        if (date) {
+            return date.toISOString().split("T")[0];
+        }
+
+        return "";
+    }
+
     return (
         <label>
-            {props.name}
-            <input onChange={onChange} data-name={props.name} type="date"></input>
+            {props.option}
+            <input value={getValue(props.date)} onChange={onChange} data-option={props.option} type="date"></input>
         </label>
     )
 }

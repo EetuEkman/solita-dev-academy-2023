@@ -9,10 +9,10 @@ import SearchOptions from './Models/SearchOptions';
 const JOURNEYS_URL = new URL("https://localhost:7263/api/Journey");
 
 const DEFAULT_SEARCH_OPTIONS: SearchOptions = {
-  DepartureDateFrom: undefined,
-  DepartureDateTo: undefined,
-  ReturnDateFrom: undefined,
-  ReturnDateTo: undefined,
+  DepartureDateFrom: null,
+  DepartureDateTo: null,
+  ReturnDateFrom: null,
+  ReturnDateTo: null,
   CoveredDistanceFrom: "",
   CoveredDistanceTo: "",
   DurationFrom: "",
@@ -23,7 +23,6 @@ const DEFAULT_SEARCH_OPTIONS: SearchOptions = {
   ReturnStationNameFi: "",
   ReturnStationNameSe: "",
   ReturnStationNameEn: "",
-  Page: undefined
 }  
 
 function App() {
@@ -61,7 +60,7 @@ function App() {
           :
           null
       }
-
+      {JSON.stringify(searchOptions)}
     </div>
   )
 }

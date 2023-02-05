@@ -1,8 +1,8 @@
 export default interface SearchOptions {
-    DepartureDateFrom?: Date;
-    DepartureDateTo?: Date;
-    ReturnDateFrom?: Date;
-    ReturnDateTo?: Date;
+    DepartureDateFrom: Date | null;
+    DepartureDateTo: Date | null;
+    ReturnDateFrom: Date | null;
+    ReturnDateTo: Date | null;
     CoveredDistanceFrom: string;
     CoveredDistanceTo: string;
     DurationFrom: string;
@@ -13,5 +13,4 @@ export default interface SearchOptions {
     ReturnStationNameFi: string;
     ReturnStationNameSe: string;
     ReturnStationNameEn: string;
-    Page?: number;
 }
