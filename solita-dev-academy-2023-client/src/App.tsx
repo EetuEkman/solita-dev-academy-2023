@@ -24,13 +24,31 @@ function App() {
       return;
     }
 
-    fetchJourneys();    
+    let direction = event.currentTarget.getAttribute("data-direction");
+
+    let url: URL;
+
+    switch (direction) {
+      case "next":
+        url = new URL(page?.Next!)
+        break;
+      case "previous":
+        url = new URL(page?.Previous!);
+        break;
+      default:
+        url = journeyUrl;
+        break;
+    }
+
+    fetchJourneys(url);
   }
 
-  async function fetchJourneys() {
+  async function fetchJourneys(url: URL) {
     setIsWorking(isWorking => true);
 
-    let page = await FetchJourneys(journeyUrl);
+    let page: JourneyPage;
+
+    page = await FetchJourneys(url);
 
     setPage(p => page);
 
@@ -46,10 +64,11 @@ function App() {
       <JourneySearch onFetchClick={handleFetchClick} searchOptions={searchOptions} setSearchOptions={setSearchOptions} isWorking={isWorking}></JourneySearch>
       {
         page ?
-          <Journeys journeyPage={page}></Journeys>
+          <Journeys handleFetchClick={handleFetchClick} page={page}></Journeys>
           :
           null
       }
+      {JSON.stringify(page)}
     </div>
   )
 }
