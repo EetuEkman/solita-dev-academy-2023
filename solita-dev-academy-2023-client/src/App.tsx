@@ -3,29 +3,12 @@ import { hot } from "react-hot-loader/root";
 import BuildUrl from './BuildUrl';
 import FetchJourneys from './FetchJourneys';
 import JourneySearch from './JourneySearch/JourneySearch';
-import JourneyTable from './Journeys/JourneyTable';
 import JourneyPage from './Models/JourneyPage';
 import SearchOptions from './Models/SearchOptions';
 import Journeys from './Journeys/Journeys';
+import DEFAULT_SEARCH_OPTIONS from './Constants/DefaultSearchOptions';
 
 const JOURNEYS_URL = "https://localhost:7263/api/Journey";
-
-const DEFAULT_SEARCH_OPTIONS: SearchOptions = {
-  DepartureDateFrom: null,
-  DepartureDateTo: null,
-  ReturnDateFrom: null,
-  ReturnDateTo: null,
-  CoveredDistanceFrom: "",
-  CoveredDistanceTo: "",
-  DurationFrom: "",
-  DurationTo: "",
-  DepartureStationNameFi: "",
-  DepartureStationNameSe: "",
-  DepartureStationNameEn: "",
-  ReturnStationNameFi: "",
-  ReturnStationNameSe: "",
-  ReturnStationNameEn: "",
-}  
 
 function App() {
   const [page, setPage] = useState<JourneyPage>();

@@ -2,7 +2,7 @@ import React from "react";
 import SearchOptionNames from "../Constants/SearchOptionNames";
 import SearchOptions from "../Models/SearchOptions";
 import DatePicker from "./DatePicker";
-import TextInput from "../Journeys/TextInput";
+import TextInput from "./TextInput";
 
 interface Props {
     searchOptions: SearchOptions;
@@ -43,6 +43,11 @@ export default function JourneySearch(props: Props) {
                 <TextInput value={props.searchOptions.ReturnStationNameFi} option={SearchOptionNames.ReturnStationNameFi} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
                 <TextInput value={props.searchOptions.ReturnStationNameSe} option={SearchOptionNames.ReturnStationNameSe} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
                 <TextInput value={props.searchOptions.ReturnStationNameEn} option={SearchOptionNames.ReturnStationNameEn} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
+            </div>
+
+            <div>
+                <button>Go</button>
+                <button>Clear</button>
             </div>
         </div>
     )
