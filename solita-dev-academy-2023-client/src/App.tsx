@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { hot } from "react-hot-loader/root";
+import BuildUrl from './BuildUrl';
 import FetchJourneys from './FetchJourneys';
 import JourneySearch from './Journeys/JourneySearch';
 import JourneyTable from './Journeys/JourneyTable';
 import JourneyPage from './Models/JourneyPage';
 import SearchOptions from './Models/SearchOptions';
 
-const JOURNEYS_URL = new URL("https://localhost:7263/api/Journey");
+const JOURNEYS_URL = "https://localhost:7263/api/Journey";
 
 const DEFAULT_SEARCH_OPTIONS: SearchOptions = {
   DepartureDateFrom: null,
@@ -32,6 +33,8 @@ function App() {
 
   const [isWorking, setIsWorking] = useState(false);
 
+  const [journeyUrl, setJourneyUrl] = useState(new URL(JOURNEYS_URL));
+
   const handleFetchClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (isWorking) {
       return;
@@ -43,12 +46,16 @@ function App() {
   async function fetchJourneys() {
     setIsWorking(isWorking => true);
 
-    let page = await FetchJourneys(JOURNEYS_URL);
+    let page = await FetchJourneys(journeyUrl);
 
     setPage(p => page);
 
     setIsWorking(isWorking => false);
   }
+
+  useEffect(() => {
+    setJourneyUrl(url => BuildUrl(JOURNEYS_URL, searchOptions));
+  }, [searchOptions])
 
   return (
     <div>
@@ -60,7 +67,6 @@ function App() {
           :
           null
       }
-      {JSON.stringify(searchOptions)}
     </div>
   )
 }

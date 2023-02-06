@@ -13,22 +13,20 @@ export default function DatePicker(props: Props) {
     function onChange(event: React.FormEvent<HTMLInputElement>) {
         let value = event.currentTarget.value;
 
-        let name = event.currentTarget.getAttribute("data-option");
-
         let searchOptions = { ...props.searchOptions } as SearchOptions;
 
-        switch (name) {
+        switch (props.option) {
             case SearchOptionNames.DepartureDateFrom:
-                searchOptions.DepartureDateFrom = new Date(value);
+                searchOptions.DepartureDateFrom = value === "" ? null : new Date(value);
                 break;
             case SearchOptionNames.DepartureDateTo:
-                searchOptions.DepartureDateTo = new Date(value);
+                searchOptions.DepartureDateTo = value === "" ? null : new Date(value);
                 break;
             case SearchOptionNames.ReturnDateFrom:
-                searchOptions.ReturnDateFrom = new Date(value);
+                searchOptions.ReturnDateFrom = value === "" ? null : new Date(value);
                 break;
             case SearchOptionNames.ReturnDateTo:
-                searchOptions.ReturnDateTo = new Date(value);
+                searchOptions.ReturnDateTo = value === "" ? null : new Date(value);
                 break;
             default:
                 return;
@@ -37,18 +35,18 @@ export default function DatePicker(props: Props) {
         props.setSearchOptions(so => searchOptions);
     }
 
-    function getValue(date: Date | null): string {
-        if (date) {
-            return date.toISOString().split("T")[0];
+    function toString(date: Date | null): string {
+        if (date === null) {
+            return "";
         }
-
-        return "";
+        
+        return date.toISOString().split("T")[0];
     }
 
     return (
         <label>
             {props.option}
-            <input value={getValue(props.date)} onChange={onChange} data-option={props.option} type="date"></input>
+            <input value={toString(props.date)} onChange={onChange} type="date"></input>
         </label>
     )
 }

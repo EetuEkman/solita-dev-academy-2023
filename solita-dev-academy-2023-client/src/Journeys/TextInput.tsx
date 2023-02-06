@@ -13,11 +13,9 @@ export default function TextInput(props: Props) {
     function onChange(event: React.FormEvent<HTMLInputElement>) {
         let value = event.currentTarget.value;
 
-        let option = event.currentTarget.getAttribute("data-option");
-
         let searchOptions = { ...props.searchOptions } as SearchOptions;
 
-        switch (option) {
+        switch (props.option) {
             case SearchOptionNames.CoveredDistanceFrom:
                 searchOptions.CoveredDistanceFrom = value;
                 break;
@@ -58,7 +56,7 @@ export default function TextInput(props: Props) {
     return (
         <label>
             {props.option}
-            <input value={props.value} onChange={onChange} data-option={props.option} type="text"></input>
+            <input value={props.value} onChange={onChange} type="text"></input>
         </label>
     )
 }
