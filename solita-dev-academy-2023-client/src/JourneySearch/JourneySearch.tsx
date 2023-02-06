@@ -1,16 +1,24 @@
 import React from "react";
+import DEFAULT_SEARCH_OPTIONS from "../Constants/DefaultSearchOptions";
 import SearchOptionNames from "../Constants/SearchOptionNames";
 import SearchOptions from "../Models/SearchOptions";
 import DatePicker from "./DatePicker";
 import TextInput from "./TextInput";
 
 interface Props {
+    isWorking: boolean;
     searchOptions: SearchOptions;
     setSearchOptions: React.Dispatch<React.SetStateAction<SearchOptions>>;
-    onClick: React.MouseEventHandler<HTMLButtonElement>;
+    onFetchClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function JourneySearch(props: Props) {
+    function clearSearchOptions() {
+        let defaultSearchOptions = {...DEFAULT_SEARCH_OPTIONS};
+
+        props.setSearchOptions(searchOptions => defaultSearchOptions);
+    }
+
     return (
         <div className="search">
             <div>
@@ -46,8 +54,13 @@ export default function JourneySearch(props: Props) {
             </div>
 
             <div>
-                <button>Go</button>
-                <button>Clear</button>
+                {
+                    props.isWorking ?
+                    <button disabled>Go</button>
+                    :
+                    <button onClick={props.onFetchClick}>Go</button>
+                }
+                <button onClick={clearSearchOptions}>Clear</button>
             </div>
         </div>
     )

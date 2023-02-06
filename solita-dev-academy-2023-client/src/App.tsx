@@ -43,8 +43,7 @@ function App() {
 
   return (
     <div>
-      <JourneySearch searchOptions={searchOptions} setSearchOptions={setSearchOptions} onClick={handleFetchClick}></JourneySearch>
-      <button onClick={handleFetchClick}>Fetch</button>
+      <JourneySearch onFetchClick={handleFetchClick} searchOptions={searchOptions} setSearchOptions={setSearchOptions} isWorking={isWorking}></JourneySearch>
       {
         page ?
           <Journeys journeyPage={page}></Journeys>
