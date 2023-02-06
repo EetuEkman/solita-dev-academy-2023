@@ -6,6 +6,7 @@ import JourneySearch from './JourneySearch/JourneySearch';
 import JourneyTable from './Journeys/JourneyTable';
 import JourneyPage from './Models/JourneyPage';
 import SearchOptions from './Models/SearchOptions';
+import Journeys from './Journeys/Journeys';
 
 const JOURNEYS_URL = "https://localhost:7263/api/Journey";
 
@@ -63,7 +64,7 @@ function App() {
       <button onClick={handleFetchClick}>Fetch</button>
       {
         page ?
-          <JourneyTable journeys={page?.Journeys}></JourneyTable>
+          <Journeys journeyPage={page}></Journeys>
           :
           null
       }
