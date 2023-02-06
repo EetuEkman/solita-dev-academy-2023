@@ -142,13 +142,9 @@ namespace solita_dev_academy_2023_server.Controllers
             {
                 // If departure date from is later than the return date to, swap them.
 
-                if (queryParameters.DepartureDateTo is not null)
+                if (queryParameters.DepartureDateTo is not null && queryParameters.DepartureDateTo < queryParameters.DepartureDateFrom)
                 {
-                    var swap = queryParameters.DepartureDateFrom;
-
-                    queryParameters.DepartureDateFrom = queryParameters.DepartureDateTo;
-
-                    queryParameters.DepartureDateTo = swap;
+                    (queryParameters.DepartureDateTo, queryParameters.DepartureDateFrom) = (queryParameters.DepartureDateFrom, queryParameters.DepartureDateTo);
                 }
 
                 query += " AND J.Departure >= @DepartureDateFrom";
@@ -214,19 +210,15 @@ namespace solita_dev_academy_2023_server.Controllers
 
            */
 
-            // Comparison operators.
+            // Using comparison operators.
 
             if (queryParameters.ReturnDateFrom is not null)
             {
                 // If return date from is later than the return date to, swap them.
 
-                if (queryParameters.ReturnDateTo is not null)
+                if (queryParameters.ReturnDateTo is not null && queryParameters.ReturnDateTo < queryParameters.ReturnDateFrom)
                 {
-                    var swap = queryParameters.ReturnDateFrom;
-
-                    queryParameters.ReturnDateFrom = queryParameters.ReturnDateTo;
-
-                    queryParameters.ReturnDateTo = swap;
+                    (queryParameters.ReturnDateTo, queryParameters.ReturnDateFrom) = (queryParameters.ReturnDateFrom, queryParameters.ReturnDateTo);
                 }
 
                 query += " AND J.[Return] >= @ReturnDateFrom";
@@ -377,7 +369,7 @@ namespace solita_dev_academy_2023_server.Controllers
                 {
                     connection.Open();
 
-                    var reader = connection.QueryMultiple(query, parameters, commandTimeout: 0);
+                    var reader = connection.QueryMultiple(query, parameters);
 
                     journeys = reader.Read<Journey>().ToList();
 
@@ -446,9 +438,9 @@ namespace solita_dev_academy_2023_server.Controllers
             if ((int)Math.Ceiling((double)(count / 20)) > currentPage)
             {
                 queryParameters.Page = currentPage + 1;
-            }
 
-            next = Url.Action("Index", "Journey", queryParameters, scheme);
+                next = Url.Action("Index", "Journey", queryParameters, scheme);
+            }
 
             result.Next = next;
 
