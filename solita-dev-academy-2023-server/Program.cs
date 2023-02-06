@@ -24,7 +24,7 @@ namespace solita_dev_academy_2023_server
                     policy.AllowAnyOrigin();
                 });
 
-                // Add default policy to allow localhost origins.
+                // Add default policy to allow localhost origins
 
                 options.AddDefaultPolicy(builder =>
                 {

@@ -25,7 +25,7 @@ namespace solita_dev_academy_2023_server.Controllers
         public string? ReturnStationNameEn { get; set; }
         public int? Page { get; set; }
     }
-    
+
     [ApiController]
     [Route("api/[controller]")]
     public class JourneyController : Controller
@@ -42,7 +42,7 @@ namespace solita_dev_academy_2023_server.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> Index([FromQuery]JourneyQueryParameters queryParameters)
+        public async Task<IActionResult> Index([FromQuery] JourneyQueryParameters queryParameters)
         {
             if (!ModelState.IsValid)
             {
@@ -91,30 +91,146 @@ namespace solita_dev_academy_2023_server.Controllers
 
             // Departure datetime.
 
-            if (queryParameters.DepartureDateFrom is not null)
+            // Using BETWEEN.
+
+            /*
+
+            if (queryParameters.DepartureDateFrom is not null && queryParameters.DepartureDateTo is not null)
+            {
+                // If departure date from is later than the departure date to, swap them.
+
+                if (queryParameters.DepartureDateTo > queryParameters.DepartureDateFrom)
+                {
+                    var swap = queryParameters.DepartureDateFrom;
+
+                    queryParameters.DepartureDateFrom = queryParameters.DepartureDateTo;
+
+                    queryParameters.DepartureDateTo = swap;
+                }
+
+                query += " AND J.Departure BETWEEN @DepartureDateFrom AND @DepartureDateTo";
+           
+                countQuery += " AND J.Departure BETWEEN @DepartureDateFrom AND @DepartureDateTo";
+
+                dictionary.Add("@DepartureDateFrom", queryParameters.DepartureDateFrom);
+
+                dictionary.Add("@DepartureDateTo", queryParameters.DepartureDateTo);
+
+            }
+            else if (queryParameters.DepartureDateFrom is not null && queryParameters.DepartureDateTo is null)
             {
                 query += " AND J.Departure >= @DepartureDateFrom";
 
                 countQuery += " AND J.Departure >= @DepartureDateFrom";
 
-                dictionary.Add("@DepartureDateFrom", queryParameters.DepartureDateFrom);
+                dictionary.Add("DepartureDateFrom", queryParameters.DepartureDateFrom);
+            }
+            else if (queryParameters.DepartureDateFrom is null && queryParameters.DepartureDateTo is not null)
+            {
+                query += " AND J.Departure <= @DepartureDateTo";
+
+                countQuery += " AND J.Departure <= @DepartureDateTo";
+
+                dictionary.Add("DepartureDateTo", queryParameters.DepartureDateTo);
+            }
+
+            */
+
+            // Using comparison operators.
+
+            if (queryParameters.DepartureDateFrom is not null)
+            {
+                // If departure date from is later than the return date to, swap them.
+
+                if (queryParameters.DepartureDateTo is not null)
+                {
+                    var swap = queryParameters.DepartureDateFrom;
+
+                    queryParameters.DepartureDateFrom = queryParameters.DepartureDateTo;
+
+                    queryParameters.DepartureDateTo = swap;
+                }
+
+                query += " AND J.Departure >= @DepartureDateFrom";
+
+                countQuery += " AND J.Departure >= @DepartureDateFrom";
+
+                dictionary.Add("@DepartureDateFrom", queryParameters.DepartureDateFrom?.ToString("yyyy-MM-dd"));
             }
 
             if (queryParameters.DepartureDateTo is not null)
             {
                 query += " AND J.Departure <= @DepartureDateTo";
-                
+
                 countQuery += " AND J.Departure <= @DepartureDateTo";
 
-                dictionary.Add("@DepartureDateTo", queryParameters.DepartureDateTo);
+                dictionary.Add("@DepartureDateTo", queryParameters.DepartureDateTo?.ToString("yyyy-MM-dd"));
             }
 
             // Return datetime.
 
+            // Using BETWEEN.
+
+            /*
+
+            if (queryParameters.ReturnDateFrom is not null && queryParameters.ReturnDateTo is not null)
+            {
+                // If return date from is later than the return date to, swap them.
+
+                if (queryParameters.ReturnDateTo > queryParameters.ReturnDateFrom)
+                {
+                    var swap = queryParameters.ReturnDateFrom;
+
+                    queryParameters.ReturnDateFrom = queryParameters.ReturnDateTo;
+
+                    queryParameters.ReturnDateTo = swap;
+                }
+
+                query += " AND J.Return BETWEEN @ReturnDateFrom AND @ReturnDateTo";
+
+                countQuery += " AND J.Return BETWEEN @ReturnDateFrom AND @ReturnDateTo";
+
+                dictionary.Add("@ReturnDateFrom", queryParameters.ReturnDateFrom);
+
+                dictionary.Add("@ReturnDateTo", queryParameters.ReturnDateTo);
+
+            }
+            else if (queryParameters.ReturnDateFrom is not null && queryParameters.ReturnDateTo is null)
+            {
+                query += " AND J.Return >= @ReturnDateFrom";
+
+                countQuery += " AND J.Return >= @ReturnDateFrom";
+
+                dictionary.Add("ReturnDateFrom", queryParameters.ReturnDateFrom);
+            }
+            else if (queryParameters.ReturnDateFrom is null && queryParameters.ReturnDateTo is not null)
+            {
+                query += " AND J.Return <= @ReturnDateTo";
+
+                countQuery += " AND J.Return <= @ReturnDateTo";
+
+                dictionary.Add("ReturnDateTo", queryParameters.ReturnDateTo);
+            }
+
+           */
+
+            // Comparison operators.
+
             if (queryParameters.ReturnDateFrom is not null)
             {
+                // If return date from is later than the return date to, swap them.
+
+                if (queryParameters.ReturnDateTo is not null)
+                {
+                    var swap = queryParameters.ReturnDateFrom;
+
+                    queryParameters.ReturnDateFrom = queryParameters.ReturnDateTo;
+
+                    queryParameters.ReturnDateTo = swap;
+                }
+
                 query += " AND J.[Return] >= @ReturnDateFrom";
-                
+
                 countQuery += " AND J.[Return] >= @ReturnDateFrom";
 
                 dictionary.Add("@ReturnDateFrom", queryParameters.ReturnDateFrom);
@@ -178,7 +294,7 @@ namespace solita_dev_academy_2023_server.Controllers
             else if (queryParameters.DurationFrom is not null && queryParameters.DurationTo is null)
             {
                 query += " AND J.Duration >= @DurationFrom";
-                
+
                 countQuery += " AND J.Duration >= @DurationFrom";
 
                 dictionary.Add("@DurationFrom", queryParameters.DurationFrom);
@@ -223,7 +339,7 @@ namespace solita_dev_academy_2023_server.Controllers
 
             // Limit the number of rows returned by the query.
 
-            query += " ORDER BY J.Departure DESC" + 
+            query += " ORDER BY J.Departure DESC" +
                 " OFFSET @Offset ROWS";
 
             var offset = 0;
@@ -261,14 +377,14 @@ namespace solita_dev_academy_2023_server.Controllers
                 {
                     connection.Open();
 
-                    var reader = connection.QueryMultiple(query, parameters);
+                    var reader = connection.QueryMultiple(query, parameters, commandTimeout: 0);
 
                     journeys = reader.Read<Journey>().ToList();
 
                     count = reader.Read<int>().Single();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(500);
             }
