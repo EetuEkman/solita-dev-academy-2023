@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { hot } from "react-hot-loader/root";
 import BuildUrl from './BuildUrl';
 import FetchJourneys from './FetchJourneys';
-import JourneySearch from './Journeys/JourneySearch';
+import JourneySearch from './JourneySearch/JourneySearch';
 import JourneyTable from './Journeys/JourneyTable';
 import JourneyPage from './Models/JourneyPage';
 import SearchOptions from './Models/SearchOptions';

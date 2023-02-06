@@ -2,7 +2,7 @@ import React from "react";
 import SearchOptionNames from "../Constants/SearchOptionNames";
 import SearchOptions from "../Models/SearchOptions";
 import DatePicker from "./DatePicker";
-import TextInput from "./TextInput";
+import TextInput from "../Journeys/TextInput";
 
 interface Props {
     searchOptions: SearchOptions;
