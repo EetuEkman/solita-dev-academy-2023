@@ -64,7 +64,7 @@ function App() {
       <JourneySearch onFetchClick={handleFetchClick} searchOptions={searchOptions} setSearchOptions={setSearchOptions} isWorking={isWorking}></JourneySearch>
       {
         page ?
-          <Journeys handleFetchClick={handleFetchClick} page={page}></Journeys>
+          <Journeys handleFetchClick={handleFetchClick} page={page} isWorking={isWorking}></Journeys>
           :
           null
       }
