@@ -1,5 +1,6 @@
 import React from "react";
 import DEFAULT_SEARCH_OPTIONS from "../Constants/DefaultSearchOptions";
+import OrderByOptions from "../Constants/OrderByOptions";
 import SearchOptionNames from "../Constants/SearchOptionNames";
 import SearchOptions from "../Models/SearchOptions";
 import DatePicker from "./DatePicker";
@@ -17,6 +18,29 @@ export default function JourneySearch(props: Props) {
         let defaultSearchOptions = {...DEFAULT_SEARCH_OPTIONS};
 
         props.setSearchOptions(searchOptions => defaultSearchOptions);
+    }
+
+    function onOrderByChange(event: React.ChangeEvent<HTMLSelectElement>) {
+        let value = event.currentTarget.value;
+
+        let searchOptions = {...props.searchOptions} as SearchOptions;
+
+        searchOptions.OrderBy = value;
+
+        props.setSearchOptions(so => searchOptions);
+    }
+
+    function onOrderChange(event: React.ChangeEvent<HTMLInputElement>) {
+        let checked = event.currentTarget.checked;
+
+        let searchOptions = {...props.searchOptions} as SearchOptions;
+
+        checked ?
+            searchOptions.Order = "Ascending"
+            :
+            searchOptions.Order = "Descending";
+
+        props.setSearchOptions(so => searchOptions);
     }
 
     return (
@@ -51,6 +75,30 @@ export default function JourneySearch(props: Props) {
                 <TextInput value={props.searchOptions.ReturnStationNameFi} option={SearchOptionNames.ReturnStationNameFi} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
                 <TextInput value={props.searchOptions.ReturnStationNameSe} option={SearchOptionNames.ReturnStationNameSe} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
                 <TextInput value={props.searchOptions.ReturnStationNameEn} option={SearchOptionNames.ReturnStationNameEn} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
+            </div>
+
+            <div>
+                <label>
+                    {SearchOptionNames.OrderBy}
+                    <select onChange={onOrderByChange} value={props.searchOptions.OrderBy} name="order_by">
+                        {
+                            Object.values(OrderByOptions).map((value, index) => {
+                                return <option key={index} value={value}>{value}</option>
+                            })
+                        }
+                    </select>
+                </label>
+
+                <label>
+                    {SearchOptionNames.Order}
+                    {
+                        props.searchOptions.OrderBy === "Ascending" ?
+                            <input onChange={onOrderChange} type="checkbox" checked></input>
+                            :
+                            <input onChange={onOrderChange} type="checkbox"></input>
+                    }
+                </label>
+
             </div>
 
             <div>

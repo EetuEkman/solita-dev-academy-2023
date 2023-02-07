@@ -66,5 +66,13 @@ export default function BuildUrl(urlArg: string, searchOptions: SearchOptions): 
        url.searchParams.set("ReturnStationNameEn", searchOptions.ReturnStationNameEn);
     }
 
+    if (searchOptions.OrderBy.length > 0) {
+      url.searchParams.set("OrderBy", searchOptions.OrderBy);
+    }
+
+    if (searchOptions.Order.length > 0) {
+      url.searchParams.set("Order", searchOptions.Order);
+    }
+
     return url;
 }

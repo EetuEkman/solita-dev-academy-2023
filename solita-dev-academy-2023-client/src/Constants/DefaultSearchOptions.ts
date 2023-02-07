@@ -1,4 +1,5 @@
 import SearchOptions from "../Models/SearchOptions"
+import OrderByOptions from "./OrderByOptions";
 
 const DEFAULT_SEARCH_OPTIONS: SearchOptions = {
     DepartureDateFrom: null,
@@ -15,6 +16,8 @@ const DEFAULT_SEARCH_OPTIONS: SearchOptions = {
     ReturnStationNameFi: "",
     ReturnStationNameSe: "",
     ReturnStationNameEn: "",
+    OrderBy: OrderByOptions.Departure,
+    Order: "Descending"
 }
 
 export default DEFAULT_SEARCH_OPTIONS;

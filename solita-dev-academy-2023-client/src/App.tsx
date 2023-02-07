@@ -68,7 +68,6 @@ function App() {
           :
           null
       }
-      {JSON.stringify(page)}
     </div>
   )
 }

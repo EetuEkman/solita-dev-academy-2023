@@ -68,9 +68,13 @@ namespace solita_dev_academy_2023_server.Controllers
         [ProducesResponseType(500)]
         public async Task<IActionResult> Index([FromQuery] JourneyQueryParameters queryParameters)
         {
+            string orderByOption = "";
+
             if (queryParameters.OrderBy is not null)
             {
-                if (OrderByOptions.Contains(queryParameters.OrderBy.ToLower()) == false)
+                orderByOption = queryParameters.OrderBy.ToLower().Replace(" ", String.Empty);
+
+                if (OrderByOptions.Contains(orderByOption) == false)
                 {
                     ModelState.AddModelError("OrderBy", "Undefined order by option " + queryParameters.OrderBy);
                 }
@@ -375,38 +379,36 @@ namespace solita_dev_academy_2023_server.Controllers
 
             if (queryParameters.OrderBy != null)
             {
-                var lowerOrderBy = queryParameters.OrderBy.ToLower();
-
-                switch (lowerOrderBy)
+                switch (orderByOption)
                 {
                     case "departure":
                         break;
                     case "return":
-                        orderBy = " ORDER BY J.[Return]"; 
+                        orderBy = " ORDER BY [J].[Return]";
                         break;
                     case "duration":
-                        orderBy = " ORDER BY J.Duration";
+                        orderBy = " ORDER BY [J].[Duration]";
                         break;
                     case "distance":
-                        orderBy = " ORDER BY J.Covered_distance";
+                        orderBy = " ORDER BY [J].[Covered_distance]";
                         break;
                     case "departurestationnamefi":
-                        orderBy = " ORDER BY J.Departure_station_name_fi";
+                        orderBy = " ORDER BY [Departure_station_name_fi]";
                         break;
                     case "departurestationnamese":
-                        orderBy = " ORDER BY J.Departure_station_name_se";
+                        orderBy = " ORDER BY [Departure_station_name_se]";
                         break;
                     case "departurestationnameen":
-                        orderBy = " ORDER BY J.Departure_station_name_en";
+                        orderBy = " ORDER BY [Departure_station_name_en]";
                         break;
                     case "returnstationnamefi":
-                        orderBy = " ORDER BY J.Departure_station_name_fi";
+                        orderBy = " ORDER BY [Return_station_name_fi]";
                         break;
                     case "returnstationnamese":
-                        orderBy = " ORDER BY J.Departure_station_name_se";
+                        orderBy = " ORDER BY [Return_station_name_se]";
                         break;
                     case "returnstationnameen":
-                        orderBy = " ORDER BY J.Departure_station_name_en";
+                        orderBy = " ORDER BY [Return_station_name_en]";
                         break;
                     default:
                         break;

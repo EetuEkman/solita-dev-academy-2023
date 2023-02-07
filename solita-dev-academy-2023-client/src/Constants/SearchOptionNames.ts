@@ -12,7 +12,9 @@ enum SearchOptionNames {
     "DepartureStationNameEn" = "Departure station name en", 
     "ReturnStationNameFi" = "Return station name fi", 
     "ReturnStationNameSe" = "Return station name se", 
-    "ReturnStationNameEn" = "Return station name en", 
+    "ReturnStationNameEn" = "Return station name en",
+    "OrderBy" = "Order by",
+    "Order" = "Ascending"
 }
 
 export default SearchOptionNames;

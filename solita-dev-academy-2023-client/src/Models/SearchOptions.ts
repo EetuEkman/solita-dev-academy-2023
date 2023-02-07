@@ -13,4 +13,6 @@ export default interface SearchOptions {
     ReturnStationNameFi: string;
     ReturnStationNameSe: string;
     ReturnStationNameEn: string;
+    OrderBy: string;
+    Order: string;
 }
