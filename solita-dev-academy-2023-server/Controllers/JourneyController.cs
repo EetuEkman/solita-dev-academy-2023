@@ -23,6 +23,8 @@ namespace solita_dev_academy_2023_server.Controllers
         public string? ReturnStationNameFi { get; set; }
         public string? ReturnStationNameSe { get; set; }
         public string? ReturnStationNameEn { get; set; }
+        public string? OrderBy { get; set; }
+        public string? Order { get; set; }
         public int? Page { get; set; }
     }
 
@@ -30,6 +32,28 @@ namespace solita_dev_academy_2023_server.Controllers
     [Route("api/[controller]")]
     public class JourneyController : Controller
     {
+        public static readonly string[] OrderByOptions =
+        {
+            "departure",
+            "return",
+            "distance",
+            "duration",
+            "departurestationnamefi",
+            "departurestationnamese",
+            "departurestationnameen",
+            "returnstationnamefi",
+            "returnstationnamese",
+            "returnstationnameen"
+        };
+
+        public static readonly string[] OrderOptions =
+        {
+            "descending",
+            "desc",
+            "ascending",
+            "asc"
+        };
+
         private readonly IConfiguration configuration;
 
         public JourneyController(IConfiguration configuration)
@@ -44,6 +68,22 @@ namespace solita_dev_academy_2023_server.Controllers
         [ProducesResponseType(500)]
         public async Task<IActionResult> Index([FromQuery] JourneyQueryParameters queryParameters)
         {
+            if (queryParameters.OrderBy is not null)
+            {
+                if (OrderByOptions.Contains(queryParameters.OrderBy.ToLower()) == false)
+                {
+                    ModelState.AddModelError("OrderBy", "Undefined order by option " + queryParameters.OrderBy);
+                }
+            }
+
+            if (queryParameters.Order is not null)
+            {
+                if (OrderOptions.Contains(queryParameters.Order.ToLower()) == false) 
+                {
+                    ModelState.AddModelError("Order", "Undefined order option " + queryParameters.Order);
+                }
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -329,10 +369,78 @@ namespace solita_dev_academy_2023_server.Controllers
                 dictionary.Add("@Covered_distanceTo", queryParameters.CoveredDistanceTo);
             }
 
+            // Ordering
+
+            var orderBy = " ORDER BY J.Departure";
+
+            if (queryParameters.OrderBy != null)
+            {
+                var lowerOrderBy = queryParameters.OrderBy.ToLower();
+
+                switch (lowerOrderBy)
+                {
+                    case "departure":
+                        break;
+                    case "return":
+                        orderBy = " ORDER BY J.[Return]"; 
+                        break;
+                    case "duration":
+                        orderBy = " ORDER BY J.Duration";
+                        break;
+                    case "distance":
+                        orderBy = " ORDER BY J.Covered_distance";
+                        break;
+                    case "departurestationnamefi":
+                        orderBy = " ORDER BY J.Departure_station_name_fi";
+                        break;
+                    case "departurestationnamese":
+                        orderBy = " ORDER BY J.Departure_station_name_se";
+                        break;
+                    case "departurestationnameen":
+                        orderBy = " ORDER BY J.Departure_station_name_en";
+                        break;
+                    case "returnstationnamefi":
+                        orderBy = " ORDER BY J.Departure_station_name_fi";
+                        break;
+                    case "returnstationnamese":
+                        orderBy = " ORDER BY J.Departure_station_name_se";
+                        break;
+                    case "returnstationnameen":
+                        orderBy = " ORDER BY J.Departure_station_name_en";
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            query += orderBy;
+
+            var order = " DESC";
+
+            if (queryParameters.Order != null)
+            {
+                var lowerOrder = queryParameters.Order.ToLower();
+
+                switch (lowerOrder)
+                {
+                    case "ascending":
+                    case "asc":
+                        order = " ASC";
+                        break;
+                    case "descending":
+                    case "desc":
+                        order = " DESC";
+                        break;
+                    default:
+                       break;
+                }
+            }
+
+            query += order;
+
             // Limit the number of rows returned by the query.
 
-            query += " ORDER BY J.Departure DESC" +
-                " OFFSET @Offset ROWS";
+            query += " OFFSET @Offset ROWS";
 
             var offset = 0;
 
