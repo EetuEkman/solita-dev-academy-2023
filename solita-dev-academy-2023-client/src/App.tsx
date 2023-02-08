@@ -13,9 +13,15 @@ const JOURNEYS_URL = "https://localhost:7263/api/Journey";
 function App() {
   const [page, setPage] = useState<JourneyPage>();
 
+  // The URL and search components are built from SearchOptions.
+
   const [searchOptions, setSearchOptions] = useState<SearchOptions>({...DEFAULT_SEARCH_OPTIONS});
 
+  // Ongoing fetches etc. asynchronous actions taking place.
+  
   const [isWorking, setIsWorking] = useState(false);
+
+  // The current URL from which to fetch the journey page when the fetch button is clicked.
 
   const [journeyUrl, setJourneyUrl] = useState(new URL(JOURNEYS_URL));
 
