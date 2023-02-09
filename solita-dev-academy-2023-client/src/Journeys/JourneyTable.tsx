@@ -12,11 +12,39 @@ export interface Sort {
     descending: boolean;
 }
 
+interface Filter {
+    text: string;
+}
+
 export default function JourneyTable(props: Props) {
     const [sort, setSort] = useState<Sort>({ by: SortByOptions.Departure, descending: true });
 
-    const [journeys, setJourneys] = useState<Journey[]>(sortJourneys(props.journeys, sort));
+    const [filter, setFilter] = useState<Filter>({ text: ""});
 
+    const [journeys, setJourneys] = useState<Journey[]>(props.journeys);
+
+    function onFilterTextChange(event: React.FormEvent<HTMLInputElement>) {
+        let value = event.currentTarget.value;
+
+        let newFilter = {...filter} as Filter;
+
+        newFilter.text = value;
+
+        setFilter(f => newFilter);
+    }
+
+    function FilterJourneys(journeys: Journey[], filter: Filter): Journey[] {
+        if (filter.text === "") {
+            return journeys;
+        }
+
+        let filteredJourneys = [...journeys] as Journey[];
+
+        filteredJourneys = journeys.filter(journey => JSON.stringify(journey).toLowerCase().indexOf(filter.text.toLowerCase()) > -1)
+
+        return filteredJourneys;
+    }
+    
     function sortJourneys(journeys: Journey[], sort: Sort): Journey[] {
         let sortedJourneys = [...journeys];
 
@@ -143,6 +171,10 @@ export default function JourneyTable(props: Props) {
     }
 
     useEffect(() => {
+        setJourneys(j => sortJourneys(FilterJourneys(props.journeys, filter), sort));
+    }, [filter])
+
+    useEffect(() => {
         setJourneys(j => sortJourneys(j, sort));
     }, [sort])
 
@@ -172,8 +204,8 @@ export default function JourneyTable(props: Props) {
                         journeys.map((journey, index) => {
                             return (
                                 <tr key={index}>
-                                    <td>{new Date(journey.Departure).toLocaleString()}</td>
-                                    <td>{new Date(journey.Return).toLocaleString()}</td>
+                                    <td>{new Date(journey.Departure).toLocaleString("fi-FI")}</td>
+                                    <td>{new Date(journey.Return).toLocaleString("fi-FI")}</td>
                                     <td>{journey.Departure_station_name_fi}</td>
                                     <td>{journey.Departure_station_address_se}</td>
                                     <td>{journey.Departure_station_name_en}</td>
@@ -192,6 +224,12 @@ export default function JourneyTable(props: Props) {
                     }
                 </tbody>
             </table>
+            <div>
+                <label>
+                    Filter by text
+                    <input onChange={onFilterTextChange} value={filter.text} type="text"></input>
+                </label>
+            </div>
         </div>
     )
 }
