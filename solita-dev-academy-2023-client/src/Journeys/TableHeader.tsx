@@ -4,7 +4,7 @@ import { Sort } from "./JourneyTable";
 interface Props {
     value: string;
     sort: Sort;
-    handleTableHeaderDown: React.PointerEventHandler<HTMLTableCellElement>
+    HandleTableHeaderDown: React.PointerEventHandler<HTMLTableCellElement>
 }
 
 export default function TableHeader(props: Props) {
@@ -13,11 +13,11 @@ export default function TableHeader(props: Props) {
             {
                 props.sort.by === props.value ?
                     props.sort.descending ?
-                        <th data-value={props.value} onPointerDown={props.handleTableHeaderDown}>{props.value}<span>&uarr;</span></th>
+                        <th data-value={props.value} onPointerDown={props.HandleTableHeaderDown}>{props.value}<span>&uarr;</span></th>
                         :
-                        <th data-value={props.value} onPointerDown={props.handleTableHeaderDown}>{props.value}<span>&darr;</span></th>
+                        <th data-value={props.value} onPointerDown={props.HandleTableHeaderDown}>{props.value}<span>&darr;</span></th>
                     :
-                    <th data-value={props.value} onPointerDown={props.handleTableHeaderDown}>{props.value}</th>
+                    <th data-value={props.value} onPointerDown={props.HandleTableHeaderDown}>{props.value}</th>
             }
         </>
     )

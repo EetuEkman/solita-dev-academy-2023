@@ -21,9 +21,9 @@ export default function JourneyTable(props: Props) {
 
     const [filter, setFilter] = useState<Filter>({ text: ""});
 
-    const [journeys, setJourneys] = useState<Journey[]>(props.journeys);
+    const [journeys, setJourneys] = useState<Journey[]>(SortJourneys(FilterJourneys(props.journeys, filter), sort));
 
-    function onFilterTextChange(event: React.FormEvent<HTMLInputElement>) {
+    function OnFilterTextChange(event: React.FormEvent<HTMLInputElement>) {
         let value = event.currentTarget.value;
 
         let newFilter = {...filter} as Filter;
@@ -45,7 +45,7 @@ export default function JourneyTable(props: Props) {
         return filteredJourneys;
     }
     
-    function sortJourneys(journeys: Journey[], sort: Sort): Journey[] {
+    function SortJourneys(journeys: Journey[], sort: Sort): Journey[] {
         let sortedJourneys = [...journeys];
 
         switch (sort.by) {
@@ -150,7 +150,7 @@ export default function JourneyTable(props: Props) {
         return sortedJourneys;
     }
 
-    function handleTableHeaderDown(event: React.PointerEvent<HTMLTableCellElement>) {
+    function HandleTableHeaderDown(event: React.PointerEvent<HTMLTableCellElement>) {
         event.stopPropagation();
 
         const value = event.currentTarget.getAttribute("data-value");
@@ -171,32 +171,28 @@ export default function JourneyTable(props: Props) {
     }
 
     useEffect(() => {
-        setJourneys(j => sortJourneys(FilterJourneys(props.journeys, filter), sort));
-    }, [filter])
-
-    useEffect(() => {
-        setJourneys(j => sortJourneys(j, sort));
-    }, [sort])
+        setJourneys(j => SortJourneys(FilterJourneys(props.journeys, filter), sort))
+    }, [sort, filter, props.journeys])
 
     return (
         <div>
             <table>
                 <thead>
                     <tr>
-                        <TableHeader handleTableHeaderDown={handleTableHeaderDown} value={SortByOptions.Departure} sort={sort}></TableHeader>
-                        <TableHeader handleTableHeaderDown={handleTableHeaderDown} value={SortByOptions.Return} sort={sort}></TableHeader>
-                        <TableHeader handleTableHeaderDown={handleTableHeaderDown} value={SortByOptions.DepartureStationNameFi} sort={sort}></TableHeader>
-                        <TableHeader handleTableHeaderDown={handleTableHeaderDown} value={SortByOptions.DepartureStationNameSe} sort={sort}></TableHeader>
-                        <TableHeader handleTableHeaderDown={handleTableHeaderDown} value={SortByOptions.DepartureStationNameEn} sort={sort}></TableHeader>
-                        <TableHeader handleTableHeaderDown={handleTableHeaderDown} value={SortByOptions.DepartureStationAddressFi} sort={sort}></TableHeader>
-                        <TableHeader handleTableHeaderDown={handleTableHeaderDown} value={SortByOptions.DepartureStationAddressSe} sort={sort}></TableHeader>
-                        <TableHeader handleTableHeaderDown={handleTableHeaderDown} value={SortByOptions.ReturnStationNameFi} sort={sort}></TableHeader>
-                        <TableHeader handleTableHeaderDown={handleTableHeaderDown} value={SortByOptions.ReturnStationNameSe} sort={sort}></TableHeader>
-                        <TableHeader handleTableHeaderDown={handleTableHeaderDown} value={SortByOptions.ReturnStationNameEn} sort={sort}></TableHeader>
-                        <TableHeader handleTableHeaderDown={handleTableHeaderDown} value={SortByOptions.ReturnStationAddressFi} sort={sort}></TableHeader>
-                        <TableHeader handleTableHeaderDown={handleTableHeaderDown} value={SortByOptions.ReturnStationAddressSe} sort={sort}></TableHeader>
-                        <TableHeader handleTableHeaderDown={handleTableHeaderDown} value={SortByOptions.Distance} sort={sort}></TableHeader>
-                        <TableHeader handleTableHeaderDown={handleTableHeaderDown} value={SortByOptions.Duration} sort={sort}></TableHeader>
+                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Departure} sort={sort}></TableHeader>
+                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Return} sort={sort}></TableHeader>
+                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationNameFi} sort={sort}></TableHeader>
+                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationNameSe} sort={sort}></TableHeader>
+                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationNameEn} sort={sort}></TableHeader>
+                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationAddressFi} sort={sort}></TableHeader>
+                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationAddressSe} sort={sort}></TableHeader>
+                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationNameFi} sort={sort}></TableHeader>
+                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationNameSe} sort={sort}></TableHeader>
+                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationNameEn} sort={sort}></TableHeader>
+                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationAddressFi} sort={sort}></TableHeader>
+                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationAddressSe} sort={sort}></TableHeader>
+                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Distance} sort={sort}></TableHeader>
+                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Duration} sort={sort}></TableHeader>
                     </tr>
                 </thead>
                 <tbody>
@@ -226,8 +222,8 @@ export default function JourneyTable(props: Props) {
             </table>
             <div>
                 <label>
-                    Filter by text
-                    <input onChange={onFilterTextChange} value={filter.text} type="text"></input>
+                    Search
+                    <input onChange={OnFilterTextChange} value={filter.text} type="text"></input>
                 </label>
             </div>
         </div>
