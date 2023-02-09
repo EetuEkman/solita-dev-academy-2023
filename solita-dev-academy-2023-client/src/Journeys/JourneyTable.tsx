@@ -176,7 +176,7 @@ export default function JourneyTable(props: Props) {
 
     return (
         <div>
-            <table>
+            <table className="table-fixed">
                 <thead>
                     <tr>
                         <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Departure} sort={sort}></TableHeader>

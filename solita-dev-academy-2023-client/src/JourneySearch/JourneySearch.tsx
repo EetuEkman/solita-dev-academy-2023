@@ -106,7 +106,7 @@ export default function JourneySearch(props: Props) {
                     props.isWorking ?
                     <button disabled>Go</button>
                     :
-                    <button onClick={props.onFetchClick}>Go</button>
+                    <button className="bg-blue-500 text-white font-bold py-2 px-2 rounded" onClick={props.onFetchClick}>Go</button>
                 }
                 <button onClick={clearSearchOptions}>Clear</button>
             </div>
