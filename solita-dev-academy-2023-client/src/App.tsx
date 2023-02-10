@@ -68,7 +68,7 @@ function App() {
   }, [searchOptions])
 
   return (
-    <div>
+    <div className="p-1">
       <JourneySearch onFetchClick={handleFetchClick} searchOptions={searchOptions} setSearchOptions={setSearchOptions} isWorking={isWorking}></JourneySearch>
       {
         page ?

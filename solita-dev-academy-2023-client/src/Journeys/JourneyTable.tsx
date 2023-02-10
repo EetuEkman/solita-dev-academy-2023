@@ -175,9 +175,9 @@ export default function JourneyTable(props: Props) {
     }, [sort, filter, props.journeys])
 
     return (
-        <div>
-            <table className="table-fixed">
-                <thead>
+        <div className="min-h-full flex flex-col justify-start px-1">
+            <table className="table-auto text-slate-400">
+                <thead className="text-md text-center text-slate-300">
                     <tr>
                         <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Departure} sort={sort}></TableHeader>
                         <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Return} sort={sort}></TableHeader>
@@ -195,11 +195,11 @@ export default function JourneyTable(props: Props) {
                         <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Duration} sort={sort}></TableHeader>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="text-sm">
                     {
                         journeys.map((journey, index) => {
                             return (
-                                <tr key={index}>
+                                <tr className="border-y-2 first:border-y-0 first:border-t-3 last:border-y-0 border-slate-400" key={index}>
                                     <td>{new Date(journey.Departure).toLocaleString("fi-FI")}</td>
                                     <td>{new Date(journey.Return).toLocaleString("fi-FI")}</td>
                                     <td>{journey.Departure_station_name_fi}</td>
@@ -220,10 +220,10 @@ export default function JourneyTable(props: Props) {
                     }
                 </tbody>
             </table>
-            <div>
+            <div className="w-full flex flex-row items-center mx-0.5 my-1">
                 <label>
                     Search
-                    <input onChange={OnFilterTextChange} value={filter.text} type="text"></input>
+                    <input onChange={OnFilterTextChange} value={filter.text} type="text"className="ml-2 pl-1 bg-slate-200 border-2 border-black_accent-500 text-black"></input>
                 </label>
             </div>
         </div>

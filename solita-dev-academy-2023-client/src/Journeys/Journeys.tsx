@@ -11,7 +11,7 @@ interface Props {
 
 export default function Journeys(props: Props) {
     return (
-        <div>
+        <div className="pb-2 bg-bluish_grey-500 text-slate-300 rounded">
             <JourneyTable journeys={props.page.Journeys}></JourneyTable>
             <PageNavigation handleFetchClick={props.handleFetchClick} page={props.page} isWorking={props.isWorking}></PageNavigation>
         </div>

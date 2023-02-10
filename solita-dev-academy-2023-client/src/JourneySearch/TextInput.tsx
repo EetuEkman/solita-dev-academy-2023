@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function TextInput(props: Props) {
-    function onChange(event: React.FormEvent<HTMLInputElement>) {
+    function OnChange(event: React.FormEvent<HTMLInputElement>) {
         let value = event.currentTarget.value;
 
         let searchOptions = { ...props.searchOptions } as SearchOptions;
@@ -55,8 +55,8 @@ export default function TextInput(props: Props) {
 
     return (
         <label>
-            {props.option}
-            <input value={props.value} onChange={onChange} type="text"></input>
+            <span>{props.option}</span>
+            <input value={props.value} onChange={OnChange} type="text" className="mx-1 px-1 bg-slate-200 border-2 border-black_accent-500 text-black_accent-500"></input>
         </label>
     )
 }
