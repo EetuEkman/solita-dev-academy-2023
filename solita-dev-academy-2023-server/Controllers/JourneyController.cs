@@ -107,31 +107,31 @@ namespace solita_dev_academy_2023_server.Controllers
 
             // Base query.
 
-            var query = "SELECT J.Departure, J.[Return], J.Covered_distance, J.Duration," +
+            var query = "SELECT [J].[Departure], [J].[Return], [J].[Covered_distance], [J].[Duration]," +
                 " DS.Name_fi AS Departure_station_name_fi, DS.Name_se AS Departure_station_name_se, DS.Name_en AS Departure_station_name_en, DS.Address_fi AS Departure_station_address_fi, DS.Address_se AS Departure_station_address_se," +
                 " RS.Name_fi AS Return_station_name_fi, RS.Name_se AS Return_station_name_se, RS.Name_en AS Return_station_name_en, RS.Address_fi AS Return_station_address_fi, RS.Address_se AS Return_station_address_se" +
                 " FROM Journeys AS J" +
-                " INNER JOIN Stations AS DS ON J.Departure_station_id = DS.Id" +
-                " INNER JOIN Stations AS RS ON J.Return_station_id = RS.Id" +
-                " WHERE DS.Name_fi LIKE @DepartureStationNameFi" +
-                " AND DS.Name_se LIKE @DepartureStationNameSe" +
-                " AND DS.Name_en LIKE @DepartureStationNameEn" +
-                " AND RS.Name_fi LIKE @ReturnStationNameFi" +
-                " AND RS.Name_se LIKE @ReturnStationNameSe" +
-                " AND RS.Name_en LIKE @ReturnStationNameEn";
+                " INNER JOIN Stations AS DS ON [J].[Departure_station_id] = [DS].[Id]" +
+                " INNER JOIN Stations AS RS ON [J].[Return_station_id] = [RS].[Id]" +
+                " WHERE [DS].[Name_fi] LIKE @DepartureStationNameFi" +
+                " AND [DS].[Name_se] LIKE @DepartureStationNameSe" +
+                " AND [DS].[Name_en] LIKE @DepartureStationNameEn" +
+                " AND [RS].[Name_fi] LIKE @ReturnStationNameFi" +
+                " AND [RS].[Name_se] LIKE @ReturnStationNameSe" +
+                " AND [RS].[Name_en] LIKE @ReturnStationNameEn";
 
             // Result count.
 
-            var countQuery = " SELECT COUNT(*)" +
+            var countQuery = " SELECT COUNT(1)" +
                 " FROM Journeys AS J" +
-                " INNER JOIN Stations AS DS ON J.Departure_station_id = DS.Id" +
-                " INNER JOIN Stations AS RS ON J.Return_station_id = RS.Id" +
-                " WHERE DS.Name_fi LIKE @DepartureStationNameFi" +
-                " AND DS.Name_se LIKE @DepartureStationNameSe" +
-                " AND DS.Name_en LIKE @DepartureStationNameEn" +
-                " AND RS.Name_fi LIKE @ReturnStationNameFi" +
-                " AND RS.Name_se LIKE @ReturnStationNameSe" +
-                " AND RS.Name_en LIKE @ReturnStationNameEn";
+                " INNER JOIN Stations AS DS ON [J].[Departure_station_id] = [DS].[Id]" +
+                " INNER JOIN Stations AS RS ON [J].[Return_station_id] = [RS].[Id]" +
+                " WHERE [DS].[Name_fi] LIKE @DepartureStationNameFi" +
+                " AND [DS].[Name_se] LIKE @DepartureStationNameSe" +
+                " AND [DS].[Name_en] LIKE @DepartureStationNameEn" +
+                " AND [RS].[Name_fi] LIKE @ReturnStationNameFi" +
+                " AND [RS].[Name_se] LIKE @ReturnStationNameSe" +
+                " AND [RS].[Name_en] LIKE @ReturnStationNameEn";
 
             // Departure datetime.
 
@@ -191,18 +191,18 @@ namespace solita_dev_academy_2023_server.Controllers
                     (queryParameters.DepartureDateTo, queryParameters.DepartureDateFrom) = (queryParameters.DepartureDateFrom, queryParameters.DepartureDateTo);
                 }
 
-                query += " AND J.Departure >= @DepartureDateFrom";
+                query += " AND [J].[Departure] >= @DepartureDateFrom";
 
-                countQuery += " AND J.Departure >= @DepartureDateFrom";
+                countQuery += " AND [J].[Departure] >= @DepartureDateFrom";
 
                 dictionary.Add("@DepartureDateFrom", queryParameters.DepartureDateFrom?.ToString("yyyy-MM-dd"));
             }
 
             if (queryParameters.DepartureDateTo is not null)
             {
-                query += " AND J.Departure <= @DepartureDateTo";
+                query += " AND [J].[Departure] <= @DepartureDateTo";
 
-                countQuery += " AND J.Departure <= @DepartureDateTo";
+                countQuery += " AND [J].[Departure] <= @DepartureDateTo";
 
                 dictionary.Add("@DepartureDateTo", queryParameters.DepartureDateTo?.ToString("yyyy-MM-dd"));
             }
@@ -265,18 +265,18 @@ namespace solita_dev_academy_2023_server.Controllers
                     (queryParameters.ReturnDateTo, queryParameters.ReturnDateFrom) = (queryParameters.ReturnDateFrom, queryParameters.ReturnDateTo);
                 }
 
-                query += " AND J.[Return] >= @ReturnDateFrom";
+                query += " AND [J].[Return] >= @ReturnDateFrom";
 
-                countQuery += " AND J.[Return] >= @ReturnDateFrom";
+                countQuery += " AND [J].[Return] >= @ReturnDateFrom";
 
                 dictionary.Add("@ReturnDateFrom", queryParameters.ReturnDateFrom);
             }
 
             if (queryParameters.ReturnDateTo is not null)
             {
-                query += " AND J.[Return] <= @ReturnDateTo";
+                query += " AND [J].[Return] <= @ReturnDateTo";
 
-                countQuery += " AND J.[Return] <= @ReturnDateTo";
+                countQuery += " AND [J].[Return] <= @ReturnDateTo";
 
                 dictionary.Add("@ReturnDateTo", queryParameters.ReturnDateTo);
             }
@@ -317,6 +317,35 @@ namespace solita_dev_academy_2023_server.Controllers
 
             // Duration.
 
+            if (queryParameters.DurationFrom is not null)
+            {
+                // If duration from is larger than the duration to, swap them.
+
+                if (queryParameters.DurationTo is not null && queryParameters.DurationTo < queryParameters.DurationFrom)
+                {
+                    (queryParameters.DurationTo, queryParameters.DurationFrom) = (queryParameters.DurationFrom, queryParameters.DurationTo);
+                }
+
+                query += " AND [J].[Duration] >= @DurationFrom";
+
+                countQuery += " AND [J].[Duration] >= @DurationFrom";
+
+                dictionary.Add("@DurationFrom", queryParameters.DurationFrom);
+            }
+
+            if (queryParameters.DurationTo is not null)
+            {
+                query += " AND [J].[Duration] <= @DurationTo";
+
+                countQuery += " AND [J].[Duration] <= @DurationTo";
+
+                dictionary.Add("@DurationTo", queryParameters.DurationTo);
+            }
+
+            // Changed to comparison operators.
+
+            /*
+
             if (queryParameters.DurationFrom is not null && queryParameters.DurationTo is not null)
             {
                 query += " AND J.Duration BETWEEN @DurationFrom AND @DurationTo";
@@ -344,7 +373,38 @@ namespace solita_dev_academy_2023_server.Controllers
                 dictionary.Add("@DurationTo", queryParameters.DurationTo);
             }
 
+            */
+
             // Covered distance.
+
+            if (queryParameters.CoveredDistanceFrom is not null)
+            {
+                // If covered distance from is larger than the covered distance to, swap them.
+
+                if (queryParameters.CoveredDistanceTo is not null && queryParameters.CoveredDistanceTo < queryParameters.CoveredDistanceFrom)
+                {
+                    (queryParameters.CoveredDistanceTo, queryParameters.CoveredDistanceFrom) = (queryParameters.CoveredDistanceFrom, queryParameters.CoveredDistanceTo);
+                }
+
+                query += " AND [J].[Covered_distance] >= @CoveredDistanceFrom";
+
+                countQuery += " AND [J].[Covered_distance] >= @CoveredDistanceFrom";
+
+                dictionary.Add("@CoveredDistanceFrom", queryParameters.CoveredDistanceFrom);
+            }
+
+            if (queryParameters.CoveredDistanceTo is not null)
+            {
+                query += " AND [J].[Covered_distance] <= @CoveredDistanceTo";
+
+                countQuery += " AND [J].[Covered_distance] <= @CoveredDistanceTo";
+
+                dictionary.Add("@CoveredDistanceTo", queryParameters.CoveredDistanceTo);
+            }
+
+            // Switched to comparison operators.
+
+            /*
 
             if (queryParameters.CoveredDistanceFrom is not null && queryParameters.CoveredDistanceTo is not null)
             {
@@ -373,9 +433,11 @@ namespace solita_dev_academy_2023_server.Controllers
                 dictionary.Add("@Covered_distanceTo", queryParameters.CoveredDistanceTo);
             }
 
-            // Ordering
+            */
 
-            var orderBy = " ORDER BY J.Departure";
+            // Ordering.
+
+            var orderBy = " ORDER BY [J].[Departure]";
 
             if (queryParameters.OrderBy != null)
             {
