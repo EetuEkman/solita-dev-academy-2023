@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.meters_tooltip, .seconds_tooltip {
+    position: relative;
+}
+
+.meters_tooltip:hover::after, .seconds_tooltip:hover::after {
+    width: fit-content;
+    height: 1.5em;
+    position: absolute;
+    left: 0;
+    top: -1.375em;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: #2D3748;
+    background-color: #EAB308;
+    z-index: 100;
+    outline: 1px solid #07080E;
+    padding: 0.25em 0.5em;
+    border-radius: 0.125em;
+    font-weight: bold;
+}
+
+.meters_tooltip:hover::after {
+    content: "meters";
+}
+
+.seconds_tooltip:hover::after {
+    content: "seconds";
+}
