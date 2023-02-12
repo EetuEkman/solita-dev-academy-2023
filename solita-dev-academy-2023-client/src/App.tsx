@@ -7,11 +7,31 @@ import JourneyPage from './Models/JourneyPage';
 import SearchOptions from './Models/SearchOptions';
 import Journeys from './Journeys/Journeys';
 import DEFAULT_SEARCH_OPTIONS from './Constants/DefaultSearchOptions';
+import FetchError from './Models/FetchError';
+import FetchErrors from "./Constants/FetchErrors";
 
 const JOURNEYS_URL = "https://localhost:7263/api/Journey";
 
+function CreateFetchError(error: string): FetchError {
+  let fetchError: FetchError = {
+      description: FetchErrors.Error
+  };
+
+  switch (error) {
+      case FetchErrors.NetworkError:
+          fetchError = {
+              description: FetchErrors.NetworkError,
+              message: "The server is unreachable. Please check your internet connectivity."
+          }
+  }
+
+  return fetchError;
+}
+
 function App() {
-  const [page, setPage] = useState<JourneyPage>();
+  const [page, setPage] = useState<JourneyPage | null>();
+
+  const [fetchError, setFetchError] = useState<FetchError | null>(null);
 
   // The URL and search components are built from SearchOptions.
 
@@ -43,7 +63,7 @@ function App() {
       case "previous":
         url = new URL(page?.Previous!);
         break;
-      default:
+      default: 
         url = journeyUrl;
         break;
     }
@@ -54,9 +74,20 @@ function App() {
   async function fetchJourneys(url: URL) {
     setIsWorking(isWorking => true);
 
+    setFetchError(error => null);
+
     let page: JourneyPage;
 
-    page = await FetchJourneys(url);
+    try {
+      page = await FetchJourneys(url);
+    }
+    catch(networkError) {
+      setFetchError(error => CreateFetchError(FetchErrors.NetworkError));
+
+      setIsWorking(isWorking => false);
+
+      return;
+    }
 
     setPage(p => page);
 
@@ -70,6 +101,21 @@ function App() {
   return (
     <div className="p-1">
       <JourneySearch onFetchClick={handleFetchClick} searchOptions={searchOptions} setSearchOptions={setSearchOptions} isWorking={isWorking}></JourneySearch>
+      {
+        fetchError ?
+          <div className="py-1 px-2 text-yellow-500 bg-bluish_grey-500 rounded">
+            <h1>{fetchError.description}</h1>
+            {
+              fetchError.message
+                ?
+                <p>{fetchError.message}</p>
+                :
+                null
+            }
+          </div>
+          :
+          null
+      }
       {
         page ?
           <Journeys handleFetchClick={handleFetchClick} page={page} isWorking={isWorking}></Journeys>
