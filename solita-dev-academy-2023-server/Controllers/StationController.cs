@@ -34,7 +34,7 @@ namespace solita_dev_academy_2023_server.Controllers
             this.configuration = configuration;
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetStations")]
         [Produces("application/json")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
