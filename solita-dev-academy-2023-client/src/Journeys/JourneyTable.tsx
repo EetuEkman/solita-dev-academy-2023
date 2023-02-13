@@ -19,14 +19,14 @@ interface Filter {
 export default function JourneyTable(props: Props) {
     const [sort, setSort] = useState<Sort>({ by: SortByOptions.Departure, descending: true });
 
-    const [filter, setFilter] = useState<Filter>({ text: ""});
+    const [filter, setFilter] = useState<Filter>({ text: "" });
 
     const [journeys, setJourneys] = useState<Journey[]>(SortJourneys(FilterJourneys(props.journeys, filter), sort));
 
     function OnFilterTextChange(event: React.FormEvent<HTMLInputElement>) {
         let value = event.currentTarget.value;
 
-        let newFilter = {...filter} as Filter;
+        let newFilter = { ...filter } as Filter;
 
         newFilter.text = value;
 
@@ -44,7 +44,7 @@ export default function JourneyTable(props: Props) {
 
         return filteredJourneys;
     }
-    
+
     function SortJourneys(journeys: Journey[], sort: Sort): Journey[] {
         let sortedJourneys = [...journeys];
 
@@ -170,60 +170,75 @@ export default function JourneyTable(props: Props) {
         setSort(s => newSort);
     }
 
+    function SecondsToMinutes(seconds: number): number {
+        let minutes = seconds / 60;
+
+        return minutes;
+    }
+
+    function MetersToKilometers(meters: number): number {
+        let kilometers = meters / 1000;
+
+        return kilometers;
+    }
+
     useEffect(() => {
         setJourneys(j => SortJourneys(FilterJourneys(props.journeys, filter), sort))
     }, [sort, filter, props.journeys])
 
     return (
-        <div className="min-h-full flex flex-col justify-start px-1">
-            <table className="table-auto text-slate-400">
-                <thead className="text-md text-center text-slate-300">
-                    <tr>
-                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Departure} sort={sort}></TableHeader>
-                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Return} sort={sort}></TableHeader>
-                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationNameFi} sort={sort}></TableHeader>
-                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationNameSe} sort={sort}></TableHeader>
-                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationNameEn} sort={sort}></TableHeader>
-                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationAddressFi} sort={sort}></TableHeader>
-                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationAddressSe} sort={sort}></TableHeader>
-                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationNameFi} sort={sort}></TableHeader>
-                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationNameSe} sort={sort}></TableHeader>
-                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationNameEn} sort={sort}></TableHeader>
-                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationAddressFi} sort={sort}></TableHeader>
-                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationAddressSe} sort={sort}></TableHeader>
-                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Distance} sort={sort}></TableHeader>
-                        <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Duration} sort={sort}></TableHeader>
-                    </tr>
-                </thead>
-                <tbody className="text-sm">
-                    {
-                        journeys.map((journey, index) => {
-                            return (
-                                <tr className="border-y-2 first:border-y-0 first:border-t-3 last:border-y-0 border-slate-400" key={index}>
-                                    <td>{new Date(journey.Departure).toLocaleString("fi-FI")}</td>
-                                    <td>{new Date(journey.Return).toLocaleString("fi-FI")}</td>
-                                    <td>{journey.Departure_station_name_fi}</td>
-                                    <td>{journey.Departure_station_address_se}</td>
-                                    <td>{journey.Departure_station_name_en}</td>
-                                    <td>{journey.Departure_station_address_fi}</td>
-                                    <td>{journey.Departure_station_address_se}</td>
-                                    <td>{journey.Return_station_name_fi}</td>
-                                    <td>{journey.Return_station_name_se}</td>
-                                    <td>{journey.Return_station_name_en}</td>
-                                    <td>{journey.Return_station_address_fi}</td>
-                                    <td>{journey.Return_station_address_se}</td>
-                                    <td>{journey.Covered_distance}</td>
-                                    <td>{journey.Duration}</td>
-                                </tr>
-                            )
-                        })
-                    }
-                </tbody>
-            </table>
-            <div className="w-full flex flex-row items-center p-0.5 my-1">
+        <div className="flex flex-col justify-start py-1 px-2">
+            <div className="overflow-auto pb-3">
+                <table className="w-full table-auto border-collapse text-slate-400">
+                    <thead className="text-md text-slate-300 border-b-2 border-slate-300">
+                        <tr>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Departure} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Return} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationNameFi} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationNameSe} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationNameEn} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationAddressFi} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationAddressSe} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationNameFi} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationNameSe} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationNameEn} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationAddressFi} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationAddressSe} sort={sort}></TableHeader>
+                            <TableHeader className="kilometers_tooltip" HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Distance} sort={sort}></TableHeader>
+                            <TableHeader className="minutes_tooltip" HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Duration} sort={sort}></TableHeader>
+                        </tr>
+                    </thead>
+                    <tbody className="text-sm">
+                        {
+                            journeys.map((journey, index) => {
+                                return (
+                                    <tr className="border-y-[1px] first:border-y-0 last:border-y-0 border-slate-400" key={index}>
+                                        <td>{new Date(journey.Departure).toLocaleString("fi-FI")}</td>
+                                        <td>{new Date(journey.Return).toLocaleString("fi-FI")}</td>
+                                        <td>{journey.Departure_station_name_fi}</td>
+                                        <td>{journey.Departure_station_address_se}</td>
+                                        <td>{journey.Departure_station_name_en}</td>
+                                        <td>{journey.Departure_station_address_fi}</td>
+                                        <td>{journey.Departure_station_address_se}</td>
+                                        <td>{journey.Return_station_name_fi}</td>
+                                        <td>{journey.Return_station_name_se}</td>
+                                        <td>{journey.Return_station_name_en}</td>
+                                        <td>{journey.Return_station_address_fi}</td>
+                                        <td>{journey.Return_station_address_se}</td>
+                                        <td>{MetersToKilometers(journey.Covered_distance).toFixed(3)}</td>
+                                        <td>{SecondsToMinutes(journey.Duration).toFixed(2)}</td>
+                                    </tr>
+                                )
+                            })
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div className="flex flex-row items-center py-1">
                 <label>
                     Search
-                    <input onChange={OnFilterTextChange} value={filter.text} type="text"className="ml-2 pl-1 bg-slate-200 border-2 border-black_accent-500 text-black"></input>
+                    <input onChange={OnFilterTextChange} value={filter.text} type="text" className="ml-2 pl-1 bg-slate-200 border-2 border-black_accent-500 text-black"></input>
                 </label>
             </div>
         </div>

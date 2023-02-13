@@ -2,11 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-.meters_tooltip, .seconds_tooltip {
+.meters_tooltip,
+.seconds_tooltip,
+.kilometers_tooltip,
+.minutes_tooltip {
     position: relative;
 }
 
-.meters_tooltip:hover::after, .seconds_tooltip:hover::after {
+.meters_tooltip:hover::after,
+.seconds_tooltip:hover::after,
+.kilometers_tooltip:hover::after,
+.minutes_tooltip:hover::after {
     width: fit-content;
     height: 1.5em;
     position: absolute;
@@ -30,4 +36,16 @@
 
 .seconds_tooltip:hover::after {
     content: "seconds";
+}
+
+.kilometers_tooltip:hover::after {
+    left: -5.125em;
+    top: 0;
+    content: "kilometers";
+}
+
+.minutes_tooltip:hover::after {
+    left: -3.875em;
+    top: 0;
+    content: "minutes";
 }

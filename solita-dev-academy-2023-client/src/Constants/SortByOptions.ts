@@ -7,16 +7,16 @@ enum SortByOptions {
     Return = "Return",
     Duration = "Duration",
     Distance = "Distance",
-    DepartureStationNameFi = "Departure station name fi",
-    DepartureStationNameSe = "Departure station name se",
-    DepartureStationNameEn = "Departure station name en",
-    DepartureStationAddressFi = "Departure station address fi",
-    DepartureStationAddressSe = "Departure station address se",
-    ReturnStationNameFi = "Return station name fi",
-    ReturnStationNameSe = "Return station name se",
-    ReturnStationNameEn = "Return station name en",
-    ReturnStationAddressFi = "Return station address fi",
-    ReturnStationAddressSe = "Return station address se"
+    DepartureStationNameFi = "Dep. st. name fi",
+    DepartureStationNameSe = "Dep. st. name se",
+    DepartureStationNameEn = "Dep. st. name en",
+    DepartureStationAddressFi = "Dep. st. address fi",
+    DepartureStationAddressSe = "Dep. st. addr. se",
+    ReturnStationNameFi = "Ret. st. name fi",
+    ReturnStationNameSe = "Ret. st. name se",
+    ReturnStationNameEn = "Ret. st. name en",
+    ReturnStationAddressFi = "Ret. st. addr. fi",
+    ReturnStationAddressSe = "Ret. st. addr. se"
 }
 
 export default SortByOptions;
