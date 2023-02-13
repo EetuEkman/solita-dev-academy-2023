@@ -45,8 +45,6 @@ function App() {
 
   const [journeyUrl, setJourneyUrl] = useState(new URL(JOURNEYS_URL));
 
-  const [sortBy, setSortBy] = useState();
-
   const handleFetchClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (isWorking) {
       return;
