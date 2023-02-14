@@ -2,30 +2,14 @@ import React, { useEffect, useState } from 'react';
 import BuildUrl from '../BuildUrl';
 import DEFAULT_SEARCH_OPTIONS from '../Constants/DefaultSearchOptions';
 import FetchErrors from '../Constants/FetchErrors';
+import FetchErrorDisplay from '../FetchErrorDisplay';
 import FetchJourneys from '../FetchJourneys';
 import Journeys from '../Journeys/Journeys';
 import JourneySearch from "../JourneySearch/JourneySearch";
-import FetchError from '../Models/FetchError';
 import JourneyPage from '../Models/JourneyPage';
 import SearchOptions from '../Models/SearchOptions';
 
 const JOURNEYS_URL = "https://localhost:7263/api/Journey";
-
-function CreateFetchError(error: string): FetchError {
-    let fetchError: FetchError = {
-        description: FetchErrors.Error
-    };
-
-    switch (error) {
-        case FetchErrors.NetworkError:
-            fetchError = {
-                description: FetchErrors.NetworkError,
-                message: "The server is unreachable. Please check your internet connectivity."
-            }
-    }
-
-    return fetchError;
-}
 
 interface Props {
 
@@ -34,7 +18,7 @@ interface Props {
 export default function JourneysPage(props: Props) {
     const [page, setPage] = useState<JourneyPage | null>();
 
-    const [fetchError, setFetchError] = useState<FetchError | null>(null);
+    const [fetchError, setFetchError] = useState("");
 
     // The URL and search components are built from SearchOptions.
 
@@ -75,7 +59,7 @@ export default function JourneysPage(props: Props) {
     async function fetchJourneys(url: URL) {
         setIsWorking(isWorking => true);
 
-        setFetchError(error => null);
+        setFetchError(error => "");
 
         let page: JourneyPage;
 
@@ -83,7 +67,7 @@ export default function JourneysPage(props: Props) {
             page = await FetchJourneys(url);
         }
         catch (networkError) {
-            setFetchError(error => CreateFetchError(FetchErrors.NetworkError));
+            setFetchError(error => FetchErrors.NetworkError);
 
             setIsWorking(isWorking => false);
 
@@ -100,20 +84,11 @@ export default function JourneysPage(props: Props) {
     }, [searchOptions])
 
     return (
-        <div className="p-1">
+        <div className="p-0.5">
             <JourneySearch onFetchClick={handleFetchClick} searchOptions={searchOptions} setSearchOptions={setSearchOptions} isWorking={isWorking}></JourneySearch>
             {
-                fetchError ?
-                    <div className="py-1 px-2 text-yellow-500 bg-bluish_grey-500 rounded">
-                        <h1>{fetchError.description}</h1>
-                        {
-                            fetchError.message
-                                ?
-                                <p>{fetchError.message}</p>
-                                :
-                                null
-                        }
-                    </div>
+                fetchError.length > 0 ?
+                    <FetchErrorDisplay fetchError={fetchError}></FetchErrorDisplay>
                     :
                     null
             }
