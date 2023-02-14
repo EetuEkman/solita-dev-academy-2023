@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import SortByOptions from "../Constants/SortByOptions";
-import Journey from "../Models/Journey";
+import SortByOptions from "../../../Constants/SortByOptions";
+import Journey from "../../../Models/Journey";
 import TableHeader from "./TableHeader";
 
 interface Props {

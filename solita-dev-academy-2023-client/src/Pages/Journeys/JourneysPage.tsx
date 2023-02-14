@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import BuildUrl from '../BuildUrl';
-import DEFAULT_SEARCH_OPTIONS from '../Constants/DefaultSearchOptions';
-import FetchErrors from '../Constants/FetchErrors';
-import FetchErrorDisplay from '../FetchErrorDisplay';
-import FetchJourneys from '../FetchJourneys';
-import Journeys from '../Journeys/Journeys';
-import JourneySearch from "../JourneySearch/JourneySearch";
-import JourneyPage from '../Models/JourneyPage';
-import SearchOptions from '../Models/SearchOptions';
+import BuildUrl from '../../BuildUrl';
+import DEFAULT_SEARCH_OPTIONS from '../../Constants/DefaultSearchOptions';
+import FetchErrors from '../../Constants/FetchErrors';
+import FetchErrorDisplay from '../Shared/FetchErrorDisplay';
+import FetchJourneys from '../../FetchJourneys';
+import Journeys from './JourneysDisplay/JourneyDisplay';
+import JourneySearch from "./JourneySearch/JourneySearch";
+import FetchedJourneysPage from '../../Models/FetchedJourneysPage';
+import SearchOptions from '../../Models/SearchOptions';
 
 const JOURNEYS_URL = "https://localhost:7263/api/Journey";
 
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default function JourneysPage(props: Props) {
-    const [page, setPage] = useState<JourneyPage | null>();
+    const [page, setPage] = useState<FetchedJourneysPage | null>();
 
     const [fetchError, setFetchError] = useState("");
 
@@ -32,7 +32,7 @@ export default function JourneysPage(props: Props) {
 
     const [journeyUrl, setJourneyUrl] = useState(new URL(JOURNEYS_URL));
 
-    const handleFetchClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const HandleFetchClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         if (isWorking) {
             return;
         }
@@ -61,7 +61,7 @@ export default function JourneysPage(props: Props) {
 
         setFetchError(error => "");
 
-        let page: JourneyPage;
+        let page: FetchedJourneysPage;
 
         try {
             page = await FetchJourneys(url);
@@ -85,7 +85,7 @@ export default function JourneysPage(props: Props) {
 
     return (
         <div className="p-0.5">
-            <JourneySearch onFetchClick={handleFetchClick} searchOptions={searchOptions} setSearchOptions={setSearchOptions} isWorking={isWorking}></JourneySearch>
+            <JourneySearch onFetchClick={HandleFetchClick} searchOptions={searchOptions} setSearchOptions={setSearchOptions} isWorking={isWorking}></JourneySearch>
             {
                 fetchError.length > 0 ?
                     <FetchErrorDisplay fetchError={fetchError}></FetchErrorDisplay>
@@ -94,7 +94,7 @@ export default function JourneysPage(props: Props) {
             }
             {
                 page ?
-                    <Journeys handleFetchClick={handleFetchClick} page={page} isWorking={isWorking}></Journeys>
+                    <Journeys HandleFetchClick={HandleFetchClick} page={page} isWorking={isWorking}></Journeys>
                     :
                     null
             }

@@ -1,6 +1,6 @@
 import React from "react";
-import SearchOptionNames from "../Constants/SearchOptionNames";
-import SearchOptions from "../Models/SearchOptions";
+import SearchOptionNames from "../../../Constants/SearchOptionNames";
+import SearchOptions from "../../../Models/SearchOptions";
 
 interface Props {
     value: string;

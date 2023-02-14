@@ -1,8 +1,8 @@
 import React from 'react';
 import { hot } from "react-hot-loader/root";
 import { BrowserRouter as Router, Routes, Route, Link, useRoutes } from 'react-router-dom';
-import JourneysPage from './Pages/JourneysPage';
-import StationsPage from './Pages/StationsPage';
+import JourneysPage from './Pages/Journeys/JourneysPage';
+import StationsPage from './Pages/Stations/StationsPage';
 
 function App() {
   return (

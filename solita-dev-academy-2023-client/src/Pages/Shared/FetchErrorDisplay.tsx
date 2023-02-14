@@ -1,6 +1,6 @@
 import React from "react";
-import FetchErrors from "./Constants/FetchErrors";
-import FetchError from "./Models/FetchError";
+import FetchErrors from "../../Constants/FetchErrors";
+import FetchError from "../../Models/FetchError";
 
 function CreateFetchError(error: string): FetchError {
     let fetchError: FetchError = {
