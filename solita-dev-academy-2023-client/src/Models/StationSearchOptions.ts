@@ -5,5 +5,5 @@ export default interface StationSearchOptions {
     Address_fi: string;
     Address_se: string;
     Operator: string;
-    Capacity?: number;
+    Capacity: string;
 }
