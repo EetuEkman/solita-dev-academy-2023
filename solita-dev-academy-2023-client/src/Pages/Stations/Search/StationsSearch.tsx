@@ -6,6 +6,8 @@ interface Props {
 
 export default function StationsSearch(props: Props) {
     return (
-        <></>
+        <div>
+            
+        </div>
     )
 }
