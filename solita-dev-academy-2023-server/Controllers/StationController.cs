@@ -34,12 +34,112 @@ namespace solita_dev_academy_2023_server.Controllers
             this.configuration = configuration;
         }
 
+        [HttpGet("{Id}", Name = "GetStation")]
+        [Produces("application/json")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> Index([FromRoute] string Id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Station Id's start from 001 instead of 1.
+
+            // Add leading zeroes to values from 1 to 99.
+
+            switch (Id.Length)
+            {
+                case 1:
+                    Id = "00" + Id;
+                    break;
+                case 2:
+                    Id = "0" + Id;
+                    break;
+                default:
+                    break;
+            }
+
+            var parameters = new DynamicParameters();
+
+            parameters.Add("Id", Id, DbType.String, ParameterDirection.Input);
+
+            /*
+              
+            Functionality
+
+            Recommended
+
+            Station name
+            Station address
+            Total number of journeys starting from the station
+            Total number of journeys ending at the station
+
+            Additional
+
+            Station location on the map
+            The average distance of a journey starting from the station
+            The average distance of a journey ending at the station
+            Top 5 most popular return stations for journeys starting from the station
+            Top 5 most popular departure stations for journeys ending at the station
+            Ability to filter all the calculations per month
+
+            */
+
+
+            var query = "SELECT TOP 1 *" +
+                " FROM [dbo].[Stations] S" +
+                " WHERE [Id] = @Id";
+
+            Station? station;
+
+            try
+            {
+                var connectionString = configuration.GetValue<string>("ConnectionStrings:Citybikes");
+
+                using (var connection = new SqlConnection(configuration.GetValue<string>("ConnectionStrings:Citybikes")))
+                {
+                    await connection.OpenAsync();
+
+                    station = await connection.QuerySingleOrDefaultAsync<Station>(query, parameters);
+                }
+            }
+            catch (InvalidOperationException ioe)
+            {
+                // Dapper .QuerySingleOrDefault throws InvalidOperationException
+                // when the query returns more than one element.
+
+                return StatusCode(500);
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(500);
+            }
+
+            if (station is null)
+            {
+                return StatusCode(204);
+            }
+
+            return Json(station);
+        }
+        
+
         [HttpGet(Name = "GetStations")]
         [Produces("application/json")]
         [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> Index([FromQuery] StationQueryParameters queryParameters)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             // Dictionary for building dynamic parameters.
 
             var dictionary = new Dictionary<string, Object>()
@@ -85,6 +185,14 @@ namespace solita_dev_academy_2023_server.Controllers
                 " AND Name_en LIKE @Name_en" +
                 " AND Address_fi LIKE @Address_fi" +
                 " AND Address_se LIKE @Address_se";
+
+            var countQuery = "COUNT(SELECT 1)" +
+                " FROM [dbo].[Stations]" +
+                " AND Name_se LIKE @Name_se" +
+                " AND Name_en LIKE @Name_en" +
+                " AND Address_fi LIKE @Address_fi" +
+                " AND Address_se LIKE @Address_se";
+
 
             List<Station> stations;
 
