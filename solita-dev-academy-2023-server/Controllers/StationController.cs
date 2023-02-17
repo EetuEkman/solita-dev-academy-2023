@@ -2,26 +2,19 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using solita_dev_academy_2023_server.Models;
-using System.Collections.Generic;
 using System.Data;
-using System.Text.Json;
 
 namespace solita_dev_academy_2023_server.Controllers
 {
     public class StationQueryParameters
     {
-        [FromQuery(Name = "name_fi")]
         public string? NameFi { get; set; }
-        [FromQuery(Name = "name_se")]
         public string? NameSe { get; set; }
-        [FromQuery(Name = "name_en")]
         public string? NameEn { get; set; }
-        [FromQuery(Name = "address_fi")]
         public string? AddressFi { get; set; }
-        [FromQuery(Name = "address_se")]
         public string? AddressSe { get; set; }
-        [FromQuery(Name = "capacity")]
         public int? Capacity { get; set; }
+        public int? Page { get; set; }
     }
 
     [ApiController]
@@ -100,7 +93,7 @@ namespace solita_dev_academy_2023_server.Controllers
             {
                 var connectionString = configuration.GetValue<string>("ConnectionStrings:Citybikes");
 
-                using (var connection = new SqlConnection(configuration.GetValue<string>("ConnectionStrings:Citybikes")))
+                using (var connection = new SqlConnection(connectionString))
                 {
                     await connection.OpenAsync();
 
@@ -135,66 +128,103 @@ namespace solita_dev_academy_2023_server.Controllers
         [ProducesResponseType(500)]
         public async Task<IActionResult> Index([FromQuery] StationQueryParameters queryParameters)
         {
+            if (queryParameters.Page is not null && queryParameters.Page < 0)
+            {
+                ModelState.AddModelError("Page", "Page number cannot be less than 0.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            // Dictionary for building dynamic parameters.
+            var parameters = new DynamicParameters();
 
-            var dictionary = new Dictionary<string, Object>()
-            {
-                { "@Name_fi", "%" },
-                { "@Name_se", "%" },
-                { "@Name_en", "%" },
-                { "@Address_fi", "%" },
-                { "@Address_se", "%" },
-            };
+            parameters.Add("Name_fi", "%", DbType.String, ParameterDirection.Input);
+            parameters.Add("Name_se", "%", DbType.String, ParameterDirection.Input);
+            parameters.Add("Name_en", "%", DbType.String, ParameterDirection.Input);
+            parameters.Add("Address_fi", "%", DbType.String, ParameterDirection.Input);
+            parameters.Add("Address_se", "%", DbType.String, ParameterDirection.Input);
 
-            if (queryParameters.NameFi != null)
+            if (queryParameters.NameFi is not null)
             {
-                dictionary["@Name_fi"] = "%" + queryParameters.NameFi + "%";
+                parameters.Add("Name_fi", "%" + queryParameters.NameFi + "%", DbType.String, ParameterDirection.Input);
             }
 
-            if (queryParameters.NameSe != null)
+            if (queryParameters.NameSe is not null)
             {
-                dictionary["@Name_se"] = "%" + queryParameters.NameSe + "%";
+                parameters.Add("Name_se", "%" + queryParameters.NameSe + "%", DbType.String, ParameterDirection.Input);
             }
 
-            if (queryParameters.NameEn != null)
+            if (queryParameters.NameEn is not null)
             {
-                dictionary["@Name_en"] = "%" + queryParameters.NameEn + "%";
+                parameters.Add("Name_en", "%" + queryParameters.NameEn + "%", DbType.String, ParameterDirection.Input);
             }
 
-            if (queryParameters.AddressFi != null)
+            if (queryParameters.AddressFi is not null)
             {
-                dictionary["@Address_fi"] = "%" + queryParameters.AddressFi + "%";
+                parameters.Add("Address_fi", "%" + queryParameters.AddressFi + "%", DbType.String, ParameterDirection.Input);
             }
 
-            if (queryParameters.AddressSe != null)
+            if (queryParameters.AddressSe is not null)
             {
-                dictionary["@Address_se"] = "%" + queryParameters.AddressSe + "%";
+                parameters.Add("Address_se", "%" + queryParameters.AddressSe + "%", DbType.String, ParameterDirection.Input);
             }
-
-            var parameters = new DynamicParameters(dictionary);
 
             var query = "SELECT *" +
-                " FROM Stations" +
+                " FROM [dbo].[Stations]" +
                 " WHERE Name_fi LIKE @Name_fi" +
                 " AND Name_se LIKE @Name_se" +
                 " AND Name_en LIKE @Name_en" +
                 " AND Address_fi LIKE @Address_fi" +
                 " AND Address_se LIKE @Address_se";
 
-            var countQuery = "COUNT(SELECT 1)" +
+            var countQuery = " SELECT COUNT(1)" +
                 " FROM [dbo].[Stations]" +
+                " WHERE Name_fi LIKE @Name_fi" +
                 " AND Name_se LIKE @Name_se" +
                 " AND Name_en LIKE @Name_en" +
                 " AND Address_fi LIKE @Address_fi" +
                 " AND Address_se LIKE @Address_se";
 
+            // ORDER BY, needed for OFFSET.
+
+            query += " ORDER BY Id ASC";
+
+            var currentPage = 1;
+
+            // Offset.
+
+            query += " OFFSET @Offset ROWS";
+
+            var offset = 0;
+
+            // Use the keyword "FIRST" instead of "NEXT" for the first page.
+
+            if (queryParameters.Page is not null && queryParameters.Page > 1)
+            {
+                offset = 20 * (int)queryParameters.Page + 1;
+
+                currentPage = (int)queryParameters.Page;
+
+                query += " FETCH NEXT 20 ROWS ONLY;";
+            }
+            else
+            {
+                query += " FETCH FIRST 20 ROWS ONLY;";
+            }
+
+            parameters.Add("Offset", offset, DbType.Int32, ParameterDirection.Input);
+
+            // Include the count in the same query.
+
+            query += countQuery;
 
             List<Station> stations;
+
+            StationPage stationPage = new();
+
+            var rowCount = 0;
 
             try
             {
@@ -202,9 +232,13 @@ namespace solita_dev_academy_2023_server.Controllers
 
                 using (var connection = new SqlConnection(connectionString))
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
 
-                    stations = connection.Query<Station>(query, parameters).ToList();
+                    var reader = await connection.QueryMultipleAsync(query, parameters);
+
+                    stations = reader.Read<Station>().ToList();
+
+                    rowCount = reader.Read<int>().Single();
 
                     // Moved from the pure ADO.NET to Dapper.
 
@@ -247,7 +281,48 @@ namespace solita_dev_academy_2023_server.Controllers
                 return StatusCode(500);
             }
 
-            return Json(stations);
+            stationPage.Count = rowCount;
+
+            var scheme = Url.ActionContext.HttpContext.Request.Scheme;
+
+            // Set the url to the previous page as null if there is no previous page.
+
+            string? previous = null;
+
+            if (currentPage > 1 && rowCount > 0)
+            {
+                queryParameters.Page -= 1;
+
+                previous = Url.Action("Index", "Station", queryParameters, scheme);
+            }
+
+            stationPage.Previous = previous;
+
+            // Set the url to the next page as null if there is no next page.
+
+            string? next = null;
+
+            if ((int)Math.Ceiling((double)(rowCount / 20)) > currentPage && rowCount > 0)
+            {
+                queryParameters.Page = currentPage + 1;
+
+                next = Url.Action("Index", "Station", queryParameters, scheme);
+            }
+
+            stationPage.Next = next;
+
+            stationPage.Stations = stations;
+
+            stationPage.CurrentPage = currentPage;
+
+            // Could send 204 No Content..
+
+            if (rowCount == 0)
+            {
+                stationPage.CurrentPage = 0;
+            }
+
+            return Json(stationPage);
         }
     }
 }
