@@ -1,6 +1,7 @@
 import React from "react";
 import FetchedStationsPage from "../../../Models/FetchedStationsPage";
 import Station from "../../../Models/Station";
+import PageNavigation from "../../Shared/PageNavigation";
 
 interface Props {
     stationsPage: FetchedStationsPage;
@@ -10,7 +11,7 @@ interface Props {
 
 export default function StationsDisplay(props: Props) {
     return (
-        <div className="max-w-7xl bg-bluish_grey-500 text-slate-400 rounded">
+        <div className="max-w-7xl bg-bluish_grey-500 text-slate-400 rounded pb-2">
             <div className="flex flex-col py-1 px-2">
                 <div className="overflow-auto pb-3">
                     <table className="w-full table-fixed border-collapse">
@@ -46,6 +47,7 @@ export default function StationsDisplay(props: Props) {
 
                 </div>
             </div>
+            <PageNavigation HandleFetchPointerDown={props.OnFetchPointerDown} isWorking={props.isWorking} page={props.stationsPage}></PageNavigation>
         </div>
     )
 }

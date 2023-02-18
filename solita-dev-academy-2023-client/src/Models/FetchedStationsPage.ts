@@ -1,9 +1,6 @@
+import FetchedPage from "./FetchedPage";
 import Station from "./Station";
 
-export default interface FetchedStationsPage {
-    Count: number;
-    Next?: string;
-    CurrentPage: number;
-    Previous?: string;
+export default interface FetchedStationsPage extends FetchedPage {
     Stations: Station[];
 }

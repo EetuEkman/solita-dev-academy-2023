@@ -10,7 +10,7 @@ interface Props {
     isWorking: boolean;
     searchOptions: SearchOptions;
     setSearchOptions: React.Dispatch<React.SetStateAction<SearchOptions>>;
-    onFetchClick: React.MouseEventHandler<HTMLButtonElement>;
+    OnFetchPointerDown: React.PointerEventHandler<HTMLButtonElement>;
 }
 
 export default function JourneySearch(props: Props) {
@@ -106,7 +106,7 @@ export default function JourneySearch(props: Props) {
                     props.isWorking ?
                     <button className="h-10 w-15 bg-gray-500/50 text-bluish_grey-500 font-bold mr-1 py-2 px-4 rounded" disabled>Go</button>
                     :
-                    <button className="h-10 w-15 bg-yellow-500 text-bluish_grey-500 font-bold mr-1 py-2 px-4 rounded" onClick={props.onFetchClick}>Go</button>
+                    <button className="h-10 w-15 bg-yellow-500 text-bluish_grey-500 font-bold mr-1 py-2 px-4 rounded" onPointerDown={props.OnFetchPointerDown}>Go</button>
                 }
                 <button className="h-10 w-15 bg-yellow-500 text-bluish_grey-500 py-2 px-4 rounded" onClick={clearSearchOptions}>Clear</button>
             </div>

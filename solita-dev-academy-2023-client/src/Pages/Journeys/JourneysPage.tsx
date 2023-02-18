@@ -4,7 +4,7 @@ import DEFAULT_SEARCH_OPTIONS from '../../Constants/DefaultSearchOptions';
 import FetchErrors from '../../Constants/FetchErrors';
 import FetchErrorDisplay from '../Shared/FetchErrorDisplay';
 import FetchJourneys from '../../Services/FetchJourneys';
-import Journeys from './JourneysDisplay/JourneyDisplay';
+import JourneyDisplay from './JourneysDisplay/JourneyDisplay';
 import JourneySearch from "./JourneySearch/JourneySearch";
 import FetchedJourneysPage from '../../Models/FetchedJourneysPage';
 import SearchOptions from '../../Models/SearchOptions';
@@ -32,7 +32,7 @@ export default function JourneysPage(props: Props) {
 
     const [journeyUrl, setJourneyUrl] = useState(new URL(JOURNEYS_URL));
 
-    const HandleFetchClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const HandleFetchPointerDown = (event: React.PointerEvent<HTMLButtonElement>) => {
         if (isWorking) {
             return;
         }
@@ -53,10 +53,10 @@ export default function JourneysPage(props: Props) {
                 break;
         }
 
-        fetchJourneys(url);
+        FetchJourneysPage(url);
     }
 
-    async function fetchJourneys(url: URL) {
+    async function FetchJourneysPage(url: URL) {
         setIsWorking(isWorking => true);
 
         setFetchError(error => "");
@@ -85,7 +85,7 @@ export default function JourneysPage(props: Props) {
 
     return (
         <div className="p-0.5">
-            <JourneySearch onFetchClick={HandleFetchClick} searchOptions={searchOptions} setSearchOptions={setSearchOptions} isWorking={isWorking}></JourneySearch>
+            <JourneySearch OnFetchPointerDown={HandleFetchPointerDown} searchOptions={searchOptions} setSearchOptions={setSearchOptions} isWorking={isWorking}></JourneySearch>
             {
                 fetchError.length > 0 ?
                     <FetchErrorDisplay fetchError={fetchError}></FetchErrorDisplay>
@@ -94,7 +94,7 @@ export default function JourneysPage(props: Props) {
             }
             {
                 page ?
-                    <Journeys HandleFetchClick={HandleFetchClick} page={page} isWorking={isWorking}></Journeys>
+                    <JourneyDisplay HandleFetchPointerDown={HandleFetchPointerDown} journeysPage={page} isWorking={isWorking}></JourneyDisplay>
                     :
                     null
             }

@@ -1,19 +1,19 @@
 import React from "react";
 import FetchedJourneysPage from "../../../Models/FetchedJourneysPage";
 import JourneyTable from "./JourneyTable";
-import PageNavigation from "./PageNavigation";
+import PageNavigation from "../../Shared/PageNavigation";
 
 interface Props {
     isWorking: boolean;
-    page: FetchedJourneysPage;
-    HandleFetchClick: React.MouseEventHandler<HTMLButtonElement>;
+    journeysPage: FetchedJourneysPage;
+    HandleFetchPointerDown: React.PointerEventHandler<HTMLButtonElement>;
 }
 
 export default function JourneyDisplay(props: Props) {
     return (
         <div className="pb-2 bg-bluish_grey-500 text-slate-300 rounded">
-            <JourneyTable journeys={props.page.Journeys}></JourneyTable>
-            <PageNavigation HandleFetchClick={props.HandleFetchClick} page={props.page} isWorking={props.isWorking}></PageNavigation>
+            <JourneyTable journeys={props.journeysPage.Journeys}></JourneyTable>
+            <PageNavigation HandleFetchPointerDown={props.HandleFetchPointerDown} page={props.journeysPage} isWorking={props.isWorking}></PageNavigation>
         </div>
     )
 }
