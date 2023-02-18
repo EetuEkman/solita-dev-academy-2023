@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using solita_dev_academy_2023_server.Models;
 using System.Data;
+using System.Text.Json;
 
 namespace solita_dev_academy_2023_server.Controllers
 {
@@ -322,7 +323,9 @@ namespace solita_dev_academy_2023_server.Controllers
                 stationPage.CurrentPage = 0;
             }
 
-            return Json(stationPage);
+            var body = JsonSerializer.Serialize(stationPage);
+
+            return Content(body, "application/json", System.Text.Encoding.UTF8);
         }
     }
 }

@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import DEFAULT_STATION_SEARCH_OPTIONS from "../../Constants/DefaultStationSearchOptions";
+import FetchErrors from "../../Constants/FetchErrors";
 import FetchedStationsPage from "../../Models/FetchedStationsPage";
 import StationSearchOptions from "../../Models/StationSearchOptions";
+import FetchStations from "../../Services/FetchStations";
+import FetchErrorDisplay from "../Shared/FetchErrorDisplay";
 import StationsSearch from "./Search/StationsSearch";
 import StationsDisplay from "./StationsDisplay/StationsDisplay";
 
@@ -9,22 +12,58 @@ interface Props {
 
 }
 
+const STATIONS_URL = "https://localhost:7263/api/Station";
+
 export default function StationsPage(props: Props) {
     const [stationSearchOptions, SetStationSearchOptions] = useState<StationSearchOptions>(DEFAULT_STATION_SEARCH_OPTIONS);
 
-    const [stationsPage, SetStationsPage] = useState<FetchedStationsPage | null>();
+    const [stationsPage, SetStationsPage] = useState<FetchedStationsPage | null>(null);
 
-    const [isWorking, setIsWorking] = useState(false);
+    const [fetchError, SetFetchError] = useState("");
+
+    const [isWorking, SetIsWorking] = useState(false);
 
     function HandleFetchPointerDown(event: React.PointerEvent<HTMLButtonElement>) {
-        console.log("Fetch stations not yet implemented.");
+        if (isWorking) {
+            return;
+        }
+
+        FetchStationPage(new URL(STATIONS_URL));
+    }
+
+    async function FetchStationPage(url: URL) {
+        SetIsWorking(isWorking => true);
+
+        SetFetchError(error => "");
+
+        let stationsPage: FetchedStationsPage;
+
+        try {
+            stationsPage = await FetchStations(url);
+        }
+        catch (networkError) {
+            SetFetchError(error => FetchErrors.NetworkError);
+
+            SetIsWorking(isWorking => false);
+
+            return;
+        }
+
+        SetStationsPage(sp => stationsPage);
+
+        SetIsWorking(isWorking => false);
     }
     
     return (
         <div className="m-0.5">
             <StationsSearch stationSearchOptions={stationSearchOptions} SetStationSearchOptions={SetStationSearchOptions} OnFetchPointerDown={HandleFetchPointerDown}></StationsSearch>
             {
-                stationsPage ?
+                fetchError.length > 0 ?
+                    <FetchErrorDisplay fetchError={fetchError}></FetchErrorDisplay> :
+                    null
+            }
+            {
+                stationsPage !== null ?
                     <StationsDisplay stationsPage={stationsPage} OnFetchPointerDown={HandleFetchPointerDown} isWorking={isWorking}></StationsDisplay> :
                     null
             }
