@@ -3,7 +3,7 @@ import BuildUrl from '../../BuildUrl';
 import DEFAULT_SEARCH_OPTIONS from '../../Constants/DefaultSearchOptions';
 import FetchErrors from '../../Constants/FetchErrors';
 import FetchErrorDisplay from '../Shared/FetchErrorDisplay';
-import FetchJourneys from '../../FetchJourneys';
+import FetchJourneys from '../../Services/FetchJourneys';
 import Journeys from './JourneysDisplay/JourneyDisplay';
 import JourneySearch from "./JourneySearch/JourneySearch";
 import FetchedJourneysPage from '../../Models/FetchedJourneysPage';
