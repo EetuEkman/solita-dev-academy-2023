@@ -1,13 +1,14 @@
 import StationSearchOptions from "../Models/StationSearchOptions";
 
 const DEFAULT_STATION_SEARCH_OPTIONS: StationSearchOptions = {
-    Name_fi: "",
-    Name_se: "",
-    Name_en: "",
+    NameFi: "",
+    NameSe: "",
+    NameEn: "",
     Operator: "",
-    Address_fi: "",
-    Address_se: "",
-    Capacity: ""
+    AddressFi: "",
+    AddressSe: "",
+    CapacityFrom: null,
+    CapacityTo: null,
 }
 
 export default DEFAULT_STATION_SEARCH_OPTIONS;

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DEFAULT_STATION_SEARCH_OPTIONS from "../../Constants/DefaultStationSearchOptions";
 import FetchErrors from "../../Constants/FetchErrors";
 import FetchedStationsPage from "../../Models/FetchedStationsPage";
 import StationSearchOptions from "../../Models/StationSearchOptions";
+import BuildStationsUrl from "../../Services/BuildStationsUrl";
 import FetchStations from "../../Services/FetchStations";
 import FetchErrorDisplay from "../Shared/FetchErrorDisplay";
 import StationsSearch from "./Search/StationsSearch";
@@ -71,6 +72,10 @@ export default function StationsPage(props: Props) {
 
         SetIsWorking(isWorking => false);
     }
+
+    useEffect(() => {
+        SetStationsUrl(su => BuildStationsUrl(STATIONS_URL, stationSearchOptions));
+    }, [stationSearchOptions])
     
     return (
         <div className="m-0.5">

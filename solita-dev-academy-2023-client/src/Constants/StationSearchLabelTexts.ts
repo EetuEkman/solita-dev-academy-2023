@@ -5,7 +5,8 @@ enum StationSearchLabelTexts {
     AddressFi = "Address fi",
     AddressSe = "Address se",
     Operator = "Operator",
-    Capacity = "Capacity"
+    CapacityFrom = "Capacity at least",
+    CapacityTo = "Capacity at most",
 }
 
 export default StationSearchLabelTexts;

@@ -1,9 +1,10 @@
 export default interface StationSearchOptions {
-    Name_fi: string;
-    Name_se: string;
-    Name_en: string;
-    Address_fi: string;
-    Address_se: string;
+    NameFi: string;
+    NameSe: string;
+    NameEn: string;
+    AddressFi: string;
+    AddressSe: string;
     Operator: string;
-    Capacity: string;
+    CapacityTo: number | null;
+    CapacityFrom: number | null;
 }

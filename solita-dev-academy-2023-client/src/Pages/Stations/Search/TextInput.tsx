@@ -6,7 +6,7 @@ interface Props {
     labelText: string;
     value: string;
     stationSearchOptions: StationSearchOptions;
-    Set: React.Dispatch<React.SetStateAction<StationSearchOptions>>;
+    SetStationSearchOptions: React.Dispatch<React.SetStateAction<StationSearchOptions>>;
 }
 
 export default function TextInput(props: Props) {
@@ -15,38 +15,35 @@ export default function TextInput(props: Props) {
 
         switch (props.labelText) {
             case StationSearchLabelTexts.AddressFi:
-                stationSearchOptions.Address_fi = event.currentTarget.value;
+                stationSearchOptions.AddressFi = event.currentTarget.value;
                 break;
             case StationSearchLabelTexts.AddressSe:
-                stationSearchOptions.Address_se = event.currentTarget.value;
+                stationSearchOptions.AddressSe = event.currentTarget.value;
                 break;
             case StationSearchLabelTexts.NameFi:
-                stationSearchOptions.Name_fi = event.currentTarget.value;
+                stationSearchOptions.NameFi = event.currentTarget.value;
                 break;
             case StationSearchLabelTexts.NameSe:
-                stationSearchOptions.Name_se = event.currentTarget.value;
+                stationSearchOptions.NameSe = event.currentTarget.value;
                 break;
             case StationSearchLabelTexts.NameEn:
-                stationSearchOptions.Name_en = event.currentTarget.value;
+                stationSearchOptions.NameEn = event.currentTarget.value;
                 break;
             case StationSearchLabelTexts.Operator:
                 stationSearchOptions.Operator = event.currentTarget.value;
-                break;
-            case StationSearchLabelTexts.Capacity:
-                stationSearchOptions.Capacity = event.currentTarget.value;
                 break;
             default:
                 return;
         }
 
-        props.Set(sso => stationSearchOptions);
+        props.SetStationSearchOptions(sso => stationSearchOptions);
     }
 
     return (
-        <div className="w-full my-0.5">
-            <label className="flex flex-row">
-                <span className="w-24">{props.labelText}</span>
-                <input className="px-1 border-2 border-black_accent-500 text-black_accent-500" onChange={OnChange} value={props.value} type="text"></input>
+        <div className="w-full h-8 flex flex-row justify-start align-middle my-0.5">
+            <label className="h-fit py-0.5 flex flex-row justify-start align-middle">
+                <span className="w-32">{props.labelText}</span>
+                <input className="w-48 px-1 border-2 border-black_accent-500 text-black_accent-500" onChange={OnChange} value={props.value} type="text"></input>
             </label>
         </div>
     )
