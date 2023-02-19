@@ -1,9 +1,10 @@
 import React from "react";
-import DEFAULT_SEARCH_OPTIONS from "../../../Constants/DefaultSearchOptions";
+import DEFAULT_SEARCH_OPTIONS from "../../../Constants/DefaultJourneySearchOptions";
 import OrderByOptions from "../../../Constants/OrderByOptions";
 import SearchOptionNames from "../../../Constants/SearchOptionNames";
 import SearchOptions from "../../../Models/JourneySearchOptions";
 import DatePicker from "./DatePicker";
+import NumberInput from "./NumberInput";
 import TextInput from "./TextInput";
 
 interface Props {
@@ -15,7 +16,7 @@ interface Props {
 
 export default function JourneySearch(props: Props) {
     function clearSearchOptions() {
-        let defaultSearchOptions = {...DEFAULT_SEARCH_OPTIONS};
+        let defaultSearchOptions = { ...DEFAULT_SEARCH_OPTIONS };
 
         props.setSearchOptions(searchOptions => defaultSearchOptions);
     }
@@ -23,7 +24,7 @@ export default function JourneySearch(props: Props) {
     function onOrderByChange(event: React.ChangeEvent<HTMLSelectElement>) {
         let value = event.currentTarget.value;
 
-        let searchOptions = {...props.searchOptions} as SearchOptions;
+        let searchOptions = { ...props.searchOptions } as SearchOptions;
 
         searchOptions.OrderBy = value;
 
@@ -33,7 +34,7 @@ export default function JourneySearch(props: Props) {
     function onOrderChange(event: React.ChangeEvent<HTMLInputElement>) {
         let checked = event.currentTarget.checked;
 
-        let searchOptions = {...props.searchOptions} as SearchOptions;
+        let searchOptions = { ...props.searchOptions } as SearchOptions;
 
         checked ?
             searchOptions.Order = "Ascending"
@@ -56,13 +57,13 @@ export default function JourneySearch(props: Props) {
             </div>
 
             <div>
-                <TextInput value={props.searchOptions.CoveredDistanceFrom} option={SearchOptionNames.CoveredDistanceFrom} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
-                <TextInput value={props.searchOptions.CoveredDistanceTo} option={SearchOptionNames.CoveredDistanceTo} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
+                <NumberInput value={props.searchOptions.CoveredDistanceFrom} option={SearchOptionNames.CoveredDistanceFrom} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></NumberInput>
+                <NumberInput value={props.searchOptions.CoveredDistanceTo} option={SearchOptionNames.CoveredDistanceTo} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></NumberInput>
             </div>
 
             <div>
-                <TextInput value={props.searchOptions.DurationFrom} option={SearchOptionNames.DurationFrom} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
-                <TextInput value={props.searchOptions.DurationTo} option={SearchOptionNames.DurationTo} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
+                <NumberInput value={props.searchOptions.DurationFrom} option={SearchOptionNames.DurationFrom} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></NumberInput>
+                <NumberInput value={props.searchOptions.DurationTo} option={SearchOptionNames.DurationTo} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></NumberInput>
             </div>
 
             <div>
@@ -104,9 +105,9 @@ export default function JourneySearch(props: Props) {
             <div className="pt-1">
                 {
                     props.isWorking ?
-                    <button className="h-10 w-15 bg-gray-500/50 text-bluish_grey-500 font-bold mr-1 py-2 px-4 rounded" disabled>Go</button>
-                    :
-                    <button className="h-10 w-15 bg-yellow-500 text-bluish_grey-500 font-bold mr-1 py-2 px-4 rounded" onPointerDown={props.OnFetchPointerDown}>Go</button>
+                        <button className="h-10 w-15 bg-gray-500/50 text-bluish_grey-500 font-bold mr-1 py-2 px-4 rounded" disabled>Go</button>
+                        :
+                        <button className="h-10 w-15 bg-yellow-500 text-bluish_grey-500 font-bold mr-1 py-2 px-4 rounded" onPointerDown={props.OnFetchPointerDown}>Go</button>
                 }
                 <button className="h-10 w-15 bg-yellow-500 text-bluish_grey-500 py-2 px-4 rounded" onClick={clearSearchOptions}>Clear</button>
             </div>

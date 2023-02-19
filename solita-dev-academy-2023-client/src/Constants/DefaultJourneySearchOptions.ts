@@ -1,15 +1,15 @@
-import SearchOptions from "../Models/JourneySearchOptions"
+import JourneySearchOptions from "../Models/JourneySearchOptions"
 import OrderByOptions from "./OrderByOptions";
 
-const DEFAULT_SEARCH_OPTIONS: SearchOptions = {
+const DEFAULT_JOURNEY_SEARCH_OPTIONS: JourneySearchOptions = {
     DepartureDateFrom: null,
     DepartureDateTo: null,
     ReturnDateFrom: null,
     ReturnDateTo: null,
-    CoveredDistanceFrom: "",
-    CoveredDistanceTo: "",
-    DurationFrom: "",
-    DurationTo: "",
+    CoveredDistanceFrom: null,
+    CoveredDistanceTo: null,
+    DurationFrom: null,
+    DurationTo: null,
     DepartureStationNameFi: "",
     DepartureStationNameSe: "",
     DepartureStationNameEn: "",
@@ -20,4 +20,4 @@ const DEFAULT_SEARCH_OPTIONS: SearchOptions = {
     Order: "Descending"
 }
 
-export default DEFAULT_SEARCH_OPTIONS;
+export default DEFAULT_JOURNEY_SEARCH_OPTIONS;

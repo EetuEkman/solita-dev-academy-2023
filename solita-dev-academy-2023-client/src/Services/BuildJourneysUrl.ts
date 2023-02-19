@@ -8,71 +8,71 @@ import SearchOptions from "../Models/JourneySearchOptions";
  */
 
 export default function BuildJourneysUrl(urlArg: string, searchOptions: SearchOptions): URL {
-    let url = new URL(urlArg);
-    
-    if (searchOptions.DepartureDateFrom !== null) {
-       url.searchParams.set("DepartureDateFrom", searchOptions.DepartureDateFrom.toISOString().split("T")[0]);
-    }
+   let url = new URL(urlArg);
 
-    if (searchOptions.DepartureDateTo !== null) {
-       url.searchParams.set("DepartureDateTo", searchOptions.DepartureDateTo.toISOString().split("T")[0]);
-    }
+   if (searchOptions.DepartureDateFrom !== null) {
+      url.searchParams.set("DepartureDateFrom", searchOptions.DepartureDateFrom.toISOString().split("T")[0]);
+   }
 
-    if (searchOptions.ReturnDateFrom !== null) {
-       url.searchParams.set("ReturnDateFrom", searchOptions.ReturnDateFrom.toISOString().split("T")[0]);
-    }
+   if (searchOptions.DepartureDateTo !== null) {
+      url.searchParams.set("DepartureDateTo", searchOptions.DepartureDateTo.toISOString().split("T")[0]);
+   }
 
-    if (searchOptions.ReturnDateTo !== null) {
-       url.searchParams.set("ReturnDateTo", searchOptions.ReturnDateTo.toISOString().split("T")[0]);
-    }
+   if (searchOptions.ReturnDateFrom !== null) {
+      url.searchParams.set("ReturnDateFrom", searchOptions.ReturnDateFrom.toISOString().split("T")[0]);
+   }
 
-    if (searchOptions.CoveredDistanceFrom.length > 0) {
-       url.searchParams.set("CoveredDistanceFrom", searchOptions.CoveredDistanceFrom);
-    }
+   if (searchOptions.ReturnDateTo !== null) {
+      url.searchParams.set("ReturnDateTo", searchOptions.ReturnDateTo.toISOString().split("T")[0]);
+   }
 
-    if (searchOptions.CoveredDistanceTo.length > 0) {
-       url.searchParams.set("CoveredDistanceTo", searchOptions.CoveredDistanceTo);
-    }
+   if (searchOptions.CoveredDistanceFrom !== null) {
+      url.searchParams.set("CoveredDistanceFrom", searchOptions.CoveredDistanceFrom?.toString());
+   }
 
-    if (searchOptions.DurationFrom.length > 0) {
-       url.searchParams.set("DurationFrom", searchOptions.DurationFrom);
-    }
-    
-    if (searchOptions.DurationTo.length > 0) {
-       url.searchParams.set("DurationTo", searchOptions.DurationTo);
-    }
-    
-    if (searchOptions.DepartureStationNameFi.length > 0) {
-       url.searchParams.set("DepartureStationNameFi", searchOptions.DepartureStationNameFi);
-    }
-    
-    if (searchOptions.DepartureStationNameSe.length > 0) {
-       url.searchParams.set("DepartureStationNameSe", searchOptions.DepartureStationNameSe);
-    }
-    
-    if (searchOptions.DepartureStationNameEn.length > 0) {
-       url.searchParams.set("DepartureStationNameEn", searchOptions.DepartureStationNameEn);
-    }
-    
-    if (searchOptions.ReturnStationNameFi.length > 0) {
-       url.searchParams.set("ReturnStationNameFi", searchOptions.ReturnStationNameFi);
-    }
-    
-    if (searchOptions.ReturnStationNameSe.length > 0) {
-       url.searchParams.set("ReturnStationNameSe", searchOptions.ReturnStationNameSe);
-    }
-    
-    if (searchOptions.ReturnStationNameEn.length > 0) {
-       url.searchParams.set("ReturnStationNameEn", searchOptions.ReturnStationNameEn);
-    }
+   if (searchOptions.CoveredDistanceTo !== null) {
+      url.searchParams.set("CoveredDistanceTo", searchOptions.CoveredDistanceTo?.toString());
+   }
 
-    if (searchOptions.OrderBy.length > 0) {
+   if (searchOptions.DurationFrom !== null) {
+      url.searchParams.set("DurationFrom", searchOptions.DurationFrom?.toString());
+   }
+
+   if (searchOptions.DurationTo !== null) {
+      url.searchParams.set("DurationTo", searchOptions.DurationTo?.toString());
+   }
+
+   if (searchOptions.DepartureStationNameFi.length > 0) {
+      url.searchParams.set("DepartureStationNameFi", searchOptions.DepartureStationNameFi);
+   }
+
+   if (searchOptions.DepartureStationNameSe.length > 0) {
+      url.searchParams.set("DepartureStationNameSe", searchOptions.DepartureStationNameSe);
+   }
+
+   if (searchOptions.DepartureStationNameEn.length > 0) {
+      url.searchParams.set("DepartureStationNameEn", searchOptions.DepartureStationNameEn);
+   }
+
+   if (searchOptions.ReturnStationNameFi.length > 0) {
+      url.searchParams.set("ReturnStationNameFi", searchOptions.ReturnStationNameFi);
+   }
+
+   if (searchOptions.ReturnStationNameSe.length > 0) {
+      url.searchParams.set("ReturnStationNameSe", searchOptions.ReturnStationNameSe);
+   }
+
+   if (searchOptions.ReturnStationNameEn.length > 0) {
+      url.searchParams.set("ReturnStationNameEn", searchOptions.ReturnStationNameEn);
+   }
+
+   if (searchOptions.OrderBy.length > 0) {
       url.searchParams.set("OrderBy", searchOptions.OrderBy);
-    }
+   }
 
-    if (searchOptions.Order.length > 0) {
+   if (searchOptions.Order.length > 0) {
       url.searchParams.set("Order", searchOptions.Order);
-    }
+   }
 
-    return url;
+   return url;
 }

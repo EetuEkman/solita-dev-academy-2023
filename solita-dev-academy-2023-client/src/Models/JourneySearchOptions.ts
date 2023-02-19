@@ -3,10 +3,10 @@ export default interface JourneySearchOptions {
     DepartureDateTo: Date | null;
     ReturnDateFrom: Date | null;
     ReturnDateTo: Date | null;
-    CoveredDistanceFrom: string;
-    CoveredDistanceTo: string;
-    DurationFrom: string;
-    DurationTo: string;
+    CoveredDistanceFrom: number | null;
+    CoveredDistanceTo: number | null;
+    DurationFrom: number | null;
+    DurationTo: number | null;
     DepartureStationNameFi: string;
     DepartureStationNameSe: string;
     DepartureStationNameEn: string;

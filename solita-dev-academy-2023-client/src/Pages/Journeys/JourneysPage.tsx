@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import BuildUrl from '../../Services/BuildJourneysUrl';
-import DEFAULT_SEARCH_OPTIONS from '../../Constants/DefaultSearchOptions';
+import DEFAULT_SEARCH_OPTIONS from '../../Constants/DefaultJourneySearchOptions';
 import FetchErrors from '../../Constants/FetchErrors';
 import FetchErrorDisplay from '../Shared/FetchErrorDisplay';
 import FetchJourneys from '../../Services/FetchJourneys';

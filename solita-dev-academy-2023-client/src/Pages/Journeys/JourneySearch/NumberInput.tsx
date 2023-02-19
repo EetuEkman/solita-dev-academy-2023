@@ -3,36 +3,40 @@ import SearchOptionNames from "../../../Constants/SearchOptionNames";
 import SearchOptions from "../../../Models/JourneySearchOptions";
 
 interface Props {
-    value: string;
+    value: number | null;
     option: string;
     searchOptions: SearchOptions;
     setSearchOptions: React.Dispatch<React.SetStateAction<SearchOptions>>;
 }
 
-export default function TextInput(props: Props) {
+export default function NumberInput(props: Props) {
     function OnChange(event: React.FormEvent<HTMLInputElement>) {
+        let number: number | null = null;
+
         let value = event.currentTarget.value;
+
+        if (value) {
+            number = Number.parseInt(event.currentTarget.value);
+
+            if (Number.isNaN(number) || number < 0) {
+                return;
+            }
+        }
 
         let searchOptions = { ...props.searchOptions } as SearchOptions;
 
         switch (props.option) {
-            case SearchOptionNames.DepartureStationNameFi:
-                searchOptions.DepartureStationNameFi = value;
+            case SearchOptionNames.CoveredDistanceFrom:
+                searchOptions.CoveredDistanceFrom = number;
                 break;
-            case SearchOptionNames.DepartureStationNameSe:
-                searchOptions.DepartureStationNameSe = value;
+            case SearchOptionNames.CoveredDistanceTo:
+                searchOptions.CoveredDistanceTo = number;
                 break;
-            case SearchOptionNames.DepartureStationNameEn:
-                searchOptions.DepartureStationNameEn = value;
+            case SearchOptionNames.DurationFrom:
+                searchOptions.DurationFrom = number;
                 break;
-            case SearchOptionNames.ReturnStationNameFi:
-                searchOptions.ReturnStationNameFi = value;
-                break;
-            case SearchOptionNames.ReturnStationNameSe:
-                searchOptions.ReturnStationNameSe = value;
-                break;
-            case SearchOptionNames.ReturnStationNameEn:
-                searchOptions.ReturnStationNameEn = value;
+            case SearchOptionNames.DurationTo:
+                searchOptions.DurationTo = number;
                 break;
             default:
                 return;
@@ -52,7 +56,7 @@ export default function TextInput(props: Props) {
                         :
                         <span>{props.option}</span>
             }
-            <input value={props.value} onChange={OnChange} type="text" className="mx-1 px-1 bg-slate-200 border-2 border-black_accent-500 text-black_accent-500"></input>
+            <input value={props.value ? props.value.toString() : ""} onChange={OnChange} type="text" className="mx-1 px-1 bg-slate-200 border-2 border-black_accent-500 text-black_accent-500"></input>
         </label>
     )
 }
