@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import BuildUrl from '../../BuildUrl';
+import BuildUrl from '../../Services/BuildJourneysUrl';
 import DEFAULT_SEARCH_OPTIONS from '../../Constants/DefaultSearchOptions';
 import FetchErrors from '../../Constants/FetchErrors';
 import FetchErrorDisplay from '../Shared/FetchErrorDisplay';
@@ -7,7 +7,7 @@ import FetchJourneys from '../../Services/FetchJourneys';
 import JourneyDisplay from './JourneysDisplay/JourneyDisplay';
 import JourneySearch from "./JourneySearch/JourneySearch";
 import FetchedJourneysPage from '../../Models/FetchedJourneysPage';
-import SearchOptions from '../../Models/SearchOptions';
+import SearchOptions from '../../Models/JourneySearchOptions';
 
 const JOURNEYS_URL = "https://localhost:7263/api/Journey";
 

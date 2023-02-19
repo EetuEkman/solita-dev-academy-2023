@@ -1,4 +1,4 @@
-import SearchOptions from "./Models/SearchOptions";
+import SearchOptions from "../Models/JourneySearchOptions";
 
 /**
  * Builds and returns an URL from the supplied URL string and SearchOptions.
@@ -7,7 +7,7 @@ import SearchOptions from "./Models/SearchOptions";
  * @returns URL with query parameters.
  */
 
-export default function BuildUrl(urlArg: string, searchOptions: SearchOptions): URL {
+export default function BuildJourneysUrl(urlArg: string, searchOptions: SearchOptions): URL {
     let url = new URL(urlArg);
     
     if (searchOptions.DepartureDateFrom !== null) {

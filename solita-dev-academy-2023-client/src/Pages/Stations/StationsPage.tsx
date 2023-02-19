@@ -17,6 +17,8 @@ const STATIONS_URL = "https://localhost:7263/api/Station";
 export default function StationsPage(props: Props) {
     const [stationSearchOptions, SetStationSearchOptions] = useState<StationSearchOptions>(DEFAULT_STATION_SEARCH_OPTIONS);
 
+    const [stationsUrl, SetStationsUrl] = useState<URL>(new URL(STATIONS_URL));
+
     const [stationsPage, SetStationsPage] = useState<FetchedStationsPage | null>(null);
 
     const [fetchError, SetFetchError] = useState("");
@@ -28,7 +30,23 @@ export default function StationsPage(props: Props) {
             return;
         }
 
-        FetchStationPage(new URL(STATIONS_URL));
+        let direction = event.currentTarget.getAttribute("data-direction");
+
+        let url: URL;
+
+        switch (direction) {
+            case "next":
+                url = new URL(stationsPage?.Next!)
+                break;
+            case "previous":
+                url = new URL(stationsPage?.Previous!);
+                break;
+            default:
+                url = stationsUrl;
+                break;
+        }
+
+        FetchStationPage(url);
     }
 
     async function FetchStationPage(url: URL) {

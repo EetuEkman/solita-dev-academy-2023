@@ -204,7 +204,7 @@ namespace solita_dev_academy_2023_server.Controllers
 
             if (queryParameters.Page is not null && queryParameters.Page > 1)
             {
-                offset = 20 * (int)queryParameters.Page + 1;
+                offset = 20 * ((int)queryParameters.Page - 1);
 
                 currentPage = (int)queryParameters.Page;
 

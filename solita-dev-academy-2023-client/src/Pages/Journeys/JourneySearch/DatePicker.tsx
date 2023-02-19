@@ -1,6 +1,6 @@
 import React from "react";
 import SearchOptionNames from "../../../Constants/SearchOptionNames";
-import SearchOptions from "../../../Models/SearchOptions";
+import SearchOptions from "../../../Models/JourneySearchOptions";
 
 interface Props {
     date: Date | null;

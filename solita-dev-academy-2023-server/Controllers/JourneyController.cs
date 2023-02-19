@@ -510,9 +510,9 @@ namespace solita_dev_academy_2023_server.Controllers
 
             // Use the keyword "FIRST" instead of "NEXT" for the first page.
 
-            if (queryParameters.Page is not null && queryParameters.Page != 1)
+            if (queryParameters.Page is not null && queryParameters.Page > 1)
             {
-                offset = ((int)queryParameters.Page * 20) + 1;
+                offset = (((int)queryParameters.Page - 1) * 20);
 
                 query += " FETCH NEXT 20 ROWS ONLY;";
             }
@@ -607,7 +607,7 @@ namespace solita_dev_academy_2023_server.Controllers
             // 23 pages == current page 23. There are no more pages,
             // keep the next null.
 
-            if ((int)Math.Ceiling((double)(count / 20)) > currentPage)
+            if ((int)Math.Ceiling((double)(count / 20)) >= currentPage)
             {
                 queryParameters.Page = currentPage + 1;
 

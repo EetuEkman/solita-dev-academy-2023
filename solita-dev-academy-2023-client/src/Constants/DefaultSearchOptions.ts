@@ -1,4 +1,4 @@
-import SearchOptions from "../Models/SearchOptions"
+import SearchOptions from "../Models/JourneySearchOptions"
 import OrderByOptions from "./OrderByOptions";
 
 const DEFAULT_SEARCH_OPTIONS: SearchOptions = {

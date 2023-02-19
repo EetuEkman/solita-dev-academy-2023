@@ -5,6 +5,7 @@ import TableHeader from "./TableHeader";
 
 interface Props {
     journeys: Journey[];
+    count: number;
 }
 
 export interface Sort {
@@ -177,7 +178,7 @@ export default function JourneyTable(props: Props) {
     }
 
     function MetersToKilometers(meters: number): number {
-        let kilometers = meters / 1000;
+        let kilometers = (meters / 1000);
 
         return kilometers;
     }
@@ -234,6 +235,21 @@ export default function JourneyTable(props: Props) {
                     </tbody>
                 </table>
             </div>
+
+            {
+                props.count > 0 ?
+                    <div>
+                        {
+                            props.count > 1 ?
+                                <span>Found {props.count} journeys.</span>
+                                :
+                                <span>Found {props.count} journey.</span>
+
+                        }
+                    </div>
+                    :
+                    <span>Found {props.count} journeys.</span>
+            }
 
             <div className="flex flex-row items-center py-1">
                 <label>

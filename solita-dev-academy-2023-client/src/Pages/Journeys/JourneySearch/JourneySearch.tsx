@@ -2,7 +2,7 @@ import React from "react";
 import DEFAULT_SEARCH_OPTIONS from "../../../Constants/DefaultSearchOptions";
 import OrderByOptions from "../../../Constants/OrderByOptions";
 import SearchOptionNames from "../../../Constants/SearchOptionNames";
-import SearchOptions from "../../../Models/SearchOptions";
+import SearchOptions from "../../../Models/JourneySearchOptions";
 import DatePicker from "./DatePicker";
 import TextInput from "./TextInput";
 

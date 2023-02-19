@@ -8,9 +8,26 @@ interface Props {
 }
 
 export default function PageNavigation(props: Props) {
-    const count = props.page.Count;
+    function CurrentPage(currentPage: number, count: number) {
+        if (count === 0) {
+            return 0;
+        }
 
-    const pageCount = Math.ceil(count / 20);
+        return currentPage;
+    }
+    function CalculatePageCount(count: number): number {
+        if (count === 0)
+        {
+            return 0;
+        }
+
+        if (count < 21)
+        {
+            return 1;
+        }
+
+        return Math.ceil(count / 20);
+    }
 
     return (
         <div className="w-full flex flex-row justify-center flex-wrap items-center gap-2 bg-bluish_grey-500 text-slate-200">
@@ -21,7 +38,7 @@ export default function PageNavigation(props: Props) {
                         <button className="h-10 w-15 bg-gray-500/50 text-slate-400 py-2 px-4 rounded" disabled>Previous</button>
                 }
                 <div>
-                    <span className="mx-1">Page {props.page.CurrentPage} of {pageCount}</span>
+                    <span className="mx-1">Page {CurrentPage(props.page.CurrentPage, props.page.Count)} of {CalculatePageCount(props.page.Count)}</span>
                 </div>
                 {
                     props.page.Next && props.isWorking === false ?

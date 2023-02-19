@@ -1,4 +1,4 @@
-export default interface SearchOptions {
+export default interface JourneySearchOptions {
     DepartureDateFrom: Date | null;
     DepartureDateTo: Date | null;
     ReturnDateFrom: Date | null;

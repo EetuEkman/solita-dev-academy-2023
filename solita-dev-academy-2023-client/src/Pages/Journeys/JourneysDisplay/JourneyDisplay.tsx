@@ -12,7 +12,7 @@ interface Props {
 export default function JourneyDisplay(props: Props) {
     return (
         <div className="pb-2 bg-bluish_grey-500 text-slate-300 rounded">
-            <JourneyTable journeys={props.journeysPage.Journeys}></JourneyTable>
+            <JourneyTable journeys={props.journeysPage.Journeys} count={props.journeysPage.Count}></JourneyTable>
             <PageNavigation HandleFetchPointerDown={props.HandleFetchPointerDown} page={props.journeysPage} isWorking={props.isWorking}></PageNavigation>
         </div>
     )
