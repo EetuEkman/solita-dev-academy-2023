@@ -14,6 +14,7 @@ namespace solita_dev_academy_2023_server.Controllers
         public string? NameEn { get; set; }
         public string? AddressFi { get; set; }
         public string? AddressSe { get; set; }
+        public string? Operator { get; set; }
         public int? CapacityFrom { get; set; }
         public int? CapacityTo { get; set; }
         public int? Page { get; set; }
@@ -148,6 +149,7 @@ namespace solita_dev_academy_2023_server.Controllers
             parameters.Add("Name_en", "%", DbType.String, ParameterDirection.Input);
             parameters.Add("Address_fi", "%", DbType.String, ParameterDirection.Input);
             parameters.Add("Address_se", "%", DbType.String, ParameterDirection.Input);
+            parameters.Add("Operator", "%", DbType.String, ParameterDirection.Input);
 
             if (queryParameters.NameFi is not null)
             {
@@ -174,13 +176,19 @@ namespace solita_dev_academy_2023_server.Controllers
                 parameters.Add("Address_se", "%" + queryParameters.AddressSe + "%", DbType.String, ParameterDirection.Input);
             }
 
+            if (queryParameters.Operator is not null)
+            {
+                parameters.Add("Operator", "%" + queryParameters.Operator + "%", DbType.String, ParameterDirection.Input);
+            }
+
             var query = "SELECT *" +
                 " FROM [dbo].[Stations]" +
                 " WHERE Name_fi LIKE @Name_fi" +
                 " AND Name_se LIKE @Name_se" +
                 " AND Name_en LIKE @Name_en" +
                 " AND Address_fi LIKE @Address_fi" +
-                " AND Address_se LIKE @Address_se";
+                " AND Address_se LIKE @Address_se" +
+                " AND Operator LIKE @Operator";
 
             var countQuery = " SELECT COUNT(1)" +
                 " FROM [dbo].[Stations]" +
@@ -188,7 +196,8 @@ namespace solita_dev_academy_2023_server.Controllers
                 " AND Name_se LIKE @Name_se" +
                 " AND Name_en LIKE @Name_en" +
                 " AND Address_fi LIKE @Address_fi" +
-                " AND Address_se LIKE @Address_se";
+                " AND Address_se LIKE @Address_se" +
+                " AND Operator LIKE @Operator";
 
             if (queryParameters.CapacityFrom is not null)
             {
