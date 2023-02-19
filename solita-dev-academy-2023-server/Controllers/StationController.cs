@@ -303,7 +303,7 @@ namespace solita_dev_academy_2023_server.Controllers
 
             string? next = null;
 
-            if ((int)Math.Ceiling((double)(rowCount / 20)) > currentPage && rowCount > 0)
+            if ((int)Math.Ceiling((double)(rowCount / 20)) >= currentPage && rowCount > 0)
             {
                 queryParameters.Page = currentPage + 1;
 
