@@ -14,7 +14,7 @@ export default function StationsDisplay(props: Props) {
         <div className="max-w-7xl bg-bluish_grey-500 text-slate-400 rounded pb-2">
             <div className="flex flex-col py-1 px-2">
                 <div className="overflow-auto pb-3">
-                    <table className="w-full min-h-[50em] table-fixed border-collapse">
+                    <table className="w-full min-h-[50em] table-auto border-collapse">
                         <thead className="text-slate-300">
                             <tr>
                                 <th>Name fi</th>

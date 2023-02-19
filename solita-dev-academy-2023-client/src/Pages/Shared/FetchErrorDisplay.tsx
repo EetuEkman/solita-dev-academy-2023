@@ -20,13 +20,14 @@ function CreateFetchError(error: string): FetchError {
 
 interface Props {
     fetchError: string;
+    className?: string;
 }
 
 export default function FetchErrorDisplay(props: Props) {
     const fetchError = CreateFetchError(props.fetchError);
 
     return (
-        <div className="py-1 px-2 text-yellow-500 bg-bluish_grey-500 rounded">
+        <div className={props.className + " py-1 px-2 text-yellow-500 bg-bluish_grey-500 rounded"}>
             <h1>{fetchError.description}</h1>
             {
                 fetchError.message

@@ -77,7 +77,7 @@ export default function StationsPage(props: Props) {
             <StationsSearch stationSearchOptions={stationSearchOptions} SetStationSearchOptions={SetStationSearchOptions} OnFetchPointerDown={HandleFetchPointerDown}></StationsSearch>
             {
                 fetchError.length > 0 ?
-                    <FetchErrorDisplay fetchError={fetchError}></FetchErrorDisplay> :
+                    <FetchErrorDisplay className="max-w-7xl" fetchError={fetchError}></FetchErrorDisplay> :
                     null
             }
             {
