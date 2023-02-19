@@ -14,8 +14,10 @@ namespace solita_dev_academy_2023_server.Controllers
         public string? NameEn { get; set; }
         public string? AddressFi { get; set; }
         public string? AddressSe { get; set; }
-        public int? Capacity { get; set; }
+        public int? CapacityFrom { get; set; }
+        public int? CapacityTo { get; set; }
         public int? Page { get; set; }
+        
     }
 
     [ApiController]
@@ -187,6 +189,24 @@ namespace solita_dev_academy_2023_server.Controllers
                 " AND Name_en LIKE @Name_en" +
                 " AND Address_fi LIKE @Address_fi" +
                 " AND Address_se LIKE @Address_se";
+
+            if (queryParameters.CapacityFrom is not null)
+            {
+                query += " AND Capacity >= @CapacityFrom";
+
+                countQuery += " AND Capacity >= @CapacityFrom";
+
+                parameters.Add("CapacityFrom", queryParameters.CapacityFrom, DbType.Int64, ParameterDirection.Input);
+            }
+
+            if (queryParameters.CapacityTo is not null)
+            {
+                query += " AND Capacity <= @CapacityTo";
+
+                countQuery += " AND Capacity <= @CapacityTo";
+
+                parameters.Add("CapacityTo", queryParameters.CapacityTo, DbType.Int64, ParameterDirection.Input);
+            }
 
             // ORDER BY, needed for OFFSET.
 
