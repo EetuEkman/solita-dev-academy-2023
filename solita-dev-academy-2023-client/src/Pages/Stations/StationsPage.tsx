@@ -58,7 +58,33 @@ export default function StationsPage(props: Props) {
         let stationsPage: FetchedStationsPage;
 
         try {
-            stationsPage = await FetchStations(url);
+            let response = await fetch(url);
+
+            if (!response.ok) {
+                let statusCode = response.status;
+
+                switch (statusCode) {
+                    case 400:
+                        SetFetchError(error => FetchErrors.BadRequest);
+                        break;
+                    case 500:
+                        SetFetchError(error => FetchErrors.InternalServerError);
+                        break;
+                    default:
+                        SetFetchError(error => FetchErrors.Error);
+                        break;
+                }
+
+                SetIsWorking(isWorking => false);
+
+                return;
+            }
+
+            let json = await response.json();
+
+            stationsPage = json as FetchedStationsPage;
+
+            // stationsPage = await FetchStations(url);
         }
         catch (networkError) {
             SetFetchError(error => FetchErrors.NetworkError);
@@ -82,7 +108,7 @@ export default function StationsPage(props: Props) {
             <StationsSearch stationSearchOptions={stationSearchOptions} SetStationSearchOptions={SetStationSearchOptions} OnFetchPointerDown={HandleFetchPointerDown}></StationsSearch>
             {
                 fetchError.length > 0 ?
-                    <FetchErrorDisplay className="max-w-7xl" fetchError={fetchError}></FetchErrorDisplay> :
+                    <FetchErrorDisplay fetchError={fetchError}></FetchErrorDisplay> :
                     null
             }
             {

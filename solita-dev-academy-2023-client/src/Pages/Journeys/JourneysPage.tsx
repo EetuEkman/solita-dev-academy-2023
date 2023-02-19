@@ -64,7 +64,30 @@ export default function JourneysPage(props: Props) {
         let page: FetchedJourneysPage;
 
         try {
-            page = await FetchJourneys(url);
+            let response = await fetch(url);
+
+            if (!response.ok) {
+                let statusCode = response.status;
+
+                switch (statusCode) {
+                    case 400:
+                        setFetchError(error => FetchErrors.BadRequest);
+                        break;
+                    case 500:
+                        setFetchError(error => FetchErrors.InternalServerError)
+                        break;
+                }
+
+                setIsWorking(isWorking => false);
+
+                return;
+            }
+
+            let json = await response.json();
+
+            page = json as FetchedJourneysPage;      
+
+            // page = await FetchJourneys(url);
         }
         catch (networkError) {
             setFetchError(error => FetchErrors.NetworkError);

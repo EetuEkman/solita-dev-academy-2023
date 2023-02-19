@@ -13,6 +13,16 @@ function CreateFetchError(error: string): FetchError {
                 description: FetchErrors.NetworkError,
                 message: "The server is unreachable. Please check your internet connectivity."
             }
+            break;
+        case FetchErrors.BadRequest:
+            fetchError = {
+                description: FetchErrors.BadRequest
+            }
+            break;
+        case FetchErrors.InternalServerError:
+            fetchError = {
+                description: FetchErrors.InternalServerError
+            }
     }
 
     return fetchError;
@@ -27,7 +37,7 @@ export default function FetchErrorDisplay(props: Props) {
     const fetchError = CreateFetchError(props.fetchError);
 
     return (
-        <div className={props.className + " py-1 px-2 text-yellow-500 bg-bluish_grey-500 rounded"}>
+        <div className={props.className ? props.className : "" + " my-0.5 py-1 px-2 text-yellow-500 bg-bluish_grey-500 rounded"}>
             <h1>{fetchError.description}</h1>
             {
                 fetchError.message
