@@ -1,4 +1,4 @@
-enum SearchOptionNames {
+enum JourneySearchLabelTexts {
     "DepartureDateFrom" = "Departure date from", 
     "DepartureDateTo" = "Departure date to", 
     "ReturnDateFrom" = "Return date from", 
@@ -7,14 +7,14 @@ enum SearchOptionNames {
     "CoveredDistanceTo" = "Covered distance to", 
     "DurationFrom" = "Duration from", 
     "DurationTo" = "Duration to", 
-    "DepartureStationNameFi" = "Departure station name fi", 
-    "DepartureStationNameSe" = "Departure station name se", 
-    "DepartureStationNameEn" = "Departure station name en", 
-    "ReturnStationNameFi" = "Return station name fi", 
-    "ReturnStationNameSe" = "Return station name se", 
-    "ReturnStationNameEn" = "Return station name en",
+    "DepartureStationNameFi" = "Lähtöasema", 
+    "DepartureStationNameSe" = "Avgångsstation", 
+    "DepartureStationNameEn" = "Departure station", 
+    "ReturnStationNameFi" = "Paluuasema", 
+    "ReturnStationNameSe" = "Returstation", 
+    "ReturnStationNameEn" = "Return station",
     "OrderBy" = "Order by",
     "Order" = "Ascending"
 }
 
-export default SearchOptionNames;
+export default JourneySearchLabelTexts;

@@ -76,52 +76,52 @@ export default function JourneyTable(props: Props) {
                 break;
             case JourneySortByOptions.DepartureStationNameFi:
                 sortedJourneys.sort(function (a, b) {
-                    return b.Departure_station_name_fi.localeCompare(a.Departure_station_name_fi);
+                    return b.Departure_station_name_fi.localeCompare(a.Departure_station_name_fi, "fi");
                 })
                 break;
             case JourneySortByOptions.DepartureStationNameSe:
                 sortedJourneys.sort(function (a, b) {
-                    return b.Departure_station_name_se.localeCompare(a.Departure_station_name_se);
+                    return b.Departure_station_name_se.localeCompare(a.Departure_station_name_se, "fi");
                 })
                 break;
             case JourneySortByOptions.DepartureStationNameEn:
                 sortedJourneys.sort(function (a, b) {
-                    return b.Departure_station_name_en.localeCompare(a.Departure_station_name_en);
+                    return b.Departure_station_name_en.localeCompare(a.Departure_station_name_en, "fi");
                 })
                 break;
             case JourneySortByOptions.DepartureStationAddressFi:
                 sortedJourneys.sort(function (a, b) {
-                    return b.Departure_station_address_fi.localeCompare(a.Departure_station_address_fi);
+                    return b.Departure_station_address_fi.localeCompare(a.Departure_station_address_fi, "fi");
                 })
                 break;
             case JourneySortByOptions.DepartureStationAddressSe:
                 sortedJourneys.sort(function (a, b) {
-                    return b.Departure_station_address_se.localeCompare(a.Departure_station_address_se);
+                    return b.Departure_station_address_se.localeCompare(a.Departure_station_address_se, "fi");
                 })
                 break;
             case JourneySortByOptions.ReturnStationNameFi:
                 sortedJourneys.sort(function (a, b) {
-                    return b.Return_station_name_fi.localeCompare(a.Return_station_name_fi);
+                    return b.Return_station_name_fi.localeCompare(a.Return_station_name_fi, "fi");
                 })
                 break;
             case JourneySortByOptions.ReturnStationNameSe:
                 sortedJourneys.sort(function (a, b) {
-                    return b.Return_station_name_se.localeCompare(a.Return_station_name_se);
+                    return b.Return_station_name_se.localeCompare(a.Return_station_name_se, "fi");
                 })
                 break;
             case JourneySortByOptions.ReturnStationNameEn:
                 sortedJourneys.sort(function (a, b) {
-                    return b.Return_station_name_en.localeCompare(a.Return_station_name_en);
+                    return b.Return_station_name_en.localeCompare(a.Return_station_name_en, "fi");
                 })
                 break;
             case JourneySortByOptions.ReturnStationAddressFi:
                 sortedJourneys.sort(function (a, b) {
-                    return b.Return_station_address_fi.localeCompare(a.Return_station_address_fi);
+                    return b.Return_station_address_fi.localeCompare(a.Return_station_address_fi, "fi");
                 })
                 break;
             case JourneySortByOptions.ReturnStationAddressSe:
                 sortedJourneys.sort(function (a, b) {
-                    return b.Return_station_address_se.localeCompare(a.Return_station_address_se);
+                    return b.Return_station_address_se.localeCompare(a.Return_station_address_se, "fi");
                 })
                 break;
             case JourneySortByOptions.Duration:
@@ -217,7 +217,7 @@ export default function JourneyTable(props: Props) {
                                         <td>{new Date(journey.Departure).toLocaleString("fi-FI")}</td>
                                         <td>{new Date(journey.Return).toLocaleString("fi-FI")}</td>
                                         <td>{journey.Departure_station_name_fi}</td>
-                                        <td>{journey.Departure_station_address_se}</td>
+                                        <td>{journey.Departure_station_name_se}</td>
                                         <td>{journey.Departure_station_name_en}</td>
                                         <td>{journey.Departure_station_address_fi}</td>
                                         <td>{journey.Departure_station_address_se}</td>

@@ -1,7 +1,7 @@
 import React from "react";
 import DEFAULT_SEARCH_OPTIONS from "../../../Constants/DefaultJourneySearchOptions";
 import OrderByOptions from "../../../Constants/OrderByOptions";
-import SearchOptionNames from "../../../Constants/SearchOptionNames";
+import JourneySearchLabelTexts from "../../../Constants/JourneySearchLabelTexts";
 import SearchOptions from "../../../Models/JourneySearchOptions";
 import DatePicker from "./DatePicker";
 import NumberInput from "./NumberInput";
@@ -48,24 +48,24 @@ export default function JourneySearch(props: Props) {
         <div className="w-full flex flex-col mb-2 py-4 px-8 bg-bluish_grey-500 text-slate-300 shadow-md shadow-bluish_grey-500/50 rounded">
             <form onSubmit={event => { event.preventDefault() }}>
 
-                <DatePicker date={props.searchOptions.DepartureDateFrom} option={SearchOptionNames.DepartureDateFrom} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></DatePicker>
-                <DatePicker date={props.searchOptions.DepartureDateTo} option={SearchOptionNames.DepartureDateTo} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></DatePicker>
-                <DatePicker date={props.searchOptions.ReturnDateFrom} option={SearchOptionNames.ReturnDateFrom} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></DatePicker>
-                <DatePicker date={props.searchOptions.ReturnDateTo} option={SearchOptionNames.ReturnDateTo} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></DatePicker>
-                <NumberInput value={props.searchOptions.CoveredDistanceFrom} option={SearchOptionNames.CoveredDistanceFrom} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></NumberInput>
-                <NumberInput value={props.searchOptions.CoveredDistanceTo} option={SearchOptionNames.CoveredDistanceTo} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></NumberInput>
-                <NumberInput value={props.searchOptions.DurationFrom} option={SearchOptionNames.DurationFrom} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></NumberInput>
-                <NumberInput value={props.searchOptions.DurationTo} option={SearchOptionNames.DurationTo} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></NumberInput>
-                <TextInput value={props.searchOptions.DepartureStationNameFi} option={SearchOptionNames.DepartureStationNameFi} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
-                <TextInput value={props.searchOptions.DepartureStationNameSe} option={SearchOptionNames.DepartureStationNameSe} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
-                <TextInput value={props.searchOptions.DepartureStationNameEn} option={SearchOptionNames.DepartureStationNameEn} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
-                <TextInput value={props.searchOptions.ReturnStationNameFi} option={SearchOptionNames.ReturnStationNameFi} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
-                <TextInput value={props.searchOptions.ReturnStationNameSe} option={SearchOptionNames.ReturnStationNameSe} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
-                <TextInput value={props.searchOptions.ReturnStationNameEn} option={SearchOptionNames.ReturnStationNameEn} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
+                <DatePicker date={props.searchOptions.DepartureDateFrom} option={JourneySearchLabelTexts.DepartureDateFrom} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></DatePicker>
+                <DatePicker date={props.searchOptions.DepartureDateTo} option={JourneySearchLabelTexts.DepartureDateTo} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></DatePicker>
+                <DatePicker date={props.searchOptions.ReturnDateFrom} option={JourneySearchLabelTexts.ReturnDateFrom} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></DatePicker>
+                <DatePicker date={props.searchOptions.ReturnDateTo} option={JourneySearchLabelTexts.ReturnDateTo} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></DatePicker>
+                <NumberInput value={props.searchOptions.CoveredDistanceFrom} option={JourneySearchLabelTexts.CoveredDistanceFrom} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></NumberInput>
+                <NumberInput value={props.searchOptions.CoveredDistanceTo} option={JourneySearchLabelTexts.CoveredDistanceTo} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></NumberInput>
+                <NumberInput value={props.searchOptions.DurationFrom} option={JourneySearchLabelTexts.DurationFrom} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></NumberInput>
+                <NumberInput value={props.searchOptions.DurationTo} option={JourneySearchLabelTexts.DurationTo} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></NumberInput>
+                <TextInput value={props.searchOptions.DepartureStationNameFi} option={JourneySearchLabelTexts.DepartureStationNameFi} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
+                <TextInput value={props.searchOptions.DepartureStationNameSe} option={JourneySearchLabelTexts.DepartureStationNameSe} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
+                <TextInput value={props.searchOptions.DepartureStationNameEn} option={JourneySearchLabelTexts.DepartureStationNameEn} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
+                <TextInput value={props.searchOptions.ReturnStationNameFi} option={JourneySearchLabelTexts.ReturnStationNameFi} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
+                <TextInput value={props.searchOptions.ReturnStationNameSe} option={JourneySearchLabelTexts.ReturnStationNameSe} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
+                <TextInput value={props.searchOptions.ReturnStationNameEn} option={JourneySearchLabelTexts.ReturnStationNameEn} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
 
                 <div className="h-8 flex items-center my-0.5">
                     <label className="inline-flex items-center">
-                        <span className="w-48 h-8 inline-flex items-center">{SearchOptionNames.OrderBy}</span>
+                        <span className="w-48 h-8 inline-flex items-center">{JourneySearchLabelTexts.OrderBy}</span>
                         <select onChange={onOrderByChange} value={props.searchOptions.OrderBy} name="order_by" className="w-48 h-7 px-1 bg-slate-200 border-2 border-black_accent-500 text-black_accent-500">
                             {
                                 Object.values(OrderByOptions).map((value, index) => {
@@ -78,7 +78,7 @@ export default function JourneySearch(props: Props) {
 
                 <div className="my-0.5">
                     <label className="inline-flex items-center">
-                        <span className="w-48 h-8 inline-flex items-center">{SearchOptionNames.Order}</span>
+                        <span className="w-48 h-8 inline-flex items-center">{JourneySearchLabelTexts.Order}</span>
                         {
                             props.searchOptions.OrderBy === "Ascending" ?
                                 <input onChange={onOrderChange} type="checkbox" checked className="w-6 h-6 mx-1 accent-yellow-500 rounded-md"></input>

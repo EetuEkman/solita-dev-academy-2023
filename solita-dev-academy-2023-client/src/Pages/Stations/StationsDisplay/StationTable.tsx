@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Station from "../../../Models/Station";
 import SortByOptions from "../../../Constants/StationSortByOptions";
+import TableHeader from "./TableHeader";
+import StationSortByOptions from "../../../Constants/StationSortByOptions";
 
 interface Props {
     stations: Station[];
@@ -16,7 +18,7 @@ interface Filter {
 }
 
 export default function StationTable(props: Props) {
-    const [sort, SetSort] = useState<Sort>({ by: SortByOptions.NameFi, descending: true });
+    const [sort, SetSort] = useState<Sort>({ by: "", descending: true });
 
     const [filter, SetFilter] = useState<Filter>({ text: "" });
 
@@ -50,32 +52,32 @@ export default function StationTable(props: Props) {
         switch (sort.by) {
             case SortByOptions.AddressFi:
                 sortedStations.sort(function (a, b) {
-                    return b.Address_fi.localeCompare(a.Address_fi);
+                    return b.Address_fi.localeCompare(a.Address_fi, "fi");
                 })
                 break;
             case SortByOptions.AddressSe:
                 sortedStations.sort(function (a, b) {
-                    return b.Address_se.localeCompare(a.Address_se);
+                    return b.Address_se.localeCompare(a.Address_se, "fi");
                 })
                 break;
-            case SortByOptions.NameEn:
+            case SortByOptions.NameFi:
                 sortedStations.sort(function (a, b) {
-                    return b.Name_en.localeCompare(a.Name_en);
+                    return b.Name_fi.localeCompare(a.Name_fi, "fi");
                 })
                 break;
             case SortByOptions.NameSe:
                 sortedStations.sort(function (a, b) {
-                    return b.Name_se.localeCompare(a.Name_se);
+                    return b.Name_se.localeCompare(a.Name_se, "fi");
                 })
                 break;
             case SortByOptions.NameEn:
                 sortedStations.sort(function (a, b) {
-                    return b.Name_en.localeCompare(a.Name_en);
+                    return b.Name_en.localeCompare(a.Name_en, "fi");
                 })
                 break;
             case SortByOptions.Operator:
                 sortedStations.sort(function (a, b) {
-                    return b.Operator.localeCompare(a.Operator);
+                    return b.Operator.localeCompare(a.Operator, "fi");
                 })
                 break;
             case SortByOptions.Capacity:
@@ -123,19 +125,20 @@ export default function StationTable(props: Props) {
     useEffect(() => {
         SetStations(j => SortStations(FilterStations(props.stations, filter), sort))
     }, [sort, filter, props.stations])
+
     return (
         <div className="flex flex-col mb-1 py-1 sm:px-1 md:px-2 lg:px-4">
             <div className="flex flex-col overflow-auto pb-3 mb-1">
                 <table className="w-full min-h-[50em] table-auto border-collapse">
                     <thead className="text-slate-300 border-b">
                         <tr>
-                            <th>Name fi</th>
-                            <th>Name se</th>
-                            <th>Name en</th>
-                            <th>Address fi</th>
-                            <th>Address se</th>
-                            <th>Operator</th>
-                            <th>Capacity</th>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} sort={sort} value={StationSortByOptions.NameFi}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} sort={sort} value={StationSortByOptions.NameSe}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} sort={sort} value={StationSortByOptions.NameEn}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} sort={sort} value={StationSortByOptions.AddressFi}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} sort={sort} value={StationSortByOptions.AddressSe}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} sort={sort} value={StationSortByOptions.Operator}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} sort={sort} value={StationSortByOptions.Capacity}></TableHeader>
                         </tr>
                     </thead>
                     <tbody>

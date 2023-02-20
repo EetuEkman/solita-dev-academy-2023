@@ -3,11 +3,11 @@
  */
 
 enum StationSortByOptions {
-    NameFi = "NameFi",
-    NameSe = "NameSe",
-    NameEn = "NameEn",
-    AddressFi = "AddressFi",
-    AddressSe = "AddressSe",
+    NameFi = "Nimi",
+    NameSe = "Namn",
+    NameEn = "Name",
+    AddressFi = "Osoite",
+    AddressSe = "Adress",
     Operator = "Operator",
     Capacity = "Capacity",
 }

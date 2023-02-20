@@ -1,5 +1,5 @@
 import React from "react";
-import SearchOptionNames from "../../../Constants/SearchOptionNames";
+import SearchOptionNames from "../../../Constants/JourneySearchLabelTexts";
 import SearchOptions from "../../../Models/JourneySearchOptions";
 
 interface Props {

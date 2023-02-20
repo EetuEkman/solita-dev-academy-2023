@@ -7,16 +7,16 @@ enum JourneySortByOptions {
     Return = "Return",
     Duration = "Duration",
     Distance = "Distance",
-    DepartureStationNameFi = "Dep. st. name fi",
-    DepartureStationNameSe = "Dep. st. name se",
-    DepartureStationNameEn = "Dep. st. name en",
-    DepartureStationAddressFi = "Dep. st. address fi",
-    DepartureStationAddressSe = "Dep. st. addr. se",
-    ReturnStationNameFi = "Ret. st. name fi",
-    ReturnStationNameSe = "Ret. st. name se",
-    ReturnStationNameEn = "Ret. st. name en",
-    ReturnStationAddressFi = "Ret. st. addr. fi",
-    ReturnStationAddressSe = "Ret. st. addr. se"
+    DepartureStationNameFi = "Lähtöasema",
+    DepartureStationNameSe = "Avgångsstation",
+    DepartureStationNameEn = "Departure station",
+    DepartureStationAddressFi = "Lähtöaseman osoite",
+    DepartureStationAddressSe = "Avgångsstationens adress",
+    ReturnStationNameFi = "Saapumisasema",
+    ReturnStationNameSe = "Returstation",
+    ReturnStationNameEn = "Return station",
+    ReturnStationAddressFi = "Saapumisaseman osoite",
+    ReturnStationAddressSe = "Returstationens adress "
 }
 
 export default JourneySortByOptions;
