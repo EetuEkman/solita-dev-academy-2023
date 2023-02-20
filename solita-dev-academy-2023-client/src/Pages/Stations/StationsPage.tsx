@@ -105,7 +105,7 @@ export default function StationsPage(props: Props) {
     
     return (
         <div className="p-2">
-            <StationsSearch stationSearchOptions={stationSearchOptions} SetStationSearchOptions={SetStationSearchOptions} OnFetchPointerDown={HandleFetchPointerDown}></StationsSearch>
+            <StationsSearch stationSearchOptions={stationSearchOptions} SetStationSearchOptions={SetStationSearchOptions} OnFetchPointerDown={HandleFetchPointerDown} isWorking={isWorking}></StationsSearch>
             {
                 fetchError.length > 0 ?
                     <FetchErrorDisplay fetchError={fetchError}></FetchErrorDisplay> :

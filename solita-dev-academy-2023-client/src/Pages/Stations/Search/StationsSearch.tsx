@@ -6,6 +6,7 @@ import NumberInput from "./NumberInput";
 import TextInput from "./TextInput";
 
 interface Props {
+    isWorking: boolean;
     stationSearchOptions: StationSearchOptions;
     SetStationSearchOptions: React.Dispatch<React.SetStateAction<StationSearchOptions>>;
     OnFetchPointerDown: React.PointerEventHandler<HTMLButtonElement>;
@@ -36,7 +37,12 @@ export default function StationsSearch(props: Props) {
                 <NumberInput labelText={StationSearchLabelTexts.CapacityTo} value={props.stationSearchOptions.CapacityTo} stationSearchOptions={props.stationSearchOptions} SetStationSearchOptions={props.SetStationSearchOptions}></NumberInput>
 
                 <div className="mt-2">
-                    <button onPointerDown={props.OnFetchPointerDown} className="h-10 w-15 bg-yellow-500 text-bluish_grey-500 py-2 px-4 mr-1 font-bold rounded">Search</button>
+                    {
+                        props.isWorking ?
+                        <button className="h-10 w-15 bg-gray-500/50 text-bluish_grey-500 font-bold mr-1 py-2 px-4 rounded" disabled>Search</button>
+                        :
+                        <button onPointerDown={props.OnFetchPointerDown} className="h-10 w-15 bg-yellow-500 text-bluish_grey-500 py-2 px-4 mr-1 font-bold rounded">Search</button>
+                    }
                     <button onPointerDown={ClearStationSearchOptions} className="h-10 w-15 bg-yellow-500 text-bluish_grey-500 py-2 px-4 rounded">Clear</button>
                 </div>
             </form>

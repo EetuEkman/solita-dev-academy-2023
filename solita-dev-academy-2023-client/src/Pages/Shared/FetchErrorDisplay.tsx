@@ -37,7 +37,7 @@ export default function FetchErrorDisplay(props: Props) {
     const fetchError = CreateFetchError(props.fetchError);
 
     return (
-        <div className={props.className ? props.className : "" + " my-1 py-1 px-2 text-yellow-500 bg-bluish_grey-500 rounded"}>
+        <div className={props.className ? props.className : "" + " my-2 py-2 px-4 text-yellow-500 bg-bluish_grey-500 shadow-md shadow-bluish_grey-500/50 rounded"}>
             <h1>{fetchError.description}</h1>
             {
                 fetchError.message

@@ -40,10 +40,10 @@ export default function TextInput(props: Props) {
     }
 
     return (
-        <div className="w-full h-8 flex flex-row justify-start align-middle my-0.5">
-            <label className="h-fit py-0.5 flex flex-row justify-start align-middle">
-                <span className="w-32">{props.labelText}</span>
-                <input className="w-48 px-1 border-2 border-black_accent-500 text-black_accent-500" onChange={OnChange} value={props.value} type="text"></input>
+        <div className="h-8 flex items-center my-0.5">
+            <label className="h-fit py-0.5 flex items-center">
+                <span className="w-48">{props.labelText}</span>
+                <input className="w-48 px-1.5 border-2 bg-slate-200 border-black_accent-500 text-black_accent-500" onChange={OnChange} value={props.value} type="text"></input>
             </label>
         </div>
     )

@@ -188,8 +188,8 @@ export default function JourneyTable(props: Props) {
     }, [sort, filter, props.journeys])
 
     return (
-        <div className="flex flex-col justify-start py-1 px-2">
-            <div className="overflow-auto pb-3">
+        <div className="flex flex-col justify-start py-1 sm:px-1 md:px-2 lg:px-4">
+            <div className="overflow-auto">
                 <table className="w-full h-full table-auto border-collapse text-slate-400">
                     <thead className="text-md text-slate-300 border-b-2 border-slate-300">
                         <tr>

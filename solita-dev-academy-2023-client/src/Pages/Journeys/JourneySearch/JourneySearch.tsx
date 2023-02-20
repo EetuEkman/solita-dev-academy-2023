@@ -64,9 +64,9 @@ export default function JourneySearch(props: Props) {
                 <TextInput value={props.searchOptions.ReturnStationNameEn} option={SearchOptionNames.ReturnStationNameEn} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
 
                 <div className="h-8 flex items-center my-0.5">
-                    <label>
-                        <span className="w-48 inline-flex items-center">{SearchOptionNames.OrderBy}</span>
-                        <select onChange={onOrderByChange} value={props.searchOptions.OrderBy} name="order_by" className="w-48 mx-1 px-1 bg-slate-200 border-2 border-black_accent-500 text-black">
+                    <label className="inline-flex items-center">
+                        <span className="w-48 h-8 inline-flex items-center">{SearchOptionNames.OrderBy}</span>
+                        <select onChange={onOrderByChange} value={props.searchOptions.OrderBy} name="order_by" className="w-48 h-7 px-1 bg-slate-200 border-2 border-black_accent-500 text-black_accent-500">
                             {
                                 Object.values(OrderByOptions).map((value, index) => {
                                     return <option key={index} value={value}>{value}</option>
@@ -91,9 +91,9 @@ export default function JourneySearch(props: Props) {
                 <div className="pt-1">
                     {
                         props.isWorking ?
-                            <button className="h-10 w-15 bg-gray-500/50 text-bluish_grey-500 font-bold mr-1 py-2 px-4 rounded" disabled>Go</button>
+                            <button className="h-10 w-15 bg-gray-500/50 text-bluish_grey-500 font-bold mr-1 py-2 px-4 rounded" disabled>Search</button>
                             :
-                            <button className="h-10 w-15 bg-yellow-500 text-bluish_grey-500 font-bold mr-1 py-2 px-4 rounded" onPointerDown={props.OnFetchPointerDown}>Go</button>
+                            <button className="h-10 w-15 bg-yellow-500 text-bluish_grey-500 font-bold mr-1 py-2 px-4 rounded" onPointerDown={props.OnFetchPointerDown}>Search</button>
                     }
                     <button className="h-10 w-15 bg-yellow-500 text-bluish_grey-500 py-2 px-4 rounded" onClick={clearSearchOptions}>Clear</button>
                 </div>

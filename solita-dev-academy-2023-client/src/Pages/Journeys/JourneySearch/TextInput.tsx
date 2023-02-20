@@ -53,7 +53,7 @@ export default function TextInput(props: Props) {
                             :
                             <span className="w-48 inline-block">{props.option}</span>
                 }
-                <input value={props.value} onChange={OnChange} type="text" className="w-48 mx-1 px-1.5 bg-slate-200 border-2 border-black_accent-500 text-black_accent-500"></input>
+                <input value={props.value} onChange={OnChange} type="text" className="w-48 px-1.5 bg-slate-200 border-2 border-black_accent-500 text-black_accent-500"></input>
             </label>
         </div>
     )
