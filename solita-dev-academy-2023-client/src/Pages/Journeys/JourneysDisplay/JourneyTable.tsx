@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SortByOptions from "../../../Constants/SortByOptions";
+import JourneySortByOptions from "../../../Constants/JourneySortByOptions";
 import Journey from "../../../Models/Journey";
 import TableHeader from "./TableHeader";
 
@@ -18,7 +18,7 @@ interface Filter {
 }
 
 export default function JourneyTable(props: Props) {
-    const [sort, setSort] = useState<Sort>({ by: SortByOptions.Departure, descending: true });
+    const [sort, setSort] = useState<Sort>({ by: JourneySortByOptions.Departure, descending: true });
 
     const [filter, setFilter] = useState<Filter>({ text: "" });
 
@@ -50,7 +50,7 @@ export default function JourneyTable(props: Props) {
         let sortedJourneys = [...journeys];
 
         switch (sort.by) {
-            case SortByOptions.Departure:
+            case JourneySortByOptions.Departure:
                 sortedJourneys.sort(function (a, b) {
                     let firstDate = new Date(a.Departure);
                     let secondDate = new Date(b.Departure);
@@ -62,7 +62,7 @@ export default function JourneyTable(props: Props) {
                     return 0;
                 })
                 break;
-            case SortByOptions.Return:
+            case JourneySortByOptions.Return:
                 sortedJourneys.sort(function (a, b) {
                     let firstDate = new Date(a.Return);
                     let secondDate = new Date(b.Return);
@@ -74,57 +74,57 @@ export default function JourneyTable(props: Props) {
                     return 0;
                 })
                 break;
-            case SortByOptions.DepartureStationNameFi:
+            case JourneySortByOptions.DepartureStationNameFi:
                 sortedJourneys.sort(function (a, b) {
                     return b.Departure_station_name_fi.localeCompare(a.Departure_station_name_fi);
                 })
                 break;
-            case SortByOptions.DepartureStationNameSe:
+            case JourneySortByOptions.DepartureStationNameSe:
                 sortedJourneys.sort(function (a, b) {
                     return b.Departure_station_name_se.localeCompare(a.Departure_station_name_se);
                 })
                 break;
-            case SortByOptions.DepartureStationNameEn:
+            case JourneySortByOptions.DepartureStationNameEn:
                 sortedJourneys.sort(function (a, b) {
                     return b.Departure_station_name_en.localeCompare(a.Departure_station_name_en);
                 })
                 break;
-            case SortByOptions.DepartureStationAddressFi:
+            case JourneySortByOptions.DepartureStationAddressFi:
                 sortedJourneys.sort(function (a, b) {
                     return b.Departure_station_address_fi.localeCompare(a.Departure_station_address_fi);
                 })
                 break;
-            case SortByOptions.DepartureStationAddressSe:
+            case JourneySortByOptions.DepartureStationAddressSe:
                 sortedJourneys.sort(function (a, b) {
                     return b.Departure_station_address_se.localeCompare(a.Departure_station_address_se);
                 })
                 break;
-            case SortByOptions.ReturnStationNameFi:
+            case JourneySortByOptions.ReturnStationNameFi:
                 sortedJourneys.sort(function (a, b) {
                     return b.Return_station_name_fi.localeCompare(a.Return_station_name_fi);
                 })
                 break;
-            case SortByOptions.ReturnStationNameSe:
+            case JourneySortByOptions.ReturnStationNameSe:
                 sortedJourneys.sort(function (a, b) {
                     return b.Return_station_name_se.localeCompare(a.Return_station_name_se);
                 })
                 break;
-            case SortByOptions.ReturnStationNameEn:
+            case JourneySortByOptions.ReturnStationNameEn:
                 sortedJourneys.sort(function (a, b) {
                     return b.Return_station_name_en.localeCompare(a.Return_station_name_en);
                 })
                 break;
-            case SortByOptions.ReturnStationAddressFi:
+            case JourneySortByOptions.ReturnStationAddressFi:
                 sortedJourneys.sort(function (a, b) {
                     return b.Return_station_address_fi.localeCompare(a.Return_station_address_fi);
                 })
                 break;
-            case SortByOptions.ReturnStationAddressSe:
+            case JourneySortByOptions.ReturnStationAddressSe:
                 sortedJourneys.sort(function (a, b) {
                     return b.Return_station_address_se.localeCompare(a.Return_station_address_se);
                 })
                 break;
-            case SortByOptions.Duration:
+            case JourneySortByOptions.Duration:
                 sortedJourneys.sort(function (a, b) {
                     if (a.Duration < b.Duration) return -1;
 
@@ -133,7 +133,7 @@ export default function JourneyTable(props: Props) {
                     return 0;
                 })
                 break;
-            case SortByOptions.Distance:
+            case JourneySortByOptions.Distance:
                 sortedJourneys.sort(function (a, b) {
                     if (a.Covered_distance < b.Covered_distance) return -1;
 
@@ -156,7 +156,7 @@ export default function JourneyTable(props: Props) {
 
         const value = event.currentTarget.getAttribute("data-value");
 
-        if (!value || Object.values<string>(SortByOptions).includes(value) === false) {
+        if (!value || Object.values<string>(JourneySortByOptions).includes(value) === false) {
             return;
         }
 
@@ -193,20 +193,20 @@ export default function JourneyTable(props: Props) {
                 <table className="w-full h-full table-auto border-collapse text-slate-400">
                     <thead className="text-md text-slate-300 border-b-2 border-slate-300">
                         <tr>
-                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Departure} sort={sort}></TableHeader>
-                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Return} sort={sort}></TableHeader>
-                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationNameFi} sort={sort}></TableHeader>
-                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationNameSe} sort={sort}></TableHeader>
-                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationNameEn} sort={sort}></TableHeader>
-                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationAddressFi} sort={sort}></TableHeader>
-                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.DepartureStationAddressSe} sort={sort}></TableHeader>
-                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationNameFi} sort={sort}></TableHeader>
-                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationNameSe} sort={sort}></TableHeader>
-                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationNameEn} sort={sort}></TableHeader>
-                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationAddressFi} sort={sort}></TableHeader>
-                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.ReturnStationAddressSe} sort={sort}></TableHeader>
-                            <TableHeader className="kilometers_tooltip" HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Distance} sort={sort}></TableHeader>
-                            <TableHeader className="minutes_tooltip" HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Duration} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={JourneySortByOptions.Departure} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={JourneySortByOptions.Return} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={JourneySortByOptions.DepartureStationNameFi} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={JourneySortByOptions.DepartureStationNameSe} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={JourneySortByOptions.DepartureStationNameEn} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={JourneySortByOptions.DepartureStationAddressFi} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={JourneySortByOptions.DepartureStationAddressSe} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={JourneySortByOptions.ReturnStationNameFi} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={JourneySortByOptions.ReturnStationNameSe} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={JourneySortByOptions.ReturnStationNameEn} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={JourneySortByOptions.ReturnStationAddressFi} sort={sort}></TableHeader>
+                            <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={JourneySortByOptions.ReturnStationAddressSe} sort={sort}></TableHeader>
+                            <TableHeader className="kilometers_tooltip" HandleTableHeaderDown={HandleTableHeaderDown} value={JourneySortByOptions.Distance} sort={sort}></TableHeader>
+                            <TableHeader className="minutes_tooltip" HandleTableHeaderDown={HandleTableHeaderDown} value={JourneySortByOptions.Duration} sort={sort}></TableHeader>
                         </tr>
                     </thead>
                     <tbody className="text-sm">

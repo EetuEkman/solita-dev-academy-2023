@@ -5,8 +5,8 @@ export default interface Station {
     Name_en: string;
     Address_fi: string;
     Address_se: string;
-    Operator?: string;
-    Capacity?: number;
+    Operator: string;
+    Capacity: number | null;
     X?: number;
     Y?: number;
 }

@@ -2,7 +2,7 @@
  * Sort by options for the journey table component.
  */
 
-enum SortByOptions {
+enum JourneySortByOptions {
     Departure = "Departure",
     Return = "Return",
     Duration = "Duration",
@@ -19,4 +19,4 @@ enum SortByOptions {
     ReturnStationAddressSe = "Ret. st. addr. se"
 }
 
-export default SortByOptions;
+export default JourneySortByOptions;
