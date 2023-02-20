@@ -163,7 +163,7 @@ export default function StationTable(props: Props) {
             <div className="flex flex-row items-center py-1">
                 <label>
                     Search
-                    <input onChange={OnFilterTextChange} value={filter.text} type="text" className="ml-2 pl-1 bg-slate-200 border-2 border-black_accent-500 text-black"></input>
+                    <input onChange={OnFilterTextChange} value={filter.text} type="text" className="ml-2 pl-1 bg-slate-200 border-2 border-black_accent-500 text-black_accent-500"></input>
                 </label>
             </div>
         </div>

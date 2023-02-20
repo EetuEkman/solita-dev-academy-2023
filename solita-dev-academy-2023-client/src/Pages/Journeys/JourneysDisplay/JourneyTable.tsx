@@ -5,7 +5,6 @@ import TableHeader from "./TableHeader";
 
 interface Props {
     journeys: Journey[];
-    count: number;
 }
 
 export interface Sort {
@@ -236,25 +235,10 @@ export default function JourneyTable(props: Props) {
                 </table>
             </div>
 
-            {
-                props.count > 0 ?
-                    <div>
-                        {
-                            props.count > 1 ?
-                                <span>Found {props.count} journeys.</span>
-                                :
-                                <span>Found {props.count} journey.</span>
-
-                        }
-                    </div>
-                    :
-                    <span>Found {props.count} journeys.</span>
-            }
-
             <div className="flex flex-row items-center py-1">
                 <label>
                     Search
-                    <input onChange={OnFilterTextChange} value={filter.text} type="text" className="ml-2 pl-1 bg-slate-200 border-2 border-black_accent-500 text-black"></input>
+                    <input onChange={OnFilterTextChange} value={filter.text} type="text" className="ml-2 pl-1 bg-slate-200 border-2 border-black_accent-500 text-black_accent-500"></input>
                 </label>
             </div>
         </div>
