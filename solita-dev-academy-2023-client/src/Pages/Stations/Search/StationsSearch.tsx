@@ -23,7 +23,7 @@ export default function StationsSearch(props: Props) {
     }
 
     return (
-        <div className="w-full flex flex-col my-0.5 py-4 px-8 bg-bluish_grey-500 text-slate-300 shadow-md rounded">
+        <div className="w-full flex flex-col mb-2 py-4 px-8 bg-bluish_grey-500 text-slate-300 shadow-md shadow-bluish_grey-500/50 rounded">
             <form onSubmit={event => {event.preventDefault()}}>
                 <TextInput labelText={StationSearchLabelTexts.NameFi} value={props.stationSearchOptions.NameFi} stationSearchOptions={props.stationSearchOptions} SetStationSearchOptions={props.SetStationSearchOptions}></TextInput>
                 <TextInput labelText={StationSearchLabelTexts.NameSe} value={props.stationSearchOptions.NameSe} stationSearchOptions={props.stationSearchOptions} SetStationSearchOptions={props.SetStationSearchOptions}></TextInput>

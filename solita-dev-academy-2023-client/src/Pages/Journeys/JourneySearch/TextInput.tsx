@@ -42,17 +42,19 @@ export default function TextInput(props: Props) {
     }
 
     return (
-        <label>
-            {
-                props.option === SearchOptionNames.CoveredDistanceFrom || props.option === SearchOptionNames.CoveredDistanceTo ?
-                    <span className="meters_tooltip">{props.option}</span>
-                    :
-                    props.option === SearchOptionNames.DurationFrom || props.option === SearchOptionNames.DurationTo ?
-                        <span className="seconds_tooltip">{props.option}</span>
+        <div className="h-8 flex items-center my-0.5">
+            <label>
+                {
+                    props.option === SearchOptionNames.CoveredDistanceFrom || props.option === SearchOptionNames.CoveredDistanceTo ?
+                        <span className="w-48 inline-block meters_tooltip">{props.option}</span>
                         :
-                        <span>{props.option}</span>
-            }
-            <input value={props.value} onChange={OnChange} type="text" className="mx-1 px-1 bg-slate-200 border-2 border-black_accent-500 text-black_accent-500"></input>
-        </label>
+                        props.option === SearchOptionNames.DurationFrom || props.option === SearchOptionNames.DurationTo ?
+                            <span className="w-48 inline-block seconds_tooltip">{props.option}</span>
+                            :
+                            <span className="w-48 inline-block">{props.option}</span>
+                }
+                <input value={props.value} onChange={OnChange} type="text" className="w-48 mx-1 px-1.5 bg-slate-200 border-2 border-black_accent-500 text-black_accent-500"></input>
+            </label>
+        </div>
     )
 }

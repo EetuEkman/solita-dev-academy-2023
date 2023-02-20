@@ -190,7 +190,7 @@ export default function JourneyTable(props: Props) {
     return (
         <div className="flex flex-col justify-start py-1 px-2">
             <div className="overflow-auto pb-3">
-                <table className="w-full table-auto border-collapse text-slate-400">
+                <table className="w-full h-full table-auto border-collapse text-slate-400">
                     <thead className="text-md text-slate-300 border-b-2 border-slate-300">
                         <tr>
                             <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} value={SortByOptions.Departure} sort={sort}></TableHeader>

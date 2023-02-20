@@ -14,11 +14,11 @@ export default function TableHeader(props: Props) {
             {
                 props.sort.by === props.value ?
                     props.sort.descending ?
-                        <th className={props.className + " "} data-value={props.value} onPointerDown={props.HandleTableHeaderDown}>{props.value}<span>&uarr;</span></th>
+                        <th className={props.className + " h-7 justify-center items-center"} data-value={props.value} onPointerDown={props.HandleTableHeaderDown}>{props.value}<span>&uarr;</span></th>
                         :
-                        <th className={props.className + " "} data-value={props.value} onPointerDown={props.HandleTableHeaderDown}>{props.value}<span>&darr;</span></th>
+                        <th className={props.className + " h-7 justify-center items-center"} data-value={props.value} onPointerDown={props.HandleTableHeaderDown}>{props.value}<span>&darr;</span></th>
                     :
-                    <th className={props.className + " "} data-value={props.value} onPointerDown={props.HandleTableHeaderDown}>{props.value}</th>
+                    <th className={props.className + " h-7 justify-center items-center"} data-value={props.value} onPointerDown={props.HandleTableHeaderDown}>{props.value}</th>
             }
         </>
     )

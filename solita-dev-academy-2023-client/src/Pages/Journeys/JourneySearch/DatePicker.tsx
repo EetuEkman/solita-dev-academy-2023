@@ -44,9 +44,11 @@ export default function DatePicker(props: Props) {
     }
 
     return (
-        <label>
-            {props.option}
-            <input value={toString(props.date)} onChange={onChange} type="date" className="mx-1 px-1 bg-slate-200 border-2 border-black_accent-500 text-black"></input>
-        </label>
+        <div className="h-8 flex items-center my-0.5">
+            <label>
+                <span className="inline-block w-48">{props.option}</span>
+                <input value={toString(props.date)} onChange={onChange} type="date" className="w-48 mx-1 px-8 bg-slate-200 border-2 border-black_accent-500 text-black"></input>
+            </label>
+        </div>
     )
 }

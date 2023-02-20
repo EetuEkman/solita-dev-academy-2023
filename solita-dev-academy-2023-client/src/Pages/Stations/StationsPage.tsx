@@ -104,7 +104,7 @@ export default function StationsPage(props: Props) {
     }, [stationSearchOptions])
     
     return (
-        <div className="m-0.5">
+        <div className="p-2">
             <StationsSearch stationSearchOptions={stationSearchOptions} SetStationSearchOptions={SetStationSearchOptions} OnFetchPointerDown={HandleFetchPointerDown}></StationsSearch>
             {
                 fetchError.length > 0 ?

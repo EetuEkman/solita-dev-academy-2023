@@ -107,7 +107,7 @@ export default function JourneysPage(props: Props) {
     }, [searchOptions])
 
     return (
-        <div className="p-0.5">
+        <div className="p-2">
             <JourneySearch OnFetchPointerDown={HandleFetchPointerDown} searchOptions={searchOptions} setSearchOptions={setSearchOptions} isWorking={isWorking}></JourneySearch>
             {
                 fetchError.length > 0 ?

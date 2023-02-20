@@ -11,7 +11,7 @@ interface Props {
 
 export default function StationsDisplay(props: Props) {
     return (
-        <div className="w-full my-0.5 bg-bluish_grey-500 text-slate-400 rounded px-4 py-2">
+        <div className="w-full my-1 bg-bluish_grey-500 text-slate-400 shadow-md shadow-bluish_grey-500/50 rounded px-4 py-2">
             <div className="flex flex-col py-1 px-2">
                 <div className="flex flex-col overflow-auto pb-3">
                     <table className="w-full min-h-[50em] table-auto border-collapse">

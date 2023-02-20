@@ -45,72 +45,59 @@ export default function JourneySearch(props: Props) {
     }
 
     return (
-        <div className="flex flex-col p-2 bg-bluish_grey-500 text-slate-300 [&>*]:my-0.5 [&>*]:flex [&>*]:flex-row [&>*]:flex-wrap [&>*]:justify-start [&>*]:items-center rounded mb-0.5">
-            <div>
+        <div className="w-full flex flex-col mb-2 py-4 px-8 bg-bluish_grey-500 text-slate-300 shadow-md shadow-bluish_grey-500/50 rounded">
+            <form onSubmit={event => { event.preventDefault() }}>
+
                 <DatePicker date={props.searchOptions.DepartureDateFrom} option={SearchOptionNames.DepartureDateFrom} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></DatePicker>
                 <DatePicker date={props.searchOptions.DepartureDateTo} option={SearchOptionNames.DepartureDateTo} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></DatePicker>
-            </div>
-
-            <div>
                 <DatePicker date={props.searchOptions.ReturnDateFrom} option={SearchOptionNames.ReturnDateFrom} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></DatePicker>
                 <DatePicker date={props.searchOptions.ReturnDateTo} option={SearchOptionNames.ReturnDateTo} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></DatePicker>
-            </div>
-
-            <div>
                 <NumberInput value={props.searchOptions.CoveredDistanceFrom} option={SearchOptionNames.CoveredDistanceFrom} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></NumberInput>
                 <NumberInput value={props.searchOptions.CoveredDistanceTo} option={SearchOptionNames.CoveredDistanceTo} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></NumberInput>
-            </div>
-
-            <div>
                 <NumberInput value={props.searchOptions.DurationFrom} option={SearchOptionNames.DurationFrom} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></NumberInput>
                 <NumberInput value={props.searchOptions.DurationTo} option={SearchOptionNames.DurationTo} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></NumberInput>
-            </div>
-
-            <div>
                 <TextInput value={props.searchOptions.DepartureStationNameFi} option={SearchOptionNames.DepartureStationNameFi} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
                 <TextInput value={props.searchOptions.DepartureStationNameSe} option={SearchOptionNames.DepartureStationNameSe} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
                 <TextInput value={props.searchOptions.DepartureStationNameEn} option={SearchOptionNames.DepartureStationNameEn} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
-            </div>
-
-            <div>
                 <TextInput value={props.searchOptions.ReturnStationNameFi} option={SearchOptionNames.ReturnStationNameFi} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
                 <TextInput value={props.searchOptions.ReturnStationNameSe} option={SearchOptionNames.ReturnStationNameSe} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
                 <TextInput value={props.searchOptions.ReturnStationNameEn} option={SearchOptionNames.ReturnStationNameEn} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
-            </div>
 
-            <div>
-                <label>
-                    {SearchOptionNames.OrderBy}
-                    <select onChange={onOrderByChange} value={props.searchOptions.OrderBy} name="order_by" className="mx-1 px-1 bg-slate-200 border-2 border-black_accent-500 text-black">
+                <div className="h-8 flex items-center my-0.5">
+                    <label>
+                        <span className="w-48 inline-flex items-center">{SearchOptionNames.OrderBy}</span>
+                        <select onChange={onOrderByChange} value={props.searchOptions.OrderBy} name="order_by" className="w-48 mx-1 px-1 bg-slate-200 border-2 border-black_accent-500 text-black">
+                            {
+                                Object.values(OrderByOptions).map((value, index) => {
+                                    return <option key={index} value={value}>{value}</option>
+                                })
+                            }
+                        </select>
+                    </label>
+                </div>
+
+                <div className="my-0.5">
+                    <label className="inline-flex items-center">
+                        <span className="w-48 h-8 inline-flex items-center">{SearchOptionNames.Order}</span>
                         {
-                            Object.values(OrderByOptions).map((value, index) => {
-                                return <option key={index} value={value}>{value}</option>
-                            })
+                            props.searchOptions.OrderBy === "Ascending" ?
+                                <input onChange={onOrderChange} type="checkbox" checked className="w-6 h-6 mx-1 accent-yellow-500 rounded-md"></input>
+                                :
+                                <input onChange={onOrderChange} type="checkbox" className="w-6 h-6 mx-1 accent-yellow-500 rounded-md"></input>
                         }
-                    </select>
-                </label>
+                    </label>
+                </div>
 
-                <label>
-                    {SearchOptionNames.Order}
+                <div className="pt-1">
                     {
-                        props.searchOptions.OrderBy === "Ascending" ?
-                            <input onChange={onOrderChange} type="checkbox" checked className="mx-1"></input>
+                        props.isWorking ?
+                            <button className="h-10 w-15 bg-gray-500/50 text-bluish_grey-500 font-bold mr-1 py-2 px-4 rounded" disabled>Go</button>
                             :
-                            <input onChange={onOrderChange} type="checkbox" className="mx-1"></input>
+                            <button className="h-10 w-15 bg-yellow-500 text-bluish_grey-500 font-bold mr-1 py-2 px-4 rounded" onPointerDown={props.OnFetchPointerDown}>Go</button>
                     }
-                </label>
-
-            </div>
-
-            <div className="pt-1">
-                {
-                    props.isWorking ?
-                        <button className="h-10 w-15 bg-gray-500/50 text-bluish_grey-500 font-bold mr-1 py-2 px-4 rounded" disabled>Go</button>
-                        :
-                        <button className="h-10 w-15 bg-yellow-500 text-bluish_grey-500 font-bold mr-1 py-2 px-4 rounded" onPointerDown={props.OnFetchPointerDown}>Go</button>
-                }
-                <button className="h-10 w-15 bg-yellow-500 text-bluish_grey-500 py-2 px-4 rounded" onClick={clearSearchOptions}>Clear</button>
-            </div>
+                    <button className="h-10 w-15 bg-yellow-500 text-bluish_grey-500 py-2 px-4 rounded" onClick={clearSearchOptions}>Clear</button>
+                </div>
+            </form>
         </div>
     )
 }
