@@ -12,10 +12,6 @@ interface Props {
     OnFetchPointerDown: React.PointerEventHandler<HTMLButtonElement>;
 }
 
-/*
-    <TextInput labelText={StationSearchLabelTexts.Capacity} value={props.stationSearchOptions.Capacity} stationSearchOptions={props.stationSearchOptions} SetStationSearchOptions={props.SetStationSearchOptions}></TextInput>
-*/
-
 export default function StationsSearch(props: Props) {
     function ClearStationSearchOptions() {
         let stationSearchOptions = {...DEFAULT_STATION_SEARCH_OPTIONS} as StationSearchOptions;
