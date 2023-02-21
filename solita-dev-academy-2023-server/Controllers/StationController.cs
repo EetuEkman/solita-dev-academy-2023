@@ -121,7 +121,9 @@ namespace solita_dev_academy_2023_server.Controllers
                 return StatusCode(204);
             }
 
-            return Json(station);
+            var json = JsonSerializer.Serialize(station);
+
+            return Content(json, "application/json", System.Text.Encoding.UTF8);
         }
         
 
@@ -352,9 +354,9 @@ namespace solita_dev_academy_2023_server.Controllers
                 stationPage.CurrentPage = 0;
             }
 
-            var body = JsonSerializer.Serialize(stationPage);
+            var json = JsonSerializer.Serialize(stationPage);
 
-            return Content(body, "application/json", System.Text.Encoding.UTF8);
+            return Content(json, "application/json", System.Text.Encoding.UTF8);
         }
     }
 }
