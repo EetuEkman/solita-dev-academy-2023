@@ -3,6 +3,7 @@ import Station from "../../../Models/Station";
 import SortByOptions from "../../../Constants/StationSortByOptions";
 import TableHeader from "./TableHeader";
 import StationSortByOptions from "../../../Constants/StationSortByOptions";
+import { Link } from "react-router-dom";
 
 interface Props {
     stations: Station[];
@@ -139,6 +140,7 @@ export default function StationTable(props: Props) {
                             <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} sort={sort} value={StationSortByOptions.AddressSe}></TableHeader>
                             <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} sort={sort} value={StationSortByOptions.Operator}></TableHeader>
                             <TableHeader HandleTableHeaderDown={HandleTableHeaderDown} sort={sort} value={StationSortByOptions.Capacity}></TableHeader>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -153,6 +155,7 @@ export default function StationTable(props: Props) {
                                         <td>{station.Address_fi}</td>
                                         <td>{station.Operator}</td>
                                         <td>{station.Capacity}</td>
+                                        <td className="flex justify-center py-1"><Link to={"/station/" + station.Id} className="inline-flex justify-center items-center px-2 py-0.5 bg-yellow-500 text-bluish_grey-500 rounded">Details</Link></td>
                                     </tr>
                                 )
                             })
