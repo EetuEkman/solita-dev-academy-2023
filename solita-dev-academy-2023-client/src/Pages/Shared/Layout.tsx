@@ -1,8 +1,11 @@
 import React from "react";
-import { Link, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
+interface Props {
+    children?: React.ReactNode
+}
 
-export default function Layout() {
+export default function Layout(props: Props) {
     return (
         <div className="h-screen flex flex-col">
             <nav className="flex items-center gap-4 p-4 text-yellow-500 bg-bluish_grey-500 shadow-md shadow-bluish_grey-500/50">
@@ -11,7 +14,7 @@ export default function Layout() {
                 <Link to="/stations">Stations</Link>
             </nav>
 
-            <Outlet></Outlet>
+            {props.children}
         </div>
     )
 }

@@ -6,6 +6,7 @@ import StationSearchOptions from "../../Models/StationSearchOptions";
 import BuildStationsUrl from "../../Services/BuildStationsUrl";
 import FetchStations from "../../Services/FetchStations";
 import FetchErrorDisplay from "../Shared/FetchErrorDisplay";
+import Layout from "../Shared/Layout";
 import StationsSearch from "./Search/StationsSearch";
 import StationsDisplay from "./StationsDisplay/StationsDisplay";
 
@@ -102,20 +103,22 @@ export default function StationsPage(props: Props) {
     useEffect(() => {
         SetStationsUrl(su => BuildStationsUrl(STATIONS_URL, stationSearchOptions));
     }, [stationSearchOptions])
-    
+
     return (
-        <div className="p-2">
-            <StationsSearch stationSearchOptions={stationSearchOptions} SetStationSearchOptions={SetStationSearchOptions} OnFetchPointerDown={HandleFetchPointerDown} isWorking={isWorking}></StationsSearch>
-            {
-                fetchError.length > 0 ?
-                    <FetchErrorDisplay fetchError={fetchError}></FetchErrorDisplay> :
-                    null
-            }
-            {
-                stationsPage !== null ?
-                    <StationsDisplay stationsPage={stationsPage} OnFetchPointerDown={HandleFetchPointerDown} isWorking={isWorking}></StationsDisplay> :
-                    null
-            }
-        </div>
+        <Layout>
+            <div className="p-2">
+                <StationsSearch stationSearchOptions={stationSearchOptions} SetStationSearchOptions={SetStationSearchOptions} OnFetchPointerDown={HandleFetchPointerDown} isWorking={isWorking}></StationsSearch>
+                {
+                    fetchError.length > 0 ?
+                        <FetchErrorDisplay fetchError={fetchError}></FetchErrorDisplay> :
+                        null
+                }
+                {
+                    stationsPage !== null ?
+                        <StationsDisplay stationsPage={stationsPage} OnFetchPointerDown={HandleFetchPointerDown} isWorking={isWorking}></StationsDisplay> :
+                        null
+                }
+            </div>
+        </Layout>
     )
 }

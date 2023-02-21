@@ -8,6 +8,7 @@ import JourneyDisplay from './JourneysDisplay/JourneyDisplay';
 import JourneySearch from "./JourneySearch/JourneySearch";
 import FetchedJourneysPage from '../../Models/FetchedJourneysPage';
 import SearchOptions from '../../Models/JourneySearchOptions';
+import Layout from '../Shared/Layout';
 
 const JOURNEYS_URL = "https://localhost:7263/api/Journey";
 
@@ -85,7 +86,7 @@ export default function JourneysPage(props: Props) {
 
             let json = await response.json();
 
-            page = json as FetchedJourneysPage;      
+            page = json as FetchedJourneysPage;
 
             // page = await FetchJourneys(url);
         }
@@ -107,20 +108,22 @@ export default function JourneysPage(props: Props) {
     }, [searchOptions])
 
     return (
-        <div className="p-2">
-            <JourneySearch OnFetchPointerDown={HandleFetchPointerDown} searchOptions={searchOptions} setSearchOptions={setSearchOptions} isWorking={isWorking}></JourneySearch>
-            {
-                fetchError.length > 0 ?
-                    <FetchErrorDisplay fetchError={fetchError}></FetchErrorDisplay>
-                    :
-                    null
-            }
-            {
-                page ?
-                    <JourneyDisplay HandleFetchPointerDown={HandleFetchPointerDown} journeysPage={page} isWorking={isWorking}></JourneyDisplay>
-                    :
-                    null
-            }
-        </div>
+        <Layout>
+            <div className="p-2">
+                <JourneySearch OnFetchPointerDown={HandleFetchPointerDown} searchOptions={searchOptions} setSearchOptions={setSearchOptions} isWorking={isWorking}></JourneySearch>
+                {
+                    fetchError.length > 0 ?
+                        <FetchErrorDisplay fetchError={fetchError}></FetchErrorDisplay>
+                        :
+                        null
+                }
+                {
+                    page ?
+                        <JourneyDisplay HandleFetchPointerDown={HandleFetchPointerDown} journeysPage={page} isWorking={isWorking}></JourneyDisplay>
+                        :
+                        null
+                }
+            </div>
+        </Layout>
     )
 }
