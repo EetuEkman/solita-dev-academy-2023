@@ -89,9 +89,25 @@ namespace solita_dev_academy_2023_server.Controllers
 
             var query = "SELECT TOP 1 *" +
                 " FROM [dbo].[Stations] S" +
-                " WHERE [Id] = @Id";
+                " WHERE [Id] = @Id;" +
 
-            Station? station;
+                " SELECT COUNT(1)" +
+                " FROM [dbo].[Journeys]" +
+                " WHERE [Departure_station_id] = @Id;" +
+
+                " SELECT COUNT(1)" +
+                " FROM [dbo].[Journeys]" +
+                " WHERE [Return_station_id] = @Id;" +
+
+                " SELECT AVG([Covered_distance])" +
+                " FROM [dbo].[Journeys] " +
+                " WHERE [Id] = @Id;" +
+
+                " SELECT AVG([Covered_distance])" +
+                " FROM [dbo].[Journeys] " +
+                " WHERE [Id] = @Id;";
+
+            DetailedStation? station;
 
             try
             {
@@ -101,24 +117,40 @@ namespace solita_dev_academy_2023_server.Controllers
                 {
                     await connection.OpenAsync();
 
-                    station = await connection.QuerySingleOrDefaultAsync<Station>(query, parameters);
-                }
-            }
-            catch (InvalidOperationException ioe)
-            {
-                // Dapper .QuerySingleOrDefault throws InvalidOperationException
-                // when the query returns more than one element.
+                    var reader = await connection.QueryMultipleAsync(query, parameters);
 
-                return StatusCode(500);
+                    station = await reader.ReadSingleOrDefaultAsync<DetailedStation>();
+
+                    if (station is null)
+                    {
+                        return NoContent();
+                    }
+
+                    var departureCount = await reader.ReadSingleAsync<int>();
+
+                    station.DepartureCount = departureCount;
+
+                    var returnCount = await reader.ReadSingleAsync<int>();
+
+                    station.ReturnCount = returnCount;
+
+                    var departureDistanceAverage = await reader.ReadSingleAsync<double>();
+
+                    station.DepartureDistanceAverage = departureDistanceAverage;
+
+                    var returnDistanceAverage = await reader.ReadSingleAsync<double>();
+
+                    station.ReturnDistanceAverage = returnDistanceAverage;
+                }
             }
             catch (Exception exception)
             {
-                return StatusCode(500);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
             if (station is null)
             {
-                return StatusCode(204);
+                return NoContent();
             }
 
             var json = JsonSerializer.Serialize(station);
