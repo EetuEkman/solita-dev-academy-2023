@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, memo } from "react";
 import DEFAULT_STATION_SEARCH_OPTIONS from "../../Constants/DefaultStationSearchOptions";
 import FetchErrors from "../../Constants/FetchErrors";
 import FetchedStationsPage from "../../Models/FetchedStationsPage";
+import { FilterSort } from "../../Models/FilterSort";
 import StationSearchOptions from "../../Models/StationSearchOptions";
 import BuildStationsUrl from "../../Services/BuildStationsUrl";
 import FetchStations from "../../Services/FetchStations";
@@ -11,17 +12,18 @@ import StationsSearch from "./Search/StationsSearch";
 import StationsDisplay from "./StationsDisplay/StationsDisplay";
 
 interface Props {
-
+    stationsPage: FetchedStationsPage | null;
+    SetStationsPage: React.Dispatch<React.SetStateAction<FetchedStationsPage | null>>
+    filterSort: FilterSort;
+    SetFilterSort: React.Dispatch<React.SetStateAction<FilterSort>>
 }
 
 const STATIONS_URL = "https://localhost:7263/api/Station";
 
-export default function StationsPage(props: Props) {
+function StationsPage(props: Props) {
     const [stationSearchOptions, SetStationSearchOptions] = useState<StationSearchOptions>(DEFAULT_STATION_SEARCH_OPTIONS);
 
     const [stationsUrl, SetStationsUrl] = useState<URL>(new URL(STATIONS_URL));
-
-    const [stationsPage, SetStationsPage] = useState<FetchedStationsPage | null>(null);
 
     const [fetchError, SetFetchError] = useState("");
 
@@ -38,10 +40,10 @@ export default function StationsPage(props: Props) {
 
         switch (direction) {
             case "next":
-                url = new URL(stationsPage?.Next!)
+                url = new URL(props.stationsPage?.Next!)
                 break;
             case "previous":
-                url = new URL(stationsPage?.Previous!);
+                url = new URL(props.stationsPage?.Previous!);
                 break;
             default:
                 url = stationsUrl;
@@ -95,7 +97,7 @@ export default function StationsPage(props: Props) {
             return;
         }
 
-        SetStationsPage(sp => stationsPage);
+        props.SetStationsPage(sp => stationsPage);
 
         SetIsWorking(isWorking => false);
     }
@@ -114,11 +116,13 @@ export default function StationsPage(props: Props) {
                         null
                 }
                 {
-                    stationsPage !== null ?
-                        <StationsDisplay stationsPage={stationsPage} OnFetchPointerDown={HandleFetchPointerDown} isWorking={isWorking}></StationsDisplay> :
+                    props.stationsPage !== null ?
+                        <StationsDisplay stationsPage={props.stationsPage} OnFetchPointerDown={HandleFetchPointerDown} filterSort={props.filterSort} SetFilterSort={props.SetFilterSort} isWorking={isWorking}></StationsDisplay> :
                         null
                 }
             </div>
         </Layout>
     )
 }
+
+export default memo(StationsPage);

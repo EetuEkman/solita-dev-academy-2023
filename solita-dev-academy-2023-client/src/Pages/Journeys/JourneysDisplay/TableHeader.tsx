@@ -1,5 +1,5 @@
 import React from "react";
-import { Sort } from "./JourneyTable";
+import { Sort } from "../../../Models/Sort";
 
 interface Props {
     className?: string;

@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from "react";
 import JourneySortByOptions from "../../../Constants/JourneySortByOptions";
+import { Filter } from "../../../Models/Filter";
+import { Sort } from "../../../Models/Sort";
 import Journey from "../../../Models/Journey";
 import TableHeader from "./TableHeader";
 
 interface Props {
     journeys: Journey[];
-}
-
-export interface Sort {
-    by: string;
-    descending: boolean;
-}
-
-interface Filter {
-    text: string;
 }
 
 export default function JourneyTable(props: Props) {
