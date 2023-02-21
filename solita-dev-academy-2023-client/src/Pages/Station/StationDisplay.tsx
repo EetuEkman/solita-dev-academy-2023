@@ -1,53 +1,66 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DetailedStation from "../../Models/DetailedStation";
+import * as Leaflet from "leaflet";
 
 interface Props {
     station: DetailedStation;
 }
 
 export default function StationDisplay(props: Props) {
+    useEffect(() => {
+        if (!props.station.X || !props.station.Y) {
+            return;
+        }
+
+        let longitude = props.station.X;
+
+        let latitude = props.station.Y;
+
+        let map = Leaflet.map("map", {
+            center: [latitude, longitude],
+            zoom: 16,
+        })
+
+        Leaflet.marker([latitude, longitude]).addTo(map);
+
+        Leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            minZoom: 12,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+    }, [])
+
     return (
         <div className="flex flex-col p-4 text-slate-300 bg-bluish_grey-500">
             <div className="flex">
-                <div className="w-32 h-8 inline-flex">Id</div>
-                <div className="w-32 h-8 inline-flex ml-2">{props.station.Id}</div>
-            </div>
-            <div className="flex">
                 <div className="w-32 h-8 inline-flex">Nimi</div>
-                <div className="w-32 h-8 inline-flex ml-2">{props.station.Name_fi}</div>
+                <div className="w-48 h-8 inline-flex">{props.station.Name_fi}</div>
             </div>
             <div className="flex">
                 <div className="w-32 h-8 inline-flex">Namn</div>
-                <div className="w-32 h-8 inline-flex ml-2">{props.station.Name_se}</div>
+                <div className="w-48 h-8 inline-flex">{props.station.Name_se}</div>
             </div>
             <div className="flex">
                 <div className="w-32 h-8 inline-flex">Name</div>
-                <div className="w-32 h-8 inline-flex ml-2">{props.station.Name_en}</div>
+                <div className="w-48 h-8 inline-flex">{props.station.Name_en}</div>
             </div>
             <div className="flex">
                 <div className="w-32 h-8 inline-flex">Osoite</div>
-                <div className="w-32 h-8 inline-flex ml-2">{props.station.Address_fi}</div>
+                <div className="w-48 h-8 inline-flex">{props.station.Address_fi}</div>
             </div>
             <div className="flex">
                 <div className="w-32 h-8 inline-flex">Adress</div>
-                <div className="w-32 h-8 inline-flex ml-2">{props.station.Address_se}</div>
+                <div className="w-48 h-8 inline-flex">{props.station.Address_se}</div>
             </div>
             <div className="flex">
                 <div className="w-32 h-8 inline-flex">Operator</div>
-                <div className="w-32 h-8 inline-flex ml-2">{props.station.Operator}</div>
+                <div className="w-48 h-8 inline-flex">{props.station.Operator}</div>
             </div>
             <div className="flex">
                 <div className="w-32 h-8 inline-flex">Capacity</div>
-                <div className="w-32 h-8 inline-flex ml-2">{props.station.Capacity}</div>
+                <div className="w-48 h-8 inline-flex">{props.station.Capacity}</div>
             </div>
-            <div className="flex">
-                <div className="w-32 h-8 inline-flex">X</div>
-                <div className="w-32 h-8 inline-flex ml-2">{props.station.X}</div>
-            </div>
-            <div className="flex">
-                <div className="w-32 h-8 inline-flex">Y</div>
-                <div className="w-32 h-8 inline-flex ml-2">{props.station.Y}</div>
-            </div>
+            <div id="map" className="w-[64em] h-[36em] my-1"></div>
         </div>
     )
 }
