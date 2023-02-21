@@ -146,8 +146,8 @@ export default function StationTable(props: Props) {
                                         <td>{station.Address_fi}</td>
                                         <td>{station.Operator}</td>
                                         <td>{station.Capacity}</td>
-                                        <td className="flex justify-center items-center py-1">
-                                            <Link to={"/station/" + station.Id} className="inline-flex justify-center items-center px-2 py-0.5 bg-yellow-500 text-bluish_grey-500 rounded">Details</Link>
+                                        <td>
+                                            <Link to={"/station/" + station.Id} className="bg-yellow-500 text-bluish_grey-500 font-bold px-2 py-1 rounded">Details</Link>
                                         </td>
                                     </tr>
                                 )
