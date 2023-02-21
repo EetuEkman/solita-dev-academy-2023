@@ -17,9 +17,9 @@ export default function JourneyDisplay(props: Props) {
             <div className="flex mb-1 sm:px-1 md:px-2 lg:px-4 text-slate-300">
                 {
                     props.journeysPage.Count === 1 ?
-                        <span>Found {props.journeysPage.Count} journey.</span>
+                        <span>Found {props.journeysPage.Count.toLocaleString()} journey.</span>
                         :
-                        <span>Found {props.journeysPage.Count} journeys.</span>
+                        <span>Found {props.journeysPage.Count.toLocaleString()} journeys.</span>
                 }
             </div>
 

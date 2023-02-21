@@ -7,6 +7,6 @@ export default interface Station {
     Address_se: string;
     Operator: string;
     Capacity: number | null;
-    X?: number;
-    Y?: number;
+    X: number | null;
+    Y: number | null;
 }

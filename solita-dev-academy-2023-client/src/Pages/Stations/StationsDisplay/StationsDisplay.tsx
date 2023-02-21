@@ -17,9 +17,9 @@ export default function StationsDisplay(props: Props) {
             <div className="flex mb-1 sm:px-1 md:px-2 lg:px-4 text-slate-300">
                 {
                     props.stationsPage.Count === 1 ?
-                        <span>Found {props.stationsPage.Count} station.</span>
+                        <span>Found {props.stationsPage.Count.toLocaleString()} station.</span>
                         :
-                        <span>Found {props.stationsPage.Count} stations.</span>
+                        <span>Found {props.stationsPage.Count.toLocaleString()} stations.</span>
                 }
             </div>
 

@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
 body {
     background-color: #CBD5E1;
 }
