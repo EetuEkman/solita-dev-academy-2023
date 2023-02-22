@@ -6,6 +6,8 @@
         public int ReturnCount { get; set; }
         public double DepartureDistanceAverage { get; set; }
         public double ReturnDistanceAverage { get; set; }
+        public List<Station> TopDestinationStations { get; set; }
+        public List<Station> TopOriginStations { get; set; }
     }
 }
 

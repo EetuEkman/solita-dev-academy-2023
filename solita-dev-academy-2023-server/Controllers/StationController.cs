@@ -1,9 +1,12 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Hosting;
 using solita_dev_academy_2023_server.Models;
+using System.Collections.Generic;
 using System.Data;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace solita_dev_academy_2023_server.Controllers
 {
@@ -86,7 +89,6 @@ namespace solita_dev_academy_2023_server.Controllers
 
             */
 
-
             var query = "SELECT TOP 1 *" +
                 " FROM [dbo].[Stations] S" +
                 " WHERE [Id] = @Id;" +
@@ -105,9 +107,22 @@ namespace solita_dev_academy_2023_server.Controllers
 
                 " SELECT AVG([Covered_distance])" +
                 " FROM [dbo].[Journeys] " +
-                " WHERE [Id] = @Id;";
+                " WHERE [Id] = @Id;" +
 
-            DetailedStation? station;
+                " ( SELECT [Return_station_id] AS [Id], COUNT([Return_station_id]) AS [Count] FROM [Journeys] WHERE [Departure_station_id] = @Id GROUP BY [Return_station_id] ) ORDER BY [Count] DESC OFFSET 0 ROWS FETCH FIRST 5 ROWS ONLY;" +
+
+                " ( SELECT [Departure_station_id] AS [Id], COUNT([Departure_station_id]) AS [Count] FROM [Journeys] WHERE [Return_station_id] = @Id GROUP BY [Departure_station_id] ) ORDER BY [Count] DESC OFFSET 0 ROWS FETCH FIRST 5 ROWS ONLY;" +
+
+                " SELECT *" + 
+                " FROM Stations WHERE Id IN" + 
+                " ( SELECT Id FROM ( SELECT TOP 5 Departure_station_id Id, COUNT(Departure_station_id) C FROM Journeys WHERE [Return_station_id] = @Id GROUP BY Departure_station_id ORDER BY C DESC ) A )" +
+
+                " SELECT *" + 
+                " FROM Stations" + 
+                " WHERE Id IN" + 
+                " ( SELECT Id FROM ( SELECT TOP 5 [Return_station_id] Id, COUNT([Return_station_id]) C FROM Journeys WHERE Departure_station_id = @Id GROUP BY [Return_station_id] ORDER BY C DESC ) A )";
+
+            DetailedStation ? station;
 
             try
             {
@@ -140,7 +155,19 @@ namespace solita_dev_academy_2023_server.Controllers
 
                     var returnDistanceAverage = await reader.ReadSingleAsync<double>();
 
+                    // Station values other than Id are null. Query works fine in SQL Management Studio, returning proper values.
+
                     station.ReturnDistanceAverage = returnDistanceAverage;
+
+                    var topOriginStations = reader.Read<Station>().ToList();
+
+                    station.TopOriginStations = topOriginStations;
+
+                    // Station values other than Id are null. Query works fine in SQL Management Studio, returning proper values.
+
+                    var topDestinationStations = reader.Read<Station>().ToList();
+
+                    station.TopDestinationStations = topDestinationStations;     
                 }
             }
             catch (Exception exception)
