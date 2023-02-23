@@ -89,60 +89,59 @@ namespace solita_dev_academy_2023_server.Controllers
 
             */
 
-            var query = "SELECT TOP 1 *" +
-                " FROM [dbo].[Stations] S" +
-                " WHERE [Id] = @Id;" +
+            var query = $@"SELECT TOP 1 *
+                FROM [dbo].[Stations] S
+                WHERE [Id] = @Id;
 
-                " SELECT COUNT(1)" +
-                " FROM [dbo].[Journeys]" +
-                " WHERE [Departure_station_id] = @Id;" +
+                SELECT COUNT(1)
+                FROM [dbo].[Journeys]
+                WHERE [Departure_station_id] = @Id;
 
-                " SELECT COUNT(1)" +
-                " FROM [dbo].[Journeys]" +
-                " WHERE [Return_station_id] = @Id;" +
+                SELECT COUNT(1)
+                FROM [dbo].[Journeys]
+                WHERE [Return_station_id] = @Id;
 
-                " SELECT AVG([Covered_distance])" +
-                " FROM [dbo].[Journeys] " +
-                " WHERE [Id] = @Id;" +
+                SELECT AVG([Covered_distance])
+                FROM [dbo].[Journeys] 
+                WHERE [Id] = @Id;
 
-                " SELECT AVG([Covered_distance])" +
-                " FROM [dbo].[Journeys] " +
-                " WHERE [Id] = @Id;" +
+                SELECT AVG([Covered_distance])
+                FROM [dbo].[Journeys] 
+                WHERE [Id] = @Id;
 
-                " ( SELECT [Return_station_id] AS [Id], COUNT([Return_station_id]) AS [Count] FROM [Journeys] WHERE [Departure_station_id] = @Id GROUP BY [Return_station_id] ) ORDER BY [Count] DESC OFFSET 0 ROWS FETCH FIRST 5 ROWS ONLY;" +
+                SELECT * 
+                FROM Stations 
+                WHERE Id IN 
+                ( 
+                    SELECT Id 
+                    FROM 
+                    ( 
+                        SELECT TOP 5 Departure_station_id Id, 
+                        COUNT(Departure_station_id) C 
+                        FROM Journeys 
+                        WHERE [Return_station_id] = @Id 
+                        GROUP BY Departure_station_id 
+                        ORDER BY C DESC 
+                    ) Id_count 
+                );
 
-                " ( SELECT [Departure_station_id] AS [Id], COUNT([Departure_station_id]) AS [Count] FROM [Journeys] WHERE [Return_station_id] = @Id GROUP BY [Departure_station_id] ) ORDER BY [Count] DESC OFFSET 0 ROWS FETCH FIRST 5 ROWS ONLY;" +
+                SELECT * 
+                FROM Stations 
+                WHERE Id IN 
+                ( 
+                    SELECT Id 
+                    FROM 
+                    ( 
+                        SELECT TOP 5 [Return_station_id] Id, 
+                        COUNT([Return_station_id]) C 
+                        FROM Journeys 
+                        WHERE Departure_station_id = @Id 
+                        GROUP BY [Return_station_id] 
+                        ORDER BY C DESC 
+                    ) Id_count 
+                );";
 
-                // Stations created from the result sets of these queries had property values other than the Id null.
-
-                // Queries returned proper values in SQL Management Studio.
-
-                /*
-                
-                " SELECT *" +
-                " FROM Stations WHERE Id IN" +
-                " ( SELECT Id FROM ( SELECT TOP 5 Departure_station_id Id, COUNT(Departure_station_id) C FROM Journeys WHERE [Return_station_id] = @Id GROUP BY Departure_station_id ORDER BY C DESC ) A );" +
-
-                " SELECT *" +
-                " FROM Stations" +
-                " WHERE Id IN" +
-                " ( SELECT Id FROM ( SELECT TOP 5 [Return_station_id] Id, COUNT([Return_station_id]) C FROM Journeys WHERE Departure_station_id = @Id GROUP BY [Return_station_id] ORDER BY C DESC ) A );" +
-
-                */
-
-                // Get the ids of the top origin and destination stations.
-
-                " SELECT Departure_station_id Id FROM ( SELECT TOP 5 Departure_station_id, COUNT(Departure_station_id) C FROM Journeys WHERE [Return_station_id] = @Id GROUP BY Departure_station_id ORDER BY C DESC ) A;" +
-
-                " SELECT [Return_station_id] Id FROM ( SELECT TOP 5 [Return_station_id], COUNT([Return_station_id]) C FROM Journeys WHERE Departure_station_id = @Id GROUP BY [Return_station_id] ORDER BY C DESC ) A;";
-
-            DetailedStation ? station;
-
-            // Ids of the top origin and destination stations.
-
-            string[] originStrings = Array.Empty<string>();
-
-            string[] destinationStrings = Array.Empty<string>();
+            DetailedStation? station;
 
             var connectionString = configuration.GetValue<string>("ConnectionStrings:Citybikes");
 
@@ -150,8 +149,6 @@ namespace solita_dev_academy_2023_server.Controllers
             {
                 using (var connection = new SqlConnection(connectionString))
                 {
-                    await connection.OpenAsync();
-
                     var reader = await connection.QueryMultipleAsync(query, parameters);
 
                     station = await reader.ReadSingleOrDefaultAsync<DetailedStation>();
@@ -176,46 +173,14 @@ namespace solita_dev_academy_2023_server.Controllers
                     var returnDistanceAverage = await reader.ReadSingleAsync<double>();
 
                     station.ReturnDistanceAverage = returnDistanceAverage;
-                    
-                    // Station values in station list other than Id were null. Query worked fine in SQL Management Studio, returning proper values.
 
-                    // Resorted to just fetch the top station ids and make a second query fetching stations with matching ids.
+                    var topOriginStations = await reader.ReadAsync<Station>();
 
-                    /*
+                    station.TopOriginStations = topOriginStations.ToList();
 
-                    var topOriginStations = reader.Read<Station>().ToList();
+                    var topDestinationStations = await reader.ReadAsync<Station>();
 
-                    station.TopOriginStations = topOriginStations;
-
-                    var topDestinationStations = reader.Read<Station>().ToList();
-
-                    station.TopDestinationStations = topDestinationStations;
-
-                    */
-
-                    originStrings = reader.Read<string>().ToArray();
-
-                    destinationStrings = reader.Read<string>().ToArray();
-
-                    await connection.CloseAsync();
-
-                    await connection.OpenAsync();
-
-                    var topOriginQuery = "SELECT * FROM Stations WHERE Id IN @OriginStrings;";
-
-                    var topDestinationQuery = " SELECT * FROM Stations WHERE Id IN @DestinationStrings;";
-
-                    var topQueries = topOriginQuery + topDestinationQuery;
-
-                    reader = await connection.QueryMultipleAsync(topQueries, new { OriginStrings = originStrings, DestinationStrings = destinationStrings });
-
-                    var topOriginStations = (await reader.ReadAsync<Station>()).ToList();
-
-                    var topDestinationStations = (await reader.ReadAsync<Station>()).ToList();
-
-                    station.TopOriginStations = topOriginStations;
-
-                    station.TopDestinationStations = topDestinationStations;
+                    station.TopDestinationStations = topDestinationStations.ToList();
                 }
             }
             catch (Exception exception)

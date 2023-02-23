@@ -45,7 +45,7 @@ export default function StationPage() {
 
     return (
         <Layout>
-            <div className="h-full m-2 rounded">
+            <div className="h-full">
                 {
                     fetchError.length > 0 ?
                         <FetchErrorDisplay fetchError={fetchError}></FetchErrorDisplay>

@@ -5,4 +5,6 @@ export default interface DetailedStation extends Station {
     ReturnCount: number;
     DepartureDistanceAverage: number;
     ReturnDistanceAverage: number;
+    TopDestinationStations: Station[];
+    TopOriginStations: Station[];
 }
