@@ -158,27 +158,39 @@ namespace solita_dev_academy_2023_server.Controllers
                         return NoContent();
                     }
 
-                    var departureCount = await reader.ReadSingleAsync<int>();
+                    var readDepartureCount = reader.ReadSingleAsync<int>();
+
+                    var readReturnCount = reader.ReadSingleAsync<int>();
+
+                    var readDepartureDistanceAverage = reader.ReadSingleAsync<double>();
+
+                    var readReturnDistanceAverage = reader.ReadSingleAsync<double>();
+
+                    var readTopOriginStations = reader.ReadAsync<Station>();
+
+                    var readTopDestinationStations = reader.ReadAsync<Station>();
+
+                    var departureCount = await readDepartureCount;
 
                     station.DepartureCount = departureCount;
 
-                    var returnCount = await reader.ReadSingleAsync<int>();
+                    var returnCount = await readReturnCount;
 
                     station.ReturnCount = returnCount;
 
-                    var departureDistanceAverage = await reader.ReadSingleAsync<double>();
+                    var departureDistanceAverage = await readDepartureDistanceAverage;
 
                     station.DepartureDistanceAverage = departureDistanceAverage;
 
-                    var returnDistanceAverage = await reader.ReadSingleAsync<double>();
+                    var returnDistanceAverage = await readReturnDistanceAverage;
 
                     station.ReturnDistanceAverage = returnDistanceAverage;
 
-                    var topOriginStations = await reader.ReadAsync<Station>();
+                    var topOriginStations = await readTopOriginStations;
 
                     station.TopOriginStations = topOriginStations.ToList();
 
-                    var topDestinationStations = await reader.ReadAsync<Station>();
+                    var topDestinationStations = await readTopDestinationStations;
 
                     station.TopDestinationStations = topDestinationStations.ToList();
                 }
