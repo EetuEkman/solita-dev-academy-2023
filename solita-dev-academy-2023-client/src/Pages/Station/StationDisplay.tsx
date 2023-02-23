@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
 import DetailedStation from "../../Models/DetailedStation";
 import * as Leaflet from "leaflet";
+import { Link } from "react-router-dom";
+import PopularStations from "./PopularStations";
 
 interface Props {
     station: DetailedStation;
 }
 
 export default function StationDisplay(props: Props) {
-    useEffect(() => {
+    function SetLeaflet() {
         if (!props.station.X || !props.station.Y) {
             return;
         }
@@ -28,6 +30,10 @@ export default function StationDisplay(props: Props) {
             minZoom: 12,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
+    }
+
+    useEffect(() => {
+        SetLeaflet();
     }, [])
 
     return (
@@ -76,6 +82,8 @@ export default function StationDisplay(props: Props) {
                 <div className="w-40 h-8 inline-flex">Ret. distance avg.</div>
                 <div className="w-48 h-8 inline-flex">{props.station.ReturnDistanceAverage.toLocaleString()} meters.</div>
             </div>
+            <PopularStations tableHeadingText="Top destination stations" stations={props.station.TopDestinationStations}></PopularStations>
+            <PopularStations tableHeadingText="Top origin stations" stations={props.station.TopOriginStations}></PopularStations>
             <div id="map" className="w-[64em] h-[36em] my-1"></div>
         </div>
     )

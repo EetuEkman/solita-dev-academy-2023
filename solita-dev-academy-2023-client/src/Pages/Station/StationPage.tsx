@@ -43,9 +43,13 @@ export default function StationPage() {
         FetchStation(new URL(STATION_URL + id));
     }, [])
 
+    useEffect(() => {
+        FetchStation(new URL(STATION_URL + id));
+    }, [id])
+
     return (
         <Layout>
-            <div className="h-full">
+            <div className="h-full m-2 rounded shadow-md shadow-bluish_grey-500/50">
                 {
                     fetchError.length > 0 ?
                         <FetchErrorDisplay fetchError={fetchError}></FetchErrorDisplay>

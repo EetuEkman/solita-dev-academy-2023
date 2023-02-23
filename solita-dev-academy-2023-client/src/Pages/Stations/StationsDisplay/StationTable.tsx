@@ -147,7 +147,7 @@ export default function StationTable(props: Props) {
                                         <td>{station.Operator}</td>
                                         <td>{station.Capacity}</td>
                                         <td>
-                                            <Link to={"/station/" + station.Id} className="bg-yellow-500 text-bluish_grey-500 font-bold px-2 py-1 rounded">Details</Link>
+                                            <Link to={"/station/" + station.Id} className="bg-yellow-500 text-bluish_grey-500 font-bold px-1 py-0.5 rounded">Details</Link>
                                         </td>
                                     </tr>
                                 )
