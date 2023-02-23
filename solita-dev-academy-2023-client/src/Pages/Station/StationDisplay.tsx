@@ -3,41 +3,16 @@ import DetailedStation from "../../Models/DetailedStation";
 import * as Leaflet from "leaflet";
 import { Link } from "react-router-dom";
 import PopularStations from "./PopularStations";
+import StationMap from "./StationMap";
 
 interface Props {
     station: DetailedStation;
 }
 
 export default function StationDisplay(props: Props) {
-    function SetLeaflet() {
-        if (!props.station.X || !props.station.Y) {
-            return;
-        }
-
-        let longitude = props.station.X;
-
-        let latitude = props.station.Y;
-
-        let map = Leaflet.map("map", {
-            center: [latitude, longitude],
-            zoom: 16,
-        })
-
-        Leaflet.marker([latitude, longitude]).addTo(map);
-
-        Leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            minZoom: 12,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
-    }
-
-    useEffect(() => {
-        SetLeaflet();
-    }, [])
-
     return (
         <div className="flex flex-col p-4 text-slate-300 bg-bluish_grey-500">
+            <StationMap station={props.station}></StationMap>
             <div className="flex">
                 <div className="w-40 h-8 inline-flex">Nimi</div>
                 <div className="w-48 h-8 inline-flex">{props.station.Name_fi}</div>
@@ -84,7 +59,6 @@ export default function StationDisplay(props: Props) {
             </div>
             <PopularStations tableHeadingText="Top destination stations" stations={props.station.TopDestinationStations}></PopularStations>
             <PopularStations tableHeadingText="Top origin stations" stations={props.station.TopOriginStations}></PopularStations>
-            <div id="map" className="w-[64em] h-[36em] my-1"></div>
         </div>
     )
 }
