@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import DetailedStation from "../../Models/DetailedStation";
-import * as Leaflet from "leaflet";
-import { Link } from "react-router-dom";
-import PopularStations from "./PopularStations";
 import StationMap from "./StationMap";
+import StationsTable from "./StationsTable";
 
 interface Props {
     station: DetailedStation;
@@ -34,12 +32,12 @@ export default function StationDisplay(props: Props) {
                 <div className="w-48 h-8 inline-flex">{props.station.Address_se}</div>
             </div>
             <div className="flex">
-                <div className="w-40 h-8 inline-flex">Operator</div>
-                <div className="w-48 h-8 inline-flex">{props.station.Operator}</div>
-            </div>
-            <div className="flex">
                 <div className="w-40 h-8 inline-flex">Capacity</div>
                 <div className="w-48 h-8 inline-flex">{props.station.Capacity}</div>
+            </div>
+            <div className="flex">
+                <div className="w-40 h-8 inline-flex">Operator</div>
+                <div className="w-48 h-8 inline-flex">{props.station.Operator}</div>
             </div>
             <div className="flex">
                 <div className="w-40 h-8 inline-flex">Departure count</div>
@@ -57,8 +55,8 @@ export default function StationDisplay(props: Props) {
                 <div className="w-40 h-8 inline-flex">Ret. distance avg.</div>
                 <div className="w-48 h-8 inline-flex">{props.station.ReturnDistanceAverage.toLocaleString()} meters.</div>
             </div>
-            <PopularStations tableHeadingText="Top destination stations" stations={props.station.TopDestinationStations}></PopularStations>
-            <PopularStations tableHeadingText="Top origin stations" stations={props.station.TopOriginStations}></PopularStations>
+            <StationsTable tableHeadingText="Top destination stations" stations={props.station.TopDestinationStations}></StationsTable>
+            <StationsTable tableHeadingText="Top origin stations" stations={props.station.TopOriginStations}></StationsTable>
         </div>
     )
 }

@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as Leaflet from "leaflet";
 import DetailedStation from "../../Models/DetailedStation";
 
 interface Props {
+    latitude?: number;
+    longitude?: number;
     station: DetailedStation
 }
 
@@ -19,7 +21,7 @@ export default function StationMap(props: Props) {
         let map = Leaflet.map("map", {
             center: [latitude, longitude],
             zoom: 16,
-        })
+        });
 
         Leaflet.marker([latitude, longitude]).addTo(map);
 
@@ -30,12 +32,11 @@ export default function StationMap(props: Props) {
         }).addTo(map);
     }
 
-    
     useEffect(() => {
         SetLeaflet();
     }, [])
 
     return (
-        <div id="map" className="w-[64em] h-[36em] mb-2"></div>
+        <div id="map" className="w-[80em] h-[45em] mb-2"></div>
     )
 }

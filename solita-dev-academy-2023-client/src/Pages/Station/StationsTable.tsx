@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Station from "../../Models/Station";
 
 interface Props {
@@ -6,11 +7,11 @@ interface Props {
     stations: Station[]
 }
 
-export default function PopularStations(props: Props) {
+export default function StationsTable(props: Props) {
     return (
-        <div className="overflow-auto my-1 py-1">
-            <h1 className="max-w-[50em] flex justify-center my-1 text-lg">{props.tableHeadingText}</h1>
-            <table className="w-full max-w-[64em] h-full table-auto text-sm text-slate-400">
+        <div className="overflow-auto my-0.5 py-2">
+            <h1 className="flex justify-center my-1 text-lg">{props.tableHeadingText}</h1>
+            <table className="w-full h-full table-auto text-sm text-slate-400">
                 <thead className="text-lg text-slate-300 border-b-2 border-slate-300">
                     <tr>
                         <th>Nimi</th>
@@ -19,7 +20,8 @@ export default function PopularStations(props: Props) {
                         <th>Osoite</th>
                         <th>Adress</th>
                         <th>Capacity</th>
-                        <th>Operator</th>        
+                        <th>Operator</th>
+                        <th></th>    
                     </tr>
                 </thead>
                 <tbody>
@@ -34,6 +36,7 @@ export default function PopularStations(props: Props) {
                                     <td>{station.Address_se}</td>
                                     <td>{station.Capacity}</td>
                                     <td>{station.Operator}</td>
+                                    <td><Link to={"/station/" + station.Id} className="text-blue-500">Link</Link></td>
                                 </tr>
                             )
                         })

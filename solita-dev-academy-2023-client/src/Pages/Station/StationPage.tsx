@@ -58,7 +58,7 @@ export default function StationPage() {
                 }
                 {
                     station ?
-                        <StationDisplay station={station}></StationDisplay>
+                        <StationDisplay key={Date.now().toString()} station={station}></StationDisplay>
                         :
                         null
                 }

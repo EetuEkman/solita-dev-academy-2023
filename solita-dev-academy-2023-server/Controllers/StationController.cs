@@ -103,11 +103,11 @@ namespace solita_dev_academy_2023_server.Controllers
 
                 SELECT AVG([Covered_distance])
                 FROM [dbo].[Journeys] 
-                WHERE [Id] = @Id;
+                WHERE Departure_station_id = @Id;
 
                 SELECT AVG([Covered_distance])
                 FROM [dbo].[Journeys] 
-                WHERE [Id] = @Id;
+                WHERE [Return_station_id] = @Id;
 
                 SELECT * 
                 FROM Stations 
