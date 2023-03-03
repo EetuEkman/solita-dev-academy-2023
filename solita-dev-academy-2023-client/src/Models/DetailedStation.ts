@@ -1,10 +1,11 @@
 import Station from "./Station";
+import PopularStation from "./PopularStation";
 
 export default interface DetailedStation extends Station {
     DepartureCount: number;
     ReturnCount: number;
     DepartureDistanceAverage: number;
     ReturnDistanceAverage: number;
-    TopDestinationStations: Station[];
-    TopOriginStations: Station[];
+    TopDestinationStations: PopularStation[];
+    TopOriginStations: PopularStation[];
 }

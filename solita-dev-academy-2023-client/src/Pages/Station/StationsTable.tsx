@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Station from "../../Models/Station";
+import PopularStation from "../../Models/PopularStation";
 
 interface Props {
     tableHeadingText: string;
-    stations: Station[]
+    stations: PopularStation[]
 }
 
 export default function StationsTable(props: Props) {
@@ -14,6 +14,7 @@ export default function StationsTable(props: Props) {
             <table className="w-full h-full table-auto text-sm text-slate-400">
                 <thead className="text-lg text-slate-300 border-b-2 border-slate-300">
                     <tr>
+                        <th>Count</th>
                         <th>Nimi</th>
                         <th>Namn</th>
                         <th>Name</th>
@@ -29,6 +30,7 @@ export default function StationsTable(props: Props) {
                         props.stations.map((station, index) => {
                             return (
                                 <tr className="border-y-[1px] first:border-y-0 last:border-y-0 border-slate-400 my-2 py-2" key={index}>
+                                    <td>{station.Count}</td>
                                     <td>{station.Name_fi}</td>
                                     <td>{station.Name_se}</td>
                                     <td>{station.Name_en}</td>
