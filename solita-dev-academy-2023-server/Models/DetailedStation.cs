@@ -6,7 +6,7 @@
         public int ReturnCount { get; set; }
         public double DepartureDistanceAverage { get; set; }
         public double ReturnDistanceAverage { get; set; }
-        public ICollection<Station> TopDestinationStations { get; set; }
-        public ICollection<Station> TopOriginStations { get; set; }
+        public ICollection<PopularStation> TopDestinationStations { get; set; }
+        public ICollection<PopularStation> TopOriginStations { get; set; }
     }
 }

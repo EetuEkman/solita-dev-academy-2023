@@ -21,7 +21,7 @@ namespace solita_dev_academy_2023_server.Controllers
         public int? CapacityFrom { get; set; }
         public int? CapacityTo { get; set; }
         public int? Page { get; set; }
-        
+
     }
 
     [ApiController]
@@ -122,8 +122,19 @@ namespace solita_dev_academy_2023_server.Controllers
                         WHERE [Return_station_id] = @Id 
                         GROUP BY Departure_station_id 
                         ORDER BY C DESC 
-                    ) Id_count 
+                    ) Ids
                 );
+
+                SELECT *
+                FROM 
+                ( 
+                    SELECT TOP 5 Departure_station_id Id, 
+                    COUNT(Departure_station_id) [Count] 
+                    FROM Journeys 
+                    WHERE [Return_station_id] = @Id
+                    GROUP BY Departure_station_id 
+                    ORDER BY [Count] DESC 
+                ) Id_Count;
 
                 SELECT * 
                 FROM Stations 
@@ -138,8 +149,20 @@ namespace solita_dev_academy_2023_server.Controllers
                         WHERE Departure_station_id = @Id 
                         GROUP BY [Return_station_id] 
                         ORDER BY C DESC 
-                    ) Id_count 
-                );";
+                    ) Ids
+                );
+    
+                SELECT *
+                FROM 
+                ( 
+                    SELECT TOP 5 [Return_station_id] Id, 
+                    COUNT([Return_station_id]) [Count] 
+                    FROM Journeys 
+                    WHERE Departure_station_id = @Id
+                    GROUP BY [Return_station_id] 
+                    ORDER BY [Count] DESC 
+                ) Id_Count;
+                ";
 
             DetailedStation? station;
 
@@ -168,7 +191,11 @@ namespace solita_dev_academy_2023_server.Controllers
 
                     var readTopOriginStations = reader.ReadAsync<Station>();
 
+                    var readTopOriginStationsIdCount = reader.ReadAsync<StationIdCount>();
+
                     var readTopDestinationStations = reader.ReadAsync<Station>();
+
+                    var readTopDestinationStationsIdCount = reader.ReadAsync<StationIdCount>();
 
                     var departureCount = await readDepartureCount;
 
@@ -188,11 +215,69 @@ namespace solita_dev_academy_2023_server.Controllers
 
                     var topOriginStations = await readTopOriginStations;
 
-                    station.TopOriginStations = topOriginStations.ToList();
+                    var topOriginStationsIdCount = await readTopOriginStationsIdCount;
+
+                    var topOriginStationsWithCount = new List<PopularStation>();
+
+                    foreach (var idCount in topOriginStationsIdCount)
+                    {
+                        var topOriginStation = topOriginStations.FirstOrDefault(station => station.Id == idCount.Id);
+
+                        if (topOriginStation is not null)
+                        {
+                            var popularStation = new PopularStation()
+                            {
+                                Id = topOriginStation.Id,
+                                Address_fi = topOriginStation.Address_fi,
+                                Address_se = topOriginStation.Address_se,
+                                Capacity = topOriginStation.Capacity,
+                                Name_en = topOriginStation.Name_en,
+                                Name_fi = topOriginStation.Name_fi,
+                                Name_se = topOriginStation.Name_se,
+                                X = topOriginStation.X,
+                                Y = topOriginStation.Y,
+                                Operator = topOriginStation.Operator,
+                                Count = idCount.Count,
+                            };
+
+                            topOriginStationsWithCount.Add(popularStation);
+                        }
+                    }
+
+                    station.TopOriginStations = topOriginStationsWithCount;
 
                     var topDestinationStations = await readTopDestinationStations;
 
-                    station.TopDestinationStations = topDestinationStations.ToList();
+                    var topDestinationStationsIdCount = await readTopDestinationStationsIdCount;
+
+                    var topDestinationStationsWithCount = new List<PopularStation>();
+
+                    foreach (var idCount in topDestinationStationsIdCount)
+                    {
+                        var topDestinationStation = topDestinationStations.FirstOrDefault(station => station.Id == idCount.Id);
+
+                        if (topDestinationStation is not null)
+                        {
+                            var popularStation = new PopularStation()
+                            {
+                                Id = topDestinationStation.Id,
+                                Address_fi = topDestinationStation.Address_fi,
+                                Address_se = topDestinationStation.Address_se,
+                                Capacity = topDestinationStation.Capacity,
+                                Name_en = topDestinationStation.Name_en,
+                                Name_fi = topDestinationStation.Name_fi,
+                                Name_se = topDestinationStation.Name_se,
+                                X = topDestinationStation.X,
+                                Y = topDestinationStation.Y,
+                                Operator = topDestinationStation.Operator,
+                                Count = idCount.Count,
+                            };
+
+                            topDestinationStationsWithCount.Add(popularStation);
+                        }
+                    }
+
+                    station.TopDestinationStations = topDestinationStationsWithCount;
                 }
             }
             catch (Exception exception)
@@ -209,7 +294,6 @@ namespace solita_dev_academy_2023_server.Controllers
 
             return Content(json, "application/json", System.Text.Encoding.UTF8);
         }
-        
 
         [HttpGet(Name = "GetStations")]
         [Produces("application/json")]
