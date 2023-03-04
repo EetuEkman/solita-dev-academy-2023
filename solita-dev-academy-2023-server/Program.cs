@@ -19,17 +19,32 @@ namespace solita_dev_academy_2023_server
             {
                 // Policy to allow all origins.
 
+                /*
+
                 options.AddPolicy("AnyOrigin", policy =>
                 {
                     policy.AllowAnyOrigin();
                 });
 
+                */
+
+                // Allow all origins by default.
+
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin();
+                });
+
                 // Add default policy to allow localhost origins
+
+                /*
 
                 options.AddDefaultPolicy(builder =>
                 {
                     builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
                 });
+
+                */
             });
 
             var app = builder.Build();
