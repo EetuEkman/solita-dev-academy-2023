@@ -1,13 +1,13 @@
 import StationSearchOptions from "../Models/StationSearchOptions";
 
 /**
- * Builds and returns an URL from the supplied URL string and SearchOptions.
+ * Builds and returns an URL from the supplied URL and StationSearchOptions.
  * @param baseUrl 
  * @param searchOptions 
  * @returns URL with query parameters.
  */
 
-export default function BuildStationsUrl(urlArg: string, searchOptions: StationSearchOptions): URL {
+export default function BuildStationsUrl(urlArg: URL, searchOptions: StationSearchOptions): URL {
     let url = new URL(urlArg);
 
     if (searchOptions.NameFi !== null) {

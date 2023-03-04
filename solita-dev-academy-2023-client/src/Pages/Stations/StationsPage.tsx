@@ -10,6 +10,7 @@ import FetchErrorDisplay from "../Shared/FetchErrorDisplay";
 import Layout from "../Shared/Layout";
 import StationsSearch from "./Search/StationsSearch";
 import StationsDisplay from "./StationsDisplay/StationsDisplay";
+import appSettings from "./../../../appSettings.json";
 
 interface Props {
     stationsPage: FetchedStationsPage | null;
@@ -18,12 +19,14 @@ interface Props {
     SetFilterSort: React.Dispatch<React.SetStateAction<FilterSort>>
 }
 
-const STATIONS_URL = "https://localhost:7263/api/Station";
+const API_BASE_URL = appSettings.urls.api;
+
+const STATIONS_URL = new URL("Station", API_BASE_URL);
 
 function StationsPage(props: Props) {
     const [stationSearchOptions, SetStationSearchOptions] = useState<StationSearchOptions>(DEFAULT_STATION_SEARCH_OPTIONS);
 
-    const [stationsUrl, SetStationsUrl] = useState<URL>(new URL(STATIONS_URL));
+    const [stationsUrl, SetStationsUrl] = useState<URL>(STATIONS_URL);
 
     const [fetchError, SetFetchError] = useState("");
 
