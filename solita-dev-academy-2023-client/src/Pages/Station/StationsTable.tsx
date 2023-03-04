@@ -9,7 +9,7 @@ interface Props {
 
 export default function StationsTable(props: Props) {
     return (
-        <div className="overflow-auto my-0.5 py-2">
+        <div className="overflow-auto my-0.5 py-2 pb-3">
             <h1 className="flex justify-center my-1 text-lg">{props.tableHeadingText}</h1>
             <table className="w-full h-full table-auto text-sm text-slate-400">
                 <thead className="text-lg text-slate-300 border-b-2 border-slate-300">
