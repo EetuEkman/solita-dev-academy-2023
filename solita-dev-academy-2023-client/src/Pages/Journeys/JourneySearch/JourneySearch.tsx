@@ -63,9 +63,9 @@ export default function JourneySearch(props: Props) {
                 <TextInput value={props.searchOptions.ReturnStationNameSe} option={JourneySearchLabelTexts.ReturnStationNameSe} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
                 <TextInput value={props.searchOptions.ReturnStationNameEn} option={JourneySearchLabelTexts.ReturnStationNameEn} searchOptions={props.searchOptions} setSearchOptions={props.setSearchOptions}></TextInput>
 
-                <div className="h-8 flex items-center my-0.5">
-                    <label className="inline-flex items-center">
-                        <span className="w-48 h-8 inline-flex items-center">{JourneySearchLabelTexts.OrderBy}</span>
+                <div className="flex items-center my-0.5">
+                    <label className="flex items-center">
+                        <span className="w-48">{JourneySearchLabelTexts.OrderBy}</span>
                         <select onChange={onOrderByChange} value={props.searchOptions.OrderBy} name="order_by" className="w-48 h-7 px-1 bg-slate-200 border-2 border-black_accent-500 text-black_accent-500">
                             {
                                 Object.values(OrderByOptions).map((value, index) => {
@@ -76,8 +76,8 @@ export default function JourneySearch(props: Props) {
                     </label>
                 </div>
 
-                <div className="my-0.5">
-                    <label className="inline-flex items-center">
+                <div className="my-0.5 flex">
+                    <label className="flex items-center">
                         <span className="w-48 h-8 inline-flex items-center">{JourneySearchLabelTexts.Order}</span>
                         {
                             props.searchOptions.OrderBy === "Ascending" ?

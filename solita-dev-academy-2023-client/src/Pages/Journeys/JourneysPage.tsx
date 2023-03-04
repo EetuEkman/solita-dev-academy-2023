@@ -9,8 +9,11 @@ import JourneySearch from "./JourneySearch/JourneySearch";
 import FetchedJourneysPage from '../../Models/FetchedJourneysPage';
 import SearchOptions from '../../Models/JourneySearchOptions';
 import Layout from '../Shared/Layout';
+import appSettings from "./../../../appSettings.json";
 
-const JOURNEYS_URL = "https://localhost:7263/api/Journey";
+const API_BASE_URL = appSettings.urls.api;
+
+const JOURNEYS_URL = new URL("Journey", API_BASE_URL);
 
 interface Props {
 
@@ -31,7 +34,7 @@ export default function JourneysPage(props: Props) {
 
     // The current URL from which to fetch the journey page when the fetch button is clicked.
 
-    const [journeyUrl, setJourneyUrl] = useState(new URL(JOURNEYS_URL));
+    const [journeyUrl, setJourneyUrl] = useState(JOURNEYS_URL);
 
     const HandleFetchPointerDown = (event: React.PointerEvent<HTMLButtonElement>) => {
         if (isWorking) {

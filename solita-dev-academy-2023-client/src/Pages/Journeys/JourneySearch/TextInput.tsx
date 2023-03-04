@@ -42,7 +42,7 @@ export default function TextInput(props: Props) {
     }
 
     return (
-        <div className="h-8 flex items-center my-0.5">
+        <div className="flex items-center my-0.5">
             <label>
                 {
                     props.option === SearchOptionNames.CoveredDistanceFrom || props.option === SearchOptionNames.CoveredDistanceTo ?

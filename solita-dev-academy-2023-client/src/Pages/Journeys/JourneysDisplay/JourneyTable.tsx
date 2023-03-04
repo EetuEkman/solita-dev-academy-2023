@@ -181,7 +181,7 @@ export default function JourneyTable(props: Props) {
 
     return (
         <div className="flex flex-col justify-start py-1 sm:px-1 md:px-2 lg:px-4">
-            <div className="overflow-auto">
+            <div className=" min-h-[31.5em] overflow-auto pb-2.5 mb-0.5">
                 <table className="w-full h-full table-auto border-collapse text-slate-400">
                     <thead className="text-md text-slate-300 border-b-2 border-slate-300">
                         <tr>
