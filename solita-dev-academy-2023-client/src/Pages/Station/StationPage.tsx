@@ -5,11 +5,12 @@ import Layout from "../Shared/Layout";
 import DetailedStation from "../../Models/DetailedStation";
 import FetchErrors from "../../Constants/FetchErrors";
 import StationDisplay from "./StationDisplay";
+import appSettings from "./../../../appSettings.json";
+
+const API_BASE_URL = appSettings.urls.api;
 
 export default function StationPage() {
     const [fetchError, SetFetchError] = useState("");
-
-    const STATION_URL = "https://localhost:7263/api/Station/";
 
     const [station, SetStation] = useState<DetailedStation | null>(null);
 
@@ -40,11 +41,23 @@ export default function StationPage() {
     }
 
     useEffect(() => {
-        FetchStation(new URL(STATION_URL + id));
+        if (!id) {
+            return;
+        }
+
+        let url = new URL("Station/" + id, API_BASE_URL);
+
+        FetchStation(url);
     }, [])
 
     useEffect(() => {
-        FetchStation(new URL(STATION_URL + id));
+        if (!id) {
+            return;
+        }
+
+        let url = new URL("Station/" + id, API_BASE_URL);
+
+        FetchStation(url);
     }, [id])
 
     return (
@@ -60,9 +73,8 @@ export default function StationPage() {
                     station ?
                         <StationDisplay key={Date.now().toString()} station={station}></StationDisplay>
                         :
-                        null
+                        <div className="text-yellow-500 py-2 px-4">Station not found.</div>
                 }
-
             </div>
         </Layout>
     )
