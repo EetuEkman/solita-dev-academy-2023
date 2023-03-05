@@ -14,14 +14,14 @@
     },
     "resourceGroupLocation": {
       "type": "string",
-      "defaultValue": "northeurope",
+      "defaultValue": "swedencentral",
       "metadata": {
         "description": "Location of the resource group. Resource groups could have different location than resources, however by default we use API versions from latest hybrid profile which support all locations for resource types we support."
       }
     },
     "resourceName": {
       "type": "string",
-      "defaultValue": "solita-dev-academy-2023",
+      "defaultValue": "solita-dev-academy-2023-server",
       "metadata": {
         "description": "Name of the main resource to be created by this template."
       }
