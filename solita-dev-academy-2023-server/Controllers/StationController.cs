@@ -153,13 +153,13 @@ namespace solita_dev_academy_2023_server.Controllers
 
             DetailedStation? station;
 
-            var connectionString = configuration.GetValue<string>("ConnectionStrings:Citybikes");
+            var connectionString = configuration.GetConnectionString("Citybikes");
 
             try
             {
                 using (var connection = new SqlConnection(connectionString))
                 {
-                    var reader = await connection.QueryMultipleAsync(query, parameters);
+                    var reader = await connection.QueryMultipleAsync(query, parameters, commandTimeout: 120);
 
                     station = await reader.ReadSingleOrDefaultAsync<DetailedStation>();
 
@@ -269,7 +269,9 @@ namespace solita_dev_academy_2023_server.Controllers
             }
             catch (Exception exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                throw;
+
+                // return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
             }
 
             if (station is null)

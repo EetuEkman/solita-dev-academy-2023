@@ -535,22 +535,26 @@ namespace solita_dev_academy_2023_server.Controllers
 
             try
             {
-                var connectionString = configuration.GetValue<string>("ConnectionStrings:Citybikes");
+                var connectionString = configuration.GetConnectionString("Citybikes");
 
                 using (var connection = new SqlConnection(connectionString))
                 {
-                    connection.Open();
+                    var reader = await connection.QueryMultipleAsync(query, parameters);
 
-                    var reader = connection.QueryMultiple(query, parameters);
+                    var readJourneys = reader.ReadAsync<Journey>();
 
-                    journeys = reader.Read<Journey>().ToList();
+                    var readCount = reader.ReadAsync<int>();
 
-                    count = reader.Read<int>().Single();
+                    journeys = (await reader.ReadAsync<Journey>()).ToList();
+
+                    count = (await readCount).Single();
                 }
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return StatusCode(500);
+                throw;
+
+                // return StatusCode(500);
             }
 
             var result = new JourneyPage();
