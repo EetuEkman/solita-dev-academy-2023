@@ -32,6 +32,10 @@ namespace solita_dev_academy_2023_server.Controllers
     [Route("api/[controller]")]
     public class JourneyController : Controller
     {
+        // Accepted order by options.
+
+        // Point is to accept capital letters and spaces.
+
         public static readonly string[] OrderByOptions =
         {
             "departure",
@@ -45,6 +49,8 @@ namespace solita_dev_academy_2023_server.Controllers
             "returnstationnamese",
             "returnstationnameen"
         };
+
+        // Accepted order options.
 
         public static readonly string[] OrderOptions =
         {
@@ -68,10 +74,14 @@ namespace solita_dev_academy_2023_server.Controllers
         [ProducesResponseType(500)]
         public async Task<IActionResult> Index([FromQuery] JourneyQueryParameters queryParameters)
         {
+            // Validate order by option.
+
             string orderByOption = "";
 
             if (queryParameters.OrderBy is not null)
             {
+                // Accept capital letters and spaces.
+
                 orderByOption = queryParameters.OrderBy.ToLower().Replace(" ", String.Empty);
 
                 if (OrderByOptions.Contains(orderByOption) == false)
@@ -79,6 +89,8 @@ namespace solita_dev_academy_2023_server.Controllers
                     ModelState.AddModelError("OrderBy", "Undefined order by option " + queryParameters.OrderBy);
                 }
             }
+
+            // Validate order.
 
             if (queryParameters.Order is not null)
             {
@@ -95,43 +107,83 @@ namespace solita_dev_academy_2023_server.Controllers
 
             // For building dynamic parameters.
 
-            var dictionary = new Dictionary<string, object>()
-            {
-                { "@DepartureStationNameFi", "%" },
-                { "@DepartureStationNameSe", "%" },
-                { "@DepartureStationNameEn", "%" },
-                { "@ReturnStationNameFi", "%" },
-                { "@ReturnStationNameSe", "%" },
-                { "@ReturnStationNameEn", "%" }
-            };
+            var dictionary = new Dictionary<string, object>();
 
             // Base query.
 
-            var query = "SELECT [J].[Departure], [J].[Return], [J].[Covered_distance], [J].[Duration]," +
-                " DS.Name_fi AS Departure_station_name_fi, DS.Name_se AS Departure_station_name_se, DS.Name_en AS Departure_station_name_en, DS.Address_fi AS Departure_station_address_fi, DS.Address_se AS Departure_station_address_se," +
-                " RS.Name_fi AS Return_station_name_fi, RS.Name_se AS Return_station_name_se, RS.Name_en AS Return_station_name_en, RS.Address_fi AS Return_station_address_fi, RS.Address_se AS Return_station_address_se" +
-                " FROM Journeys AS J" +
-                " INNER JOIN Stations AS DS ON [J].[Departure_station_id] = [DS].[Id]" +
-                " INNER JOIN Stations AS RS ON [J].[Return_station_id] = [RS].[Id]" +
-                " WHERE [DS].[Name_fi] LIKE @DepartureStationNameFi" +
-                " AND [DS].[Name_se] LIKE @DepartureStationNameSe" +
-                " AND [DS].[Name_en] LIKE @DepartureStationNameEn" +
-                " AND [RS].[Name_fi] LIKE @ReturnStationNameFi" +
-                " AND [RS].[Name_se] LIKE @ReturnStationNameSe" +
-                " AND [RS].[Name_en] LIKE @ReturnStationNameEn";
+            var query = @$"SELECT J.Departure, J.[Return], J.Covered_distance, J.Duration,
+                 DS.Name_fi Departure_station_name_fi, DS.Name_se Departure_station_name_se, DS.Name_en Departure_station_name_en, DS.Address_fi Departure_station_address_fi, DS.Address_se Departure_station_address_se,
+                 RS.Name_fi Return_station_name_fi, RS.Name_se Return_station_name_se, RS.Name_en Return_station_name_en, RS.Address_fi Return_station_address_fi, RS.Address_se Return_station_address_se
+                 FROM Journeys J
+                 INNER JOIN Stations DS ON J.Departure_station_id = DS.Id
+                 INNER JOIN Stations RS ON J.[Return_station_id] = RS.Id
+                 WHERE 1 = 1";
 
-            // Result count.
+            // Result count query.
 
-            var countQuery = " SELECT COUNT(1)" +
-                " FROM Journeys AS J" +
-                " INNER JOIN Stations AS DS ON [J].[Departure_station_id] = [DS].[Id]" +
-                " INNER JOIN Stations AS RS ON [J].[Return_station_id] = [RS].[Id]" +
-                " WHERE [DS].[Name_fi] LIKE @DepartureStationNameFi" +
-                " AND [DS].[Name_se] LIKE @DepartureStationNameSe" +
-                " AND [DS].[Name_en] LIKE @DepartureStationNameEn" +
-                " AND [RS].[Name_fi] LIKE @ReturnStationNameFi" +
-                " AND [RS].[Name_se] LIKE @ReturnStationNameSe" +
-                " AND [RS].[Name_en] LIKE @ReturnStationNameEn";
+            var countQuery = @$" SELECT COUNT(1)
+                 FROM Journeys AS J
+                 INNER JOIN Stations AS DS ON J.Departure_station_id = DS.Id
+                 INNER JOIN Stations AS RS ON J.[Return_station_id] = RS.Id
+                 WHERE 1 = 1";
+
+            // Departure station names.
+
+            if (String.IsNullOrEmpty(queryParameters.DepartureStationNameFi) != false)
+            {
+                dictionary["@DepartureStationNameFi"] = "%" + queryParameters.DepartureStationNameFi + "%";
+
+                query += " AND DS.Name_fi LIKE @DepartureStationNameFi";
+
+                countQuery += " AND DS.Name_fi LIKE @DepartureStationNameFi";
+            }
+
+            if (String.IsNullOrEmpty(queryParameters.DepartureStationNameSe) != false)
+            {
+                dictionary["@DepartureStationNameSe"] = "%" + queryParameters.DepartureStationNameSe + "%";
+
+                query += " AND DS.Name_se LIKE @DepartureStationNameSe";
+
+                countQuery += " AND DS.Name_se LIKE @DepartureStationNameSe";
+            }
+
+            if (String.IsNullOrEmpty(queryParameters.DepartureStationNameEn) != false)
+            {
+                dictionary["@DepartureStationNameEn"] = "%" + queryParameters.DepartureStationNameEn + "%";
+
+                query += " AND DS.Name_en LIKE @DepartureStationNameEn";
+
+                countQuery += " AND DS.Name_en LIKE @DepartureStationNameEn";
+            }
+
+            // Return station names.
+
+            if (String.IsNullOrEmpty(queryParameters.ReturnStationNameFi) != false)
+            {
+                dictionary["@ReturnStationNameFi"] = "%" + queryParameters.ReturnStationNameFi + "%";
+
+                query += " AND RS.Name_fi LIKE @ReturnStationNameFi";
+
+                countQuery += " AND RS.Name_fi LIKE @ReturnStationNameFi";
+            }
+
+            if (String.IsNullOrEmpty(queryParameters.ReturnStationNameSe) != false)
+            {
+                dictionary["@ReturnStationNameSe"] = "%" + queryParameters.ReturnStationNameSe + "%";
+
+                query += " AND RS.Name_se LIKE @ReturnStationNameSe";
+
+                countQuery += " AND RS.Name_se LIKE @ReturnStationNameSe";
+            }
+
+            if (String.IsNullOrEmpty(queryParameters.ReturnStationNameEn) != false)
+            {
+                dictionary["@ReturnStationNameEn"] = "%" + queryParameters.ReturnStationNameEn + "%";
+
+                query += " AND RS.Name_en LIKE @ReturnStationNameEn";
+
+                countQuery += " AND RS.Name_en LIKE @ReturnStationNameEn";
+            }
 
             // Departure datetime.
 
@@ -195,7 +247,11 @@ namespace solita_dev_academy_2023_server.Controllers
 
                 countQuery += " AND [J].[Departure] >= @DepartureDateFrom";
 
-                dictionary.Add("@DepartureDateFrom", queryParameters.DepartureDateFrom?.ToString("yyyy-MM-dd"));
+                var dateTime = (DateTime)queryParameters.DepartureDateFrom;
+
+                var date = dateTime.ToString("yyyy-MM-dd");
+
+                dictionary.Add("@DepartureDateFrom", date);
             }
 
             if (queryParameters.DepartureDateTo is not null)
@@ -204,7 +260,11 @@ namespace solita_dev_academy_2023_server.Controllers
 
                 countQuery += " AND [J].[Departure] <= @DepartureDateTo";
 
-                dictionary.Add("@DepartureDateTo", queryParameters.DepartureDateTo?.ToString("yyyy-MM-dd"));
+                var dateTime = (DateTime)queryParameters.DepartureDateTo;
+
+                var date = dateTime.ToString("yyyy-MM-dd");
+
+                dictionary.Add("@DepartureDateTo", date);
             }
 
             // Return datetime.
@@ -269,7 +329,11 @@ namespace solita_dev_academy_2023_server.Controllers
 
                 countQuery += " AND [J].[Return] >= @ReturnDateFrom";
 
-                dictionary.Add("@ReturnDateFrom", queryParameters.ReturnDateFrom);
+                var dateTime = (DateTime)queryParameters.ReturnDateFrom;
+
+                var date = dateTime.ToString("yyyy-MM-dd");
+
+                dictionary.Add("@ReturnDateFrom", date);
             }
 
             if (queryParameters.ReturnDateTo is not null)
@@ -278,10 +342,16 @@ namespace solita_dev_academy_2023_server.Controllers
 
                 countQuery += " AND [J].[Return] <= @ReturnDateTo";
 
-                dictionary.Add("@ReturnDateTo", queryParameters.ReturnDateTo);
+                var dateTime = (DateTime)queryParameters.ReturnDateTo;
+
+                var date = dateTime.ToString("yyyy-MM-dd");
+
+                dictionary.Add("@ReturnDateTo", date);
             }
 
             // Departure station names.
+
+            /*
 
             if (String.IsNullOrWhiteSpace(queryParameters.DepartureStationNameFi) == false)
             {
@@ -314,6 +384,8 @@ namespace solita_dev_academy_2023_server.Controllers
             {
                 dictionary["@ReturnStationNameEn"] = "%" + queryParameters.ReturnStationNameEn + "%";
             }
+
+            */
 
             // Duration.
 
@@ -543,11 +615,11 @@ namespace solita_dev_academy_2023_server.Controllers
 
                     var readJourneys = reader.ReadAsync<Journey>();
 
-                    var readCount = reader.ReadAsync<int>();
+                    var readCount = reader.ReadSingleAsync<int>();
 
-                    journeys = (await reader.ReadAsync<Journey>()).ToList();
+                    journeys = (await readJourneys).ToList();
 
-                    count = (await readCount).Single();
+                    count = (await readCount);
                 }
             }
             catch (Exception exception)
