@@ -552,9 +552,7 @@ namespace solita_dev_academy_2023_server.Controllers
             }
             catch (Exception exception)
             {
-                throw;
-
-                // return StatusCode(500);
+                return StatusCode(500, exception.Message);
             }
 
             var result = new JourneyPage();

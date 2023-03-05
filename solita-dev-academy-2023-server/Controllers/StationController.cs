@@ -269,9 +269,7 @@ namespace solita_dev_academy_2023_server.Controllers
             }
             catch (Exception exception)
             {
-                throw;
-
-                // return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
             }
 
             if (station is null)
@@ -421,8 +419,6 @@ namespace solita_dev_academy_2023_server.Controllers
 
                 using (var connection = new SqlConnection(connectionString))
                 {
-                    await connection.OpenAsync();
-
                     var reader = await connection.QueryMultipleAsync(query, parameters);
 
                     stations = reader.Read<Station>().ToList();
@@ -467,7 +463,7 @@ namespace solita_dev_academy_2023_server.Controllers
 
             catch (Exception exception)
             {
-                return StatusCode(500);
+                return StatusCode(500, exception.Message);
             }
 
             stationPage.Count = rowCount;
