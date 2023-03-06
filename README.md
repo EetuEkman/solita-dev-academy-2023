@@ -2,6 +2,10 @@
 
 This repository is a solution for Solita Dev Academy pre-assignment.
 
+The client is hosted [here](https://victorious-bay-04e773803.2.azurestaticapps.net/journeys).
+
+:point_right: Please note that the SQL Server basic tier instance used for this demo is quite limited especially for the complex queries used for the detailed station page. For the best performance, please test the project locally.
+
 The solution is an user interface and a backend service for displaying data from the city bike journeys in the Helsinki capital area.
 
 The purpose of the project is to show off basic web developing skills: 
@@ -97,10 +101,14 @@ Since the frontend is server by a different webserver and therefore origin, I ra
 
 The frontend is a React app written in TypeScript.
 
+I decided to use [Tailwind CSS framework](https://tailwindcss.com/) for this project.
+
+The SearchOptions holds the state of the search options from which the url and query parameters are built from, as well as the journey search components.
+
+### Setup
+
 First, run command `npm install` to install all all the dependencies.
 
 Then, start the server by running the command `npm run start` which will start the server in development mode.
 
 After that, open the browser and navigate to http://localhost:8080.
-
-The SearchOptions holds the state of the search options from which the url and query parameters are built from, as well as the journey search components.

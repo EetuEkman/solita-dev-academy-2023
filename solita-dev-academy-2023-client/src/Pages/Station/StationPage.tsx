@@ -73,7 +73,7 @@ export default function StationPage() {
                     station ?
                         <StationDisplay key={Date.now().toString()} station={station}></StationDisplay>
                         :
-                        <div className="text-yellow-500 py-2 px-4">Station not found.</div>
+                        <div className="flex justify-center align-middle text-xl py-2 px-4">Loading..</div>
                 }
             </div>
         </Layout>

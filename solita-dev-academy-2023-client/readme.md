@@ -1,4 +1,4 @@
-#
+# Client for solita dev academy 2023 project.
 
 ## Building and running on localhost
 
@@ -28,7 +28,11 @@ npm run build-dev
 
 ## Running
 
-Open the file `dist/index.html` in your browser
+```sh
+    npm run start
+```
+
+and open [http://localhost:8080] in your browser.
 
 ## Testing
 
