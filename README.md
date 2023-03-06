@@ -2,7 +2,7 @@
 
 This repository is a solution for Solita Dev Academy pre-assignment.
 
-The client is hosted [here](https://victorious-bay-04e773803.2.azurestaticapps.net/journeys).
+The client is hosted [here](https://victorious-bay-04e773803.2.azurestaticapps.net/).
 
 :point_right: Please note that the SQL Server basic tier instance used for this demo is quite limited especially for the complex queries used for the detailed station page. For the best performance, please test the project locally.
 
