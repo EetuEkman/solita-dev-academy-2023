@@ -236,3 +236,11 @@ GO
 GRANT SELECT, INSERT, EXECUTE TO Citybikes_user
 
 GO
+
+CREATE INDEX FK_Stations ON Journeys (Departure_station_id, [Return_station_id])
+
+GO
+
+CREATE INDEX Covered_distance ON Journeys (Covered_distance)
+
+GO
