@@ -129,7 +129,7 @@ namespace solita_dev_academy_2023_server.Controllers
 
             // Departure station names.
 
-            if (String.IsNullOrEmpty(queryParameters.DepartureStationNameFi) != false)
+            if (String.IsNullOrEmpty(queryParameters.DepartureStationNameFi) == false)
             {
                 dictionary["@DepartureStationNameFi"] = "%" + queryParameters.DepartureStationNameFi + "%";
 
@@ -138,7 +138,7 @@ namespace solita_dev_academy_2023_server.Controllers
                 countQuery += " AND DS.Name_fi LIKE @DepartureStationNameFi";
             }
 
-            if (String.IsNullOrEmpty(queryParameters.DepartureStationNameSe) != false)
+            if (String.IsNullOrEmpty(queryParameters.DepartureStationNameSe) == false)
             {
                 dictionary["@DepartureStationNameSe"] = "%" + queryParameters.DepartureStationNameSe + "%";
 
@@ -147,7 +147,7 @@ namespace solita_dev_academy_2023_server.Controllers
                 countQuery += " AND DS.Name_se LIKE @DepartureStationNameSe";
             }
 
-            if (String.IsNullOrEmpty(queryParameters.DepartureStationNameEn) != false)
+            if (String.IsNullOrEmpty(queryParameters.DepartureStationNameEn) == false)
             {
                 dictionary["@DepartureStationNameEn"] = "%" + queryParameters.DepartureStationNameEn + "%";
 
@@ -158,7 +158,7 @@ namespace solita_dev_academy_2023_server.Controllers
 
             // Return station names.
 
-            if (String.IsNullOrEmpty(queryParameters.ReturnStationNameFi) != false)
+            if (String.IsNullOrEmpty(queryParameters.ReturnStationNameFi) == false)
             {
                 dictionary["@ReturnStationNameFi"] = "%" + queryParameters.ReturnStationNameFi + "%";
 
@@ -167,7 +167,7 @@ namespace solita_dev_academy_2023_server.Controllers
                 countQuery += " AND RS.Name_fi LIKE @ReturnStationNameFi";
             }
 
-            if (String.IsNullOrEmpty(queryParameters.ReturnStationNameSe) != false)
+            if (String.IsNullOrEmpty(queryParameters.ReturnStationNameSe) == false)
             {
                 dictionary["@ReturnStationNameSe"] = "%" + queryParameters.ReturnStationNameSe + "%";
 
@@ -176,7 +176,7 @@ namespace solita_dev_academy_2023_server.Controllers
                 countQuery += " AND RS.Name_se LIKE @ReturnStationNameSe";
             }
 
-            if (String.IsNullOrEmpty(queryParameters.ReturnStationNameEn) != false)
+            if (String.IsNullOrEmpty(queryParameters.ReturnStationNameEn) == false)
             {
                 dictionary["@ReturnStationNameEn"] = "%" + queryParameters.ReturnStationNameEn + "%";
 
