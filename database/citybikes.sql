@@ -244,3 +244,75 @@ GO
 CREATE INDEX Covered_distance ON Journeys (Covered_distance)
 
 GO
+
+-- Bulk insert journeys from the file in the supplied path. 
+
+CREATE PROCEDURE BulkInsertJourneys @FilePath nvarchar(255)
+AS
+BEGIN
+    IF OBJECT_ID(N'tempdb..#Journeys') IS NOT NULL
+    BEGIN
+        DROP TABLE #Journeys
+    END
+    
+    CREATE TABLE #Journeys
+    (
+        Departure datetime2(0),
+        [Return] datetime2(0),
+        Departure_station_id nvarchar(4),
+        Departure_station_name nvarchar(64),
+        Return_station_id nvarchar(4),
+        Return_station_name nvarchar(64),
+        Covered_distance float,
+        Duration float
+    )
+
+    DECLARE @BulkInsert NVARCHAR(500) =
+    'BULK INSERT #Journeys FROM ''' 
+    + 
+    @FilePath 
+    + 
+    '''
+     WITH
+    (
+    	FORMAT = ''CSV'',
+    	CODEPAGE = ''65001'',
+    	DATAFILETYPE=''char'',
+        FIRSTROW = 2,
+    	FIELDTERMINATOR = '','',
+    	ROWTERMINATOR = ''0x0a'',
+    	FIELDQUOTE = ''"''
+    )'
+
+    EXEC(@BulkInsert);
+
+    INSERT INTO Stations (Id, Name_fi, Name_en)
+    SELECT DISTINCT Departure_station_id, Departure_station_name, Departure_station_name
+    FROM #Journeys
+    WHERE NOT EXISTS
+    (
+    	SELECT Id
+    	FROM Stations
+    	WHERE Stations.Id = #Journeys.Departure_station_id
+    )
+    ORDER BY Departure_station_id ASC;
+
+    INSERT INTO Stations (Id, Name_fi, Name_en)
+    SELECT DISTINCT Return_station_id, Return_station_name, Return_station_name
+    FROM #Journeys
+    WHERE NOT EXISTS
+    (
+    	SELECT Id
+    	FROM Stations
+    	WHERE Stations.Id = #Journeys.Return_station_id
+    )
+    ORDER BY Return_station_id ASC;
+
+    INSERT INTO Journeys (Departure, [Return], Departure_station_id, Departure_station_name, Return_station_id, Return_station_name, Covered_distance, Duration)
+    SELECT Departure, [Return], Departure_station_id, Departure_station_name, Return_station_id, Return_station_name, Covered_distance, Duration
+    FROM #Journeys
+    WHERE NOT Duration < 10
+    AND NOT Covered_distance < 10
+END
+
+GO;
