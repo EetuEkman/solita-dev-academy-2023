@@ -12,8 +12,6 @@ docker rmi dev-academy-db-image:1.0.0 | Out-Null;
 
 Start-Sleep 1;
 
-<#
-
 docker volume rm dev-academy-db-volume | Out-Null;
 
 Start-Sleep 1;
@@ -21,8 +19,6 @@ Start-Sleep 1;
 docker volume create dev-academy-db-volume | Out-Null;
 
 Start-Sleep 1;
-
-#>
 
 Set-Location (Join-Path $PSScriptRoot .\database);
 
@@ -44,19 +40,19 @@ docker exec -t dev-academy-db curl https://opendata.arcgis.com/datasets/726277c5
 
 Start-Sleep 1;
 
-docker exec -t dev-academy-db /opt/mssql-tools/bin/sqlcmd -P E14DxqSMBq -U sa -d citybikes -v CsvPath = '/flatfiles/stations.csv' -Q 'EXEC BulkInsertStations @FilePath=$(CsvPath)' | Out-Null;
+docker exec -t dev-academy-db /opt/mssql-tools/bin/sqlcmd -P E14DxqSMBq -U sa -d citybikes -v CsvPath="'/flatfiles/stations.csv'" -Q 'EXEC BulkInsertStations @FilePath=$(CsvPath)' | Out-Null;
 
 Start-Sleep 1;
 
-docker exec -t dev-academy-db /opt/mssql-tools/bin/sqlcmd -P E14DxqSMBq -U sa -d citybikes -v CsvPath = '/flatfiles/2021-05.csv' -Q 'EXEC BulkInsertJourneys @FilePath=$(CsvPath)' | Out-Null;
+docker exec -t dev-academy-db /opt/mssql-tools/bin/sqlcmd -P E14DxqSMBq -U sa -d citybikes -v CsvPath="'/flatfiles/2021-05.csv'" -Q 'EXEC BulkInsertJourneys @FilePath=$(CsvPath)' | Out-Null;
 
 Start-Sleep 1;
 
-docker exec -t dev-academy-db /opt/mssql-tools/bin/sqlcmd -P E14DxqSMBq -U sa -d citybikes -v CsvPath = '/flatfiles/2021-06.csv' -Q 'EXEC BulkInsertJourneys @FilePath=$(CsvPath)' | Out-Null;
+docker exec -t dev-academy-db /opt/mssql-tools/bin/sqlcmd -P E14DxqSMBq -U sa -d citybikes -v CsvPath="'/flatfiles/2021-06.csv'" -Q 'EXEC BulkInsertJourneys @FilePath=$(CsvPath)' | Out-Null;
 
 Start-Sleep 1;
 
-docker exec -t dev-academy-db /opt/mssql-tools/bin/sqlcmd -P E14DxqSMBq -U sa -d citybikes -v CsvPath = '/flatfiles/2021-07.csv' -Q 'EXEC BulkInsertJourneys @FilePath=$(CsvPath)' | Out-Null;
+docker exec -t dev-academy-db /opt/mssql-tools/bin/sqlcmd -P E14DxqSMBq -U sa -d citybikes -v CsvPath="'/flatfiles/2021-07.csv'" -Q 'EXEC BulkInsertJourneys @FilePath=$(CsvPath)' | Out-Null;
 
 Start-Sleep 1;
 
