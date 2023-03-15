@@ -61,6 +61,8 @@ CREATE INDEX covered_distance ON journeys (covered_distance);
 
 GO
 
+-- Bulk insert stations from the file in the supplied path. 
+
 CREATE PROCEDURE BulkInsertStations @FilePath nvarchar(255)
 AS
 BEGIN
