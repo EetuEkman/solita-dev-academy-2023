@@ -1,19 +1,19 @@
 FROM mcr.microsoft.com/mssql/server:2022-latest
 
-# Create a config directory
+EXPOSE 1433
 
-RUN mkdir -p /usr/config
+ENV ACCEPT_EULA Y
 
-WORKDIR /usr/config
+ENV MSSQL_SA_PASSWORD=E14DxqSMBq
 
-# Bundle config source
+ENV SA_PASSWORD=E14DxqSMBq
 
-COPY . /usr/config
+USER root
 
-# Grant permissions for to our scripts to be executable
+RUN mkdir -p /usr/init
 
-RUN chmod +x /usr/config/entrypoint.sh
+COPY ./setup.sql /usr/init
 
-RUN chmod +x /usr/config/configure-db.sh
+RUN chmod +x /usr/init/setup.sql
 
-ENTRYPOINT ["./entrypoint.sh"]
+RUN apt update -y && apt install curl -y

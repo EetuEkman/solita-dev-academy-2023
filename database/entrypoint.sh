@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Start the script to create the DB and user
-/usr/config/configure-db.sh &
+# Start SQL Server and start the script to create the DB
 
-# Start SQL Server
-/opt/mssql/bin/sqlservr
-
-
+/opt/mssql/bin/sqlservr | /usr/config/configure-db.sh 
