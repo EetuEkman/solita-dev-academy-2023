@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "vRcCYyCjuDSVlZj8tZ5nlwjKXUe9TJeEeTGLbFgzf9ysspfAbXG4hVNk3zMk/WGPVjZoqUGe9mdi4uXjocnFzw==",
+  "dgSpecHash": "Z/9FYZSB2NGwm9knXHwDdH3G+vW5h4fI229dDcvsqkVrxb5bLRjsf/wbaZPYVF1jByQMpGPxfBdpaCKAXy65eQ==",
   "success": true,
   "projectFilePath": "F:\\general-projects\\solita-dev-academy-2023\\solita-dev-academy-2023-server\\solita-dev-academy-2023-server.csproj",
   "expectedPackageFiles": [
@@ -43,6 +43,7 @@
     "C:\\Users\\eetue\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\eetue\\.nuget\\packages\\microsoft.openapi\\1.4.3\\microsoft.openapi.1.4.3.nupkg.sha512",
     "C:\\Users\\eetue\\.nuget\\packages\\microsoft.sqlserver.server\\1.0.0\\microsoft.sqlserver.server.1.0.0.nupkg.sha512",
+    "C:\\Users\\eetue\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.17.0\\microsoft.visualstudio.azure.containers.tools.targets.1.17.0.nupkg.sha512",
     "C:\\Users\\eetue\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\eetue\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\eetue\\.nuget\\packages\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",

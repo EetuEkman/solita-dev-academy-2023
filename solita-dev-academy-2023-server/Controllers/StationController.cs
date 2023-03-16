@@ -14,11 +14,15 @@ namespace solita_dev_academy_2023_server.Controllers
     [Route("api/[controller]")]
     public class StationController : Controller
     {
-        private readonly IConfiguration configuration;
+        // private readonly IConfiguration configuration;
+
+        private readonly string? connectionString;
 
         public StationController(IConfiguration configuration)
         {
-            this.configuration = configuration;
+            // this.configuration = configuration;
+
+            connectionString = configuration.GetConnectionString("Citybikes");
         }
 
         [HttpGet("{Id}", Name = "GetStation")]
@@ -152,8 +156,6 @@ namespace solita_dev_academy_2023_server.Controllers
                 ";
 
             DetailedStation? station;
-
-            var connectionString = configuration.GetConnectionString("Citybikes");
 
             try
             {
@@ -415,8 +417,6 @@ namespace solita_dev_academy_2023_server.Controllers
 
             try
             {
-                var connectionString = configuration.GetValue<string>("ConnectionStrings:Citybikes");
-
                 using (var connection = new SqlConnection(connectionString))
                 {
                     var reader = await connection.QueryMultipleAsync(query, parameters);

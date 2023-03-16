@@ -33,6 +33,8 @@ namespace solita_dev_academy_2023_server
                 options.AddDefaultPolicy(builder =>
                 {
                     builder.AllowAnyOrigin();
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
                 });
 
                 // Add default policy to allow localhost origins

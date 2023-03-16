@@ -11,6 +11,7 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("475fe8e5-609e-4565-82ba-e792ef0963ff")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("solita-dev-academy-2023-server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
