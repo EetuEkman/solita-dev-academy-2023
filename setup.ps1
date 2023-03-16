@@ -1,34 +1,38 @@
 docker pull mcr.microsoft.com/mssql/server:2022-latest
 
-docker stop dev-academy-db
+docker stop dev-academy-db | Out-Null
 
-docker stop dev-academy-server
+docker stop dev-academy-server | Out-Null
 
-Start-Sleep 1;
-
-docker rm dev-academy-db
-
-docker rm dev-academy-server
+docker stop dev-academy-client | Out-Null
 
 Start-Sleep 1;
 
-docker network rm dev-academy-network
+docker rm dev-academy-db | Out-Null
 
-docker volume rm dev-academy-db-volume
+docker rm dev-academy-server | Out-Null
 
-docker rmi dev-academy-db-image:1.0.0
+docker rm dev-academy-client | Out-Null
 
-docker rmi dev-academy-server-image:1.0.0
+Start-Sleep 1;
+
+docker network rm dev-academy-network | Out-Null
+
+#docker volume rm dev-academy-db-volume | Out-Null
+
+docker rmi dev-academy-db-image:1.0.0 | Out-Null
+
+docker rmi dev-academy-server-image:1.0.0 | Out-Null
+
+docker rmi dev-academy-server-client-image:1.0.0 | Out-Null
 
 Start-Sleep 1;
 
 docker network create --driver bridge dev-academy-network
 
-docker volume create dev-academy-db-volume
+#docker volume create dev-academy-db-volume
 
-Start-Sleep 1;
-
-Set-Location (Join-Path $PSScriptRoot .\database);
+Set-Location (Join-Path $PSScriptRoot database);
 
 docker build -t dev-academy-db-image:1.0.0 .
 
@@ -61,5 +65,11 @@ Set-Location (Join-Path $PSScriptRoot solita-dev-academy-2023-server);
 docker build -t dev-academy-server-image:1.0.0 .
 
 docker run --name dev-academy-server -p 5222:80 --detach --network dev-academy-network dev-academy-server-image:1.0.0
+
+Set-Location (Join-Path $PSScriptRoot solita-dev-academy-2023-client);
+
+docker build -t dev-academy-client-image:1.0.0 .
+
+docker run --name dev-academy-client -p 5000:80 --detach dev-academy-client-image:1.0.0
 
 Set-Location $PSScriptRoot;
