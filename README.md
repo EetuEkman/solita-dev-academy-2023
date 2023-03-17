@@ -69,33 +69,15 @@ Script creates user Citybikes_user and grants the user permissions to read, writ
 
 The backend is an ASP.NET Core WebApi app.
 
-### Testing
-
-#### Using Microsoft Visual Studio
-
-To test out the backend I recommend using the latest version of Microsoft Visual Studio. 
-
-Open the solution in Visual Studio. Click the "green arrow" or press Ctrl+F5 to start without debugging.
-
-Visual Studio might ask to trust the development certificate. Select yes.
-
-#### Using Visual Studio Code
-
-Trust the HTTPS development certificate by running the command `dotnet dev-cets https --trust` and selecting yes.
-
-In Visual Studio Code, press Ctrl+F5 to start.
-
-### Notes
-
 For data access, the backend uses Dapper micro-orm. I heard about it and decided to try it out. Dapper is simple and light-weight, forcing you to understand what you're doing.
 
-The connection string is found in the appsettings.json. Database connection is made with the user Citybikes_user created in the database script, with permissions only to the Citybikes database.
+The connection string is found in the appsettings.json. 
 
 I implemented a pagination for the results. The database query result set is bound to JourneyPage model class. JourneyPage represents a "page" of results, containing a list of journeys, a subset of 20 results, links to the previous and next pages, current page and the total result count.
 
 The journey class contains information about the single city bike journey. Journey class has foreign keys referencing the departure and return stations, which are represented with the Station class.
 
-Since the frontend is server by a different webserver and therefore origin, I ran into the CORS issue. I configured the default setting to allow CORS on all localhost origins. I also made a policy to allow all origins, but the policy needs to be setup on controller actions for example by decorating the actions with the CORS policy option before the API goes public.
+Since the frontend is server by a different webserver and therefore origin, I ran into the CORS issue. I configured the default setting to allow CORS with all origins, headers and methods.
 
 ## Frontend
 
@@ -103,12 +85,32 @@ The frontend is a React app written in TypeScript.
 
 I decided to use [Tailwind CSS framework](https://tailwindcss.com/) for this project.
 
-The SearchOptions holds the state of the search options from which the url and query parameters are built from, as well as the journey search components.
+# Setup
 
-### Setup
+Requirements
 
-First, run command `npm install` to install all all the dependencies.
+* Docker
+* Powershell 7
 
-Then, start the server by running the command `npm run start` which will start the server in development mode.
+The solution uses docker containers for convenient and consistent setup.
 
-After that, open the browser and navigate to http://localhost:8080.
+The containers are setup with a PowerShell script.
+
+On Windows and Mac systems, use Unblock-File cmdlet to allow the script to run with the command `PS> Unblock-File ./setup_sqlserver.ps1`.
+
+Run the setup_sqlserver.ps1 script in PowerShell 7 with the command `PS> ./setup_sqlserver.ps1`.
+
+# Issues
+
+SQL Server BULK INSERT with Codepage = 65001 is unsupported on Linux systems and are inserted with Codepage = "RAW" option instead.
+
+The bcp bulk copy program tool provided with the SQL Server doesn't understand field quotes, e.g.
+
+Id = 5, Name = "Aalto university, tietotie", Address = Tietotie 4
+
+becomes
+
+Id, Name, address
+Id = 5, Name = "Aalto university, Address = tietotie", extra column causing the error: Tietotie 4
+
+Ä's and ö's are therefore not displayed correctly.

@@ -52,6 +52,10 @@ docker exec -t dev-academy-db curl https://opendata.arcgis.com/datasets/726277c5
 
 Start-Sleep 1;
 
+# .CSV-files contain ä's and ö's.
+
+# Bulk insert with UTF-8 codepage 65001 is not supported on Linux.
+
 docker exec -t dev-academy-db /opt/mssql-tools/bin/sqlcmd -P E14DxqSMBq -U sa -d citybikes -v CsvPath="'/flatfiles/stations.csv'" -Q 'EXEC BulkInsertStations @FilePath=$(CsvPath)'
 
 docker exec -t dev-academy-db /opt/mssql-tools/bin/sqlcmd -P E14DxqSMBq -U sa -d citybikes -v CsvPath="'/flatfiles/2021-05.csv'" -Q 'EXEC BulkInsertJourneys @FilePath=$(CsvPath)'
@@ -59,6 +63,31 @@ docker exec -t dev-academy-db /opt/mssql-tools/bin/sqlcmd -P E14DxqSMBq -U sa -d
 docker exec -t dev-academy-db /opt/mssql-tools/bin/sqlcmd -P E14DxqSMBq -U sa -d citybikes -v CsvPath="'/flatfiles/2021-06.csv'" -Q 'EXEC BulkInsertJourneys @FilePath=$(CsvPath)'
 
 docker exec -t dev-academy-db /opt/mssql-tools/bin/sqlcmd -P E14DxqSMBq -U sa -d citybikes -v CsvPath="'/flatfiles/2021-07.csv'" -Q 'EXEC BulkInsertJourneys @FilePath=$(CsvPath)'
+
+<#
+
+bcp bulk copy program doesn't understand field quotes, e.g.
+
+Id = 5, Name = "Aalto university, tietotie", Address = Tietotie 4
+
+becomes
+
+Id, Name, address
+Id = 5, Name = "Aalto university, Address = tietotie", extra column causing the error: Tietotie 4
+
+#docker exec -t dev-academy-db /opt/mssql-tools/bin/bcp stations in '/flatfiles/stations.csv' -S . -U sa -P E14DxqSMBq -d citybikes -c -C '"65001"' -F 2 -r '"0x0a"' -t `,
+
+#docker exec -t dev-academy-db /opt/mssql-tools/bin/sqlcmd -S . -P E14DxqSMBq -U sa -d citybikes -Q 'EXEC BulkInsertStationsFromTempTable'
+
+#docker exec -t dev-academy-db /opt/mssql-tools/bin/bcp stations in '/flatfiles/2021-05.csv' -S . -U sa -P E14DxqSMBq -d citybikes -c -C '"65001"' -F 2 -r '"0x0a"' -t '","'
+
+#docker exec -t dev-academy-db /opt/mssql-tools/bin/bcp stations in '/flatfiles/2021-06.csv' -S . -U sa -P E14DxqSMBq -d citybikes -c -C '"65001"' -F 2 -r '"0x0a"' -t '","'
+
+#docker exec -t dev-academy-db /opt/mssql-tools/bin/bcp stations in '/flatfiles/2021-07.csv' -S . -U sa -P E14DxqSMBq -d citybikes -c -C '"65001"' -F 2 -r '"0x0a"' -t '","'
+
+#docker exec -t dev-academy-db /opt/mssql-tools/bin/sqlcmd -S . -P E14DxqSMBq -U sa -d citybikes -Q 'EXEC BulkInsertJourneysFromTempTable'
+
+#>
 
 Set-Location (Join-Path $PSScriptRoot solita-dev-academy-2023-server);
 

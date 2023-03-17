@@ -61,11 +61,49 @@ CREATE INDEX covered_distance ON journeys (covered_distance);
 
 GO
 
+CREATE TABLE tempStations
+(
+    FID nvarchar(64),
+    ID nvarchar(64),
+    Nimi nvarchar(64),
+    Namn nvarchar(64),
+    [Name] nvarchar(64),
+    Osoite nvarchar(64),
+    Adress nvarchar(64),
+    Kaupunki nvarchar(64),
+    Stad nvarchar(64),
+    Operaattor nvarchar(64),
+    Kapasiteet nvarchar(64),
+    x DECIMAL(16, 13),
+    y DECIMAL(16, 13)
+)
+
+GO
+
+CREATE TABLE tempJourneys
+(
+    Departure datetime2(0),
+    [Return] datetime2(0),
+    Departure_station_id nvarchar(4),
+    Departure_station_name nvarchar(64),
+    Return_station_id nvarchar(4),
+    Return_station_name nvarchar(64),
+    Covered_distance float,
+    Duration float
+);
+
+GO
+
 -- Bulk insert stations from the file in the supplied path. 
 
 CREATE PROCEDURE BulkInsertStations @FilePath nvarchar(255)
 AS
 BEGIN
+    IF OBJECT_iD(N'tempdb..#stations') IS NOT NULL
+    BEGIN
+        DROP TABLE #stations;
+    END
+
     CREATE TABLE #stations
     (
         FID nvarchar(64),
@@ -180,3 +218,27 @@ BEGIN
 END;
 
 GO
+
+CREATE PROCEDURE BulkInsertStationsFromTempTable
+AS
+BEGIN
+    INSERT INTO stations (id, name_fi, name_se, name_en, address_fi, address_se, city_fi, city_se, operator, capacity, x, y)
+    SELECT ID, Nimi, Namn, [Name], Osoite, Adress, Kaupunki, Stad, Operaattor, Kapasiteet, X, Y
+    FROM tempStations;
+
+    TRUNCATE TABLE tempStations;
+END
+
+GO
+
+CREATE PROCEDURE BulkInsertJourneysFromTempTable
+AS
+BEGIN
+    INSERT INTO journeys (departure, [return], departure_station_id, departure_station_name, [return_station_id], [return_station_name], covered_distance, duration)
+    SELECT Departure, [Return], Departure_station_id, Departure_station_name, [Return_station_id], [Return_station_name], Covered_distance, Duration
+    FROM tempJourneys
+    WHERE NOT Duration < 10
+    AND NOT Covered_distance < 10;
+
+    TRUNCATE TABLE tempJourneys;
+END
