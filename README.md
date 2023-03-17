@@ -1,6 +1,6 @@
 # Solution for Solita Dev Academy pre-assignment
 
-This repository is a solution for [Solita Dev Academy pre-assignment](github.com/solita/dev-academy-2023-exercise).
+This repository is a solution for [Solita Dev Academy pre-assignment](https://github.com/solita/dev-academy-2023-exercise).
 
 The solution is an user interface and a backend service for displaying data from the city bike journeys in the Helsinki capital area.
 
