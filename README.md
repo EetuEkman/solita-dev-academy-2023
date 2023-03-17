@@ -98,6 +98,10 @@ On Windows and Mac systems, use Unblock-File cmdlet to allow the script to run w
 
 Run the setup_sqlserver.ps1 script in PowerShell 7 with the command `PS> ./setup_sqlserver.ps1`.
 
+Make sure the docker is up and running.
+
+After the setup script finishes, open up browser and go to http://localhost:5000.
+
 # Issues
 
 SQL Server BULK INSERT with Codepage = 65001 is unsupported on Linux systems and rows from the .CSV are inserted with Codepage = "RAW" option instead.
