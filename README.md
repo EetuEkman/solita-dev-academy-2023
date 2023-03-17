@@ -37,19 +37,19 @@ The scripts were created for and tested in Windows 11 operating system. Windows 
 
 ## Database
 
-The database is set up in Citybikes.sql script-file. The script was tested on Microsoft SQL Server development edition.
+The SQL Server database is set up in a docker Linux container.
 
-The script requires permissions to create database, tables and columns and relationships.
-
-The script creates database Citybikes and creates tables Journeys and Stations.
+Database, tables and stored procecures are then created by the setup.sql script-file copied to the /usr/init directory and executed with the sqlcmd-utility.
 
 Journeys contains data about the journeys made on the city bikes, such as departure date and time, as well as duration and distance covered.
 
 Stations contains data about the bike stations, such as the name and address.
 
-The script imports data by bulk inserting from the .csv flat files to a temporary staging table, from which data is inserted into the permanent table. 
+Bulk data is imported from the .csv files in the /flatfiles directory. /flatfiles is a docker volume created in the setup script. The files are also downloaded with the wget and curl applications in the setup script.
 
-The script checks path C:\temp for .csv files. Download and place the required files in the `C:\temp` directory.
+The bulk importing is done by the stored procedures called with the sqlcmd and the docker exec.
+
+The stored procedures import the data by bulk inserting the rows from the .csv flat files to a temporary staging table, from which the data is then inserted into the permanent table. 
 
 The files
 
@@ -62,8 +62,6 @@ contain data about the journeys, and
 * <https://opendata.arcgis.com/datasets/726277c507ef4914b0aec3cbcfcbfafc_0.csv>
 
 contains information about the Helsinki Region Transport's city bicycle stations.
-
-Script creates user Citybikes_user and grants the user permissions to read, write and execute on the Citybikes-database.
 
 ## Backend
 
@@ -102,7 +100,7 @@ Run the setup_sqlserver.ps1 script in PowerShell 7 with the command `PS> ./setup
 
 # Issues
 
-SQL Server BULK INSERT with Codepage = 65001 is unsupported on Linux systems and are inserted with Codepage = "RAW" option instead.
+SQL Server BULK INSERT with Codepage = 65001 is unsupported on Linux systems and rows from the .CSV are inserted with Codepage = "RAW" option instead.
 
 The bcp bulk copy program tool provided with the SQL Server doesn't understand field quotes, e.g.
 
