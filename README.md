@@ -1,10 +1,6 @@
 # Solution for Solita Dev Academy pre-assignment
 
-This repository is a solution for Solita Dev Academy pre-assignment.
-
-The client is hosted [here](https://victorious-bay-04e773803.2.azurestaticapps.net/).
-
-:point_right: Please note that the SQL Server basic tier instance used for this demo is quite limited especially for the complex queries used for the detailed station page. For the best performance, please test the project locally.
+This repository is a solution for [Solita Dev Academy pre-assignment](github.com/solita/dev-academy-2023-exercise).
 
 The solution is an user interface and a backend service for displaying data from the city bike journeys in the Helsinki capital area.
 
@@ -32,8 +28,6 @@ For the database, I chose the Microsoft SQL Server for it's robustness and wide 
 For the backend, I chose to use ASP.NET Core WebApi for it's familiarity.
 
 For the frontend, I chose the TypeScript and React set up with my own Powershell script once again for it's familiarity.
-
-The scripts were created for and tested in Windows 11 operating system. Windows is not a requirement, but the database script uses windows file path for example.
 
 ## Database
 
@@ -101,6 +95,10 @@ Run the setup_sqlserver.ps1 script in PowerShell 7 with the command `PS> ./setup
 Make sure the docker is up and running.
 
 After the setup script finishes, open up browser and go to http://localhost:5000.
+
+The client is hosted [here](https://victorious-bay-04e773803.2.azurestaticapps.net/).
+
+:point_right: Please note that the SQL Server basic tier instance used for this demo is quite limited especially for the complex queries used for the detailed station page. For the best performance, please test the project locally.
 
 # Issues
 
