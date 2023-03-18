@@ -421,50 +421,6 @@ namespace solita_dev_academy_2023_server.Controllers
                 var dataAccess = new DataAccess(configuration);
 
                 stationsPage = await dataAccess.GetStationsPage(query, parameters);
-
-                /*
-                using (var connection = new SqlConnection(connectionString))
-                {
-                    var reader = await connection.QueryMultipleAsync(query, parameters);
-
-                    
-
-                    //stations = reader.Read<Station>().ToList();
-
-                    //rowCount = reader.Read<int>().Single();
-
-                    // Moved from the pure ADO.NET to Dapper.
-
-                    /*
-
-                    using (var command = new SqlCommand(query, connection))
-                    {
-                        using (var reader = command.ExecuteReader())
-                        {
-
-                            while (reader.Read())
-                            {
-                                var station = new Station
-                                {
-                                    Id = reader["Id"] as string,
-                                    Name_fi = reader["Name_fi"] as string,
-                                    Name_se = reader["Name_se"] as string,
-                                    Name_en = reader["Name_en"] as string,
-                                    Address_fi = reader["Address_fi"] as string,
-                                    Address_se = reader["Address_se"] as string,
-                                    Operator = reader["Operator"] as string,
-                                    Capacity = reader["Capacity"] as int?,
-                                    X = reader["X"] == DBNull.Value ? null : reader.GetDecimal("X"),
-                                    Y = reader["Y"] == DBNull.Value ? null : reader.GetDecimal("Y")
-                                };
-
-                                stations.Add(station);
-                            }
-                        }
-                    }
-                }
-
-                */
             }
 
             catch (Exception exception)
@@ -472,7 +428,6 @@ namespace solita_dev_academy_2023_server.Controllers
                 return StatusCode(500, exception.Message);
             }
 
-            // stationPage.Count = rowCount;
 
             var scheme = Url.ActionContext.HttpContext.Request.Scheme;
 
@@ -487,20 +442,7 @@ namespace solita_dev_academy_2023_server.Controllers
                 previous = Url.Action("Index", "Station", queryParameters, scheme);
             }
 
-            /*
-
-            if (currentPage > 1 && rowCount > 0)
-            {
-                queryParameters.Page -= 1;
-
-                previous = Url.Action("Index", "Station", queryParameters, scheme);
-            }
-
-            */
-
             stationsPage.Previous = previous;
-
-            //stationPage.Previous = previous;
 
             // Set the url to the next page as null if there is no next page.
 
@@ -521,32 +463,6 @@ namespace solita_dev_academy_2023_server.Controllers
             {
                 stationsPage.CurrentPage = 0;
             }
-
-            /*
-
-            if ((int)Math.Ceiling((double)(rowCount / 20)) >= currentPage && rowCount > 0)
-            {
-                queryParameters.Page = currentPage + 1;
-
-                next = Url.Action("Index", "Station", queryParameters, scheme);
-            }
-
-            stationPage.Next = next;
-
-            stationPage.Stations = stations;
-
-            stationPage.CurrentPage = currentPage;
-
-            // Could send 204 No Content..
-
-            if (rowCount == 0)
-            {
-                stationPage.CurrentPage = 0;
-            }
-
-            */
-
-            //var json = JsonSerializer.Serialize(stationPage);
 
             var json = JsonSerializer.Serialize(stationsPage);
 
