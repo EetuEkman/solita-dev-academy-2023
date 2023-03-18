@@ -12,18 +12,10 @@ namespace solita_dev_academy_2023_server.Controllers
     [Route("api/[controller]")]
     public class StationController : Controller
     {
-        private readonly IConfiguration configuration;
-
-        private readonly string? connectionString;
-
         private readonly DataAccess dataAccess;
 
         public StationController(IConfiguration configuration)
         {
-            this.configuration = configuration;
-
-            connectionString = configuration.GetConnectionString("Citybikes");
-
             dataAccess = new DataAccess(configuration);
         }
 
@@ -83,24 +75,24 @@ namespace solita_dev_academy_2023_server.Controllers
             */
 
             var query = $@"SELECT TOP 1 *
-                FROM [dbo].[Stations] S
-                WHERE [Id] = @Id;
+                FROM Stations S
+                WHERE Id = @Id;
 
                 SELECT COUNT(1)
-                FROM [dbo].[Journeys]
-                WHERE [Departure_station_id] = @Id;
-
-                SELECT COUNT(1)
-                FROM [dbo].[Journeys]
-                WHERE [Return_station_id] = @Id;
-
-                SELECT AVG([Covered_distance])
-                FROM [dbo].[Journeys] 
+                FROM Journeys
                 WHERE Departure_station_id = @Id;
 
-                SELECT AVG([Covered_distance])
-                FROM [dbo].[Journeys] 
-                WHERE [Return_station_id] = @Id;
+                SELECT COUNT(1)
+                FROM Journeys
+                WHERE Return_station_id = @Id;
+
+                SELECT AVG(Covered_distance)
+                FROM Journeys 
+                WHERE Departure_station_id = @Id;
+
+                SELECT AVG(Covered_distance)
+                FROM Journeys 
+                WHERE Return_station_id = @Id;
 
                 SELECT * 
                 FROM Stations 
@@ -112,7 +104,7 @@ namespace solita_dev_academy_2023_server.Controllers
                         SELECT TOP 5 Departure_station_id Id, 
                         COUNT(Departure_station_id) C 
                         FROM Journeys 
-                        WHERE [Return_station_id] = @Id 
+                        WHERE Return_station_id = @Id 
                         GROUP BY Departure_station_id 
                         ORDER BY C DESC 
                     ) Ids
@@ -122,11 +114,11 @@ namespace solita_dev_academy_2023_server.Controllers
                 FROM 
                 ( 
                     SELECT TOP 5 Departure_station_id Id, 
-                    COUNT(Departure_station_id) [Count] 
+                    COUNT(Departure_station_id) Count 
                     FROM Journeys 
-                    WHERE [Return_station_id] = @Id
+                    WHERE Return_station_id = @Id
                     GROUP BY Departure_station_id 
-                    ORDER BY [Count] DESC 
+                    ORDER BY Count DESC 
                 ) Id_Count;
 
                 SELECT * 
@@ -136,11 +128,11 @@ namespace solita_dev_academy_2023_server.Controllers
                     SELECT Id 
                     FROM 
                     ( 
-                        SELECT TOP 5 [Return_station_id] Id, 
-                        COUNT([Return_station_id]) C 
+                        SELECT TOP 5 Return_station_id Id, 
+                        COUNT(Return_station_id) C 
                         FROM Journeys 
                         WHERE Departure_station_id = @Id 
-                        GROUP BY [Return_station_id] 
+                        GROUP BY Return_station_id 
                         ORDER BY C DESC 
                     ) Ids
                 );
@@ -148,12 +140,12 @@ namespace solita_dev_academy_2023_server.Controllers
                 SELECT *
                 FROM 
                 ( 
-                    SELECT TOP 5 [Return_station_id] Id, 
-                    COUNT([Return_station_id]) [Count] 
+                    SELECT TOP 5 Return_station_id Id, 
+                    COUNT(Return_station_id) Count 
                     FROM Journeys 
                     WHERE Departure_station_id = @Id
-                    GROUP BY [Return_station_id] 
-                    ORDER BY [Count] DESC 
+                    GROUP BY Return_station_id 
+                    ORDER BY Count DESC 
                 ) Id_Count;
                 ";
 
@@ -197,60 +189,67 @@ namespace solita_dev_academy_2023_server.Controllers
 
             var parameters = new DynamicParameters();
 
-            parameters.Add("Name_fi", "%", DbType.String, ParameterDirection.Input);
-            parameters.Add("Name_se", "%", DbType.String, ParameterDirection.Input);
-            parameters.Add("Name_en", "%", DbType.String, ParameterDirection.Input);
-            parameters.Add("Address_fi", "%", DbType.String, ParameterDirection.Input);
-            parameters.Add("Address_se", "%", DbType.String, ParameterDirection.Input);
-            parameters.Add("Operator", "%", DbType.String, ParameterDirection.Input);
+            var query = "SELECT *" +
+                " FROM stations" +
+                " WHERE 1=1";
 
-            if (queryParameters.NameFi is not null)
+            var countQuery = " SELECT COUNT(1) " +
+                " FROM stations" +
+                " WHERE 1=1";
+
+            if (String.IsNullOrEmpty(queryParameters.NameFi) == false)
             {
+                query += " AND name_fi LIKE @Name_fi";
+
+                countQuery += " AND name_fi LIKE @Name_fi";
+
                 parameters.Add("Name_fi", "%" + queryParameters.NameFi + "%", DbType.String, ParameterDirection.Input);
             }
 
-            if (queryParameters.NameSe is not null)
+            if (String.IsNullOrEmpty(queryParameters.NameSe) == false)
             {
+                query += " AND name_se LIKE @Name_se";
+
+                countQuery += " AND name_se LIKE @Name_se";
+
                 parameters.Add("Name_se", "%" + queryParameters.NameSe + "%", DbType.String, ParameterDirection.Input);
             }
 
-            if (queryParameters.NameEn is not null)
+            if (String.IsNullOrEmpty(queryParameters.NameEn) == false)
             {
+                query += " AND name_en LIKE @Name_en";
+
+                countQuery += " AND name_en LIKE @Name_en";
+
                 parameters.Add("Name_en", "%" + queryParameters.NameEn + "%", DbType.String, ParameterDirection.Input);
             }
 
-            if (queryParameters.AddressFi is not null)
+            if (String.IsNullOrEmpty(queryParameters.AddressFi) == false)
             {
+                query += " AND address_fi LIKE @Address_fi";
+
+                countQuery += " AND address_fi LIKE @Address_fi";
+
                 parameters.Add("Address_fi", "%" + queryParameters.AddressFi + "%", DbType.String, ParameterDirection.Input);
             }
 
-            if (queryParameters.AddressSe is not null)
+            if (String.IsNullOrEmpty(queryParameters.AddressSe) == false)
             {
+                query += " AND address_se LIKE @Address_se";
+
+                countQuery += " AND address_se LIKE @Address_se";
+
                 parameters.Add("Address_se", "%" + queryParameters.AddressSe + "%", DbType.String, ParameterDirection.Input);
             }
 
-            if (queryParameters.Operator is not null)
+            if (String.IsNullOrEmpty(queryParameters.Operator) == false)
             {
+                query += " AND operator LIKE @Operator";
+
+                countQuery += " AND operator LIKE @Operator";
+
                 parameters.Add("Operator", "%" + queryParameters.Operator + "%", DbType.String, ParameterDirection.Input);
             }
-
-            var query = "SELECT *" +
-                " FROM [dbo].[Stations]" +
-                " WHERE Name_fi LIKE @Name_fi" +
-                " AND Name_se LIKE @Name_se" +
-                " AND Name_en LIKE @Name_en" +
-                " AND Address_fi LIKE @Address_fi" +
-                " AND Address_se LIKE @Address_se" +
-                " AND Operator LIKE @Operator";
-
-            var countQuery = " SELECT COUNT(1)" +
-                " FROM [dbo].[Stations]" +
-                " WHERE Name_fi LIKE @Name_fi" +
-                " AND Name_se LIKE @Name_se" +
-                " AND Name_en LIKE @Name_en" +
-                " AND Address_fi LIKE @Address_fi" +
-                " AND Address_se LIKE @Address_se" +
-                " AND Operator LIKE @Operator";
 
             if (queryParameters.CapacityFrom is not null)
             {
