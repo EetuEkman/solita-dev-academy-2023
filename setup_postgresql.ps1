@@ -26,4 +26,12 @@ docker run --name dev-academy-postgres -p 5432:5432 --detach --network dev-acade
 
 #Start-Sleep 10;
 
+docker exec -t dev-academy-postgres wget -nc https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv -P /flatfiles
+
+docker exec -t dev-academy-postgres wget -nc https://dev.hsl.fi/citybikes/od-trips-2021/2021-06.csv -P /flatfiles
+
+docker exec -t dev-academy-postgres wget -nc https://dev.hsl.fi/citybikes/od-trips-2021/2021-07.csv -P /flatfiles
+
+docker exec -t dev-academy-postgres curl https://opendata.arcgis.com/datasets/726277c507ef4914b0aec3cbcfcbfafc_0.csv --output /flatfiles/stations.csv -L
+
 Set-Location $PSScriptRoot
