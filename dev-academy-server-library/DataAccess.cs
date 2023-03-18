@@ -1,10 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
-using solita_dev_academy_2023_server.Models;
 using Microsoft.Data.SqlClient;
 using Npgsql;
 using System.Data;
 using Dapper;
-using static System.Collections.Specialized.BitVector32;
+using dev_academy_server_library.Models;
 
 namespace dev_academy_server_library
 {
