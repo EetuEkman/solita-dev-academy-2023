@@ -1179,6 +1179,16 @@
             "rid": "win"
           }
         }
+      },
+      "dev-academy-server-library/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/dev-academy-server-library.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/dev-academy-server-library.dll": {}
+        }
       }
     }
   },
@@ -3440,6 +3450,11 @@
         "system.windows.extensions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "dev-academy-server-library/1.0.0": {
+      "type": "project",
+      "path": "../dev-academy-server-library/dev-academy-server-library.csproj",
+      "msbuildProject": "../dev-academy-server-library/dev-academy-server-library.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -3450,7 +3465,8 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.2",
       "Microsoft.EntityFrameworkCore.Tools >= 7.0.2",
       "Microsoft.VisualStudio.Azure.Containers.Tools.Targets >= 1.17.0",
-      "Swashbuckle.AspNetCore >= 6.4.0"
+      "Swashbuckle.AspNetCore >= 6.4.0",
+      "dev-academy-server-library >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -3485,7 +3501,11 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "F:\\general-projects\\solita-dev-academy-2023\\dev-academy-server-library\\dev-academy-server-library.csproj": {
+              "projectPath": "F:\\general-projects\\solita-dev-academy-2023\\dev-academy-server-library\\dev-academy-server-library.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
