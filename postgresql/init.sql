@@ -17,8 +17,8 @@ CREATE TABLE stations
 CREATE TABLE journeys 
 (
     id SERIAL PRIMARY KEY, 
-    departure timestamp(0), 
-    "return" timestamp(0), 
+    departure timestamp, 
+    "return" timestamp, 
     departure_station_id varchar(3), 
     departure_station_name varchar(64), 
     return_station_id varchar(3), 
@@ -67,7 +67,7 @@ BEGIN
         kaupunki varchar(64),    
         stad varchar(64), 
         operaattor varchar(64), 
-        kapasiteet varchar(64), 
+        kapasiteet integer, 
         x DECIMAL(16, 13), 
         y DECIMAL(16, 13) 
     );
@@ -112,8 +112,6 @@ BEGIN
     )
     SELECT id, nimi, namn, "name", osoite, adress, kaupunki, stad, operaattor, kapasiteet, x, y
     FROM temp_stations;
-
-    COMMIT; 
 END; $body$; 
 
 CREATE PROCEDURE init_journeys()
@@ -122,8 +120,8 @@ AS $body$
 BEGIN
     CREATE TEMPORARY TABLE temp_journeys
     (
-        departure timestamp(0),
-        "return" timestamp(0),
+        departure timestamp,
+        "return" timestamp,
         departure_station_id varchar(4),
         departure_station_name varchar(64),
         return_station_id varchar(4),
@@ -182,7 +180,7 @@ BEGIN
     CSV HEADER 
     DELIMITER ',' 
     QUOTE '"' 
-    ENCODING 'UTF8'; 
+    ENCODING 'UTF8';
 
     INSERT INTO stations (id, name_fi, name_en) 
     SELECT DISTINCT departure_station_id, departure_station_name, departure_station_name 
@@ -206,11 +204,9 @@ BEGIN
     )
     ORDER BY return_station_id ASC; 
 
-    INSERT INTO Journeys (departure, "return", departure_station_id, departure_station_name, return_station_id, return_station_name, covered_distance, duration) 
+    INSERT INTO journeys (departure, "return", departure_station_id, departure_station_name, return_station_id, return_station_name, covered_distance, duration) 
     SELECT departure, "return", departure_station_id, departure_station_name, return_station_id, return_station_name, covered_distance, duration 
     FROM temp_journeys 
-    WHERE NOT duration < 10 
-    AND NOT covered_distance < 10; 
-    
-    COMMIT; 
+    WHERE duration >= 10 
+    AND covered_distance >= 10; 
 END; $body$ 
