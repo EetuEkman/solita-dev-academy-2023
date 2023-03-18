@@ -37,15 +37,11 @@ ADD CONSTRAINT fk_return_id
 FOREIGN KEY (return_station_id)
 REFERENCES stations (id);
 
-CREATE INDEX pk_station ON stations (id);
-
 CREATE INDEX station_names ON stations (name_fi, name_se, name_en);
 
 CREATE INDEX station_addresses ON stations (address_fi, address_se);
 
 CREATE INDEX station_capacity ON stations (capacity);
-
-CREATE INDEX pk_journey ON journeys (id);
 
 CREATE INDEX fk_stations ON journeys (departure_station_id, return_station_id);
 
