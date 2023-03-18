@@ -75,7 +75,7 @@ namespace dev_academy_server_library
             return journeysPage;
         }
 
-        public async Task<Station?> GetDetailedStation(string query, DynamicParameters parameters)
+        public async Task<DetailedStation?> GetDetailedStation(string query, DynamicParameters parameters)
         {
             using IDbConnection connection = database switch
             {
