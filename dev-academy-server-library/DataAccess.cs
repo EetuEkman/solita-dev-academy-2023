@@ -11,6 +11,7 @@ namespace dev_academy_server_library
     {
         private readonly string? connectionString;
         private readonly string? database;
+
         public DataAccess(IConfiguration configuration)
         {
             connectionString = configuration.GetConnectionString("citybikes");
@@ -18,9 +19,9 @@ namespace dev_academy_server_library
             database = configuration["Database"];
         }
 
-        public async Task<List<Station>> GetStations(DynamicParameters parameters)
+        public async Task<StationsPage> GetStationsPage(string query, DynamicParameters parameters)
         {
-            var stations = new List<Station>();
+            var stationsPage = new StationsPage();
 
             using IDbConnection connection = database switch
             {
@@ -29,12 +30,49 @@ namespace dev_academy_server_library
                 _ => new SqlConnection(connectionString)
             };
 
-            var query = $@"
-                
-            ";
+            var reader = await connection.QueryMultipleAsync(query, parameters);
 
+            var readStations = reader.ReadAsync<Station>();
 
-            return stations;
+            var readCount = reader.ReadAsync<int>();
+
+            var stations = (await readStations).ToList();
+
+            var rowCount = (await readCount).Single();
+
+            stationsPage.Stations = stations;
+
+            stationsPage.Count = rowCount;
+
+            return stationsPage;
+        }
+
+        public async Task<JourneysPage> GetJourneysPage(string query, DynamicParameters parameters) 
+        { 
+            var journeysPage = new JourneysPage();
+
+            using IDbConnection connection = database switch
+            {
+                "SQL Server" => new SqlConnection(connectionString),
+                "PostgreSQL" => new NpgsqlConnection(connectionString),
+                _ => new SqlConnection(connectionString)
+            };
+
+            var reader = await connection.QueryMultipleAsync(query, parameters);
+
+            var readJourneys = reader.ReadAsync<Journey>();
+
+            var readCount = reader.ReadSingleAsync<int>();
+
+            var journeys = (await readJourneys).ToList();
+
+            var count = await readCount;
+
+            journeysPage.Journeys = journeys;
+
+            journeysPage.Count = count;
+
+            return journeysPage;
         }
     }
 }
