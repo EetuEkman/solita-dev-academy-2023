@@ -3547,8 +3547,8 @@
     },
     "dev-academy-server-library/1.0.0": {
       "type": "project",
-      "path": "../dev-academy-server-library/dev-academy-server-library.csproj",
-      "msbuildProject": "../dev-academy-server-library/dev-academy-server-library.csproj"
+      "path": "dev-academy-server-library/dev-academy-server-library.csproj",
+      "msbuildProject": "dev-academy-server-library/dev-academy-server-library.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -3596,8 +3596,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "F:\\general-projects\\solita-dev-academy-2023\\dev-academy-server-library\\dev-academy-server-library.csproj": {
-              "projectPath": "F:\\general-projects\\solita-dev-academy-2023\\dev-academy-server-library\\dev-academy-server-library.csproj"
+            "F:\\general-projects\\solita-dev-academy-2023\\solita-dev-academy-2023-server\\dev-academy-server-library\\dev-academy-server-library.csproj": {
+              "projectPath": "F:\\general-projects\\solita-dev-academy-2023\\solita-dev-academy-2023-server\\dev-academy-server-library\\dev-academy-server-library.csproj"
             }
           }
         }

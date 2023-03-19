@@ -13,9 +13,12 @@ namespace solita_dev_academy_2023_server.Controllers
     {
         private readonly DataAccess dataAccess;
         private readonly QueryBuilder queryBuilder = new();
+        private readonly IConfiguration configuration;
 
         public StationController(IConfiguration configuration)
         {
+            this.configuration = configuration;
+
             dataAccess = new DataAccess(configuration);
         }
 
@@ -80,7 +83,7 @@ namespace solita_dev_academy_2023_server.Controllers
             }
             catch (Exception exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message + "connectionString: " + configuration.GetConnectionString("DefaultConnection"));
             }
 
             if (station == null)
@@ -121,7 +124,7 @@ namespace solita_dev_academy_2023_server.Controllers
 
             catch (Exception exception)
             {
-                return StatusCode(500, exception.Message);
+                return StatusCode(500, exception.Message + "connectionString: " + configuration.GetConnectionString("DefaultConnection"));
             }
 
             var currentPage = 1;

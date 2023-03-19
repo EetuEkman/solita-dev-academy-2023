@@ -8,6 +8,8 @@
     <UserSecretsId>475fe8e5-609e-4565-82ba-e792ef0963ff</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\dev-academy-server-library\dev-academy-server-library.csproj" />
+    <ProjectReference Include="dev-academy-server-library\dev-academy-server-library.csproj" />
   </ItemGroup>
 
 </Project>

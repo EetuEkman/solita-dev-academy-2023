@@ -1,4 +1,4 @@
-﻿namespace solita_dev_academy_2023_server.Models
+﻿namespace dev_academy_server_library.Models
 {
     // Used to hold both the top return and departure station ids and the count.
     public class StationIdCount
