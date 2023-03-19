@@ -1,7 +1,5 @@
 ﻿using Dapper;
 using dev_academy_server_library.Models;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 
 namespace dev_academy_server_library
@@ -26,7 +24,7 @@ namespace dev_academy_server_library
 
                 countQuery += " AND name_fi LIKE @Name_fi";
 
-                parameters.Add("Name_fi", "%" + queryParameters.NameFi + "%", DbType.String, ParameterDirection.Input);
+                parameters.Add("Name_fi", "%" + queryParameters.NameFi + "%");
             }
 
             if (String.IsNullOrEmpty(queryParameters.NameSe) == false)
@@ -35,7 +33,7 @@ namespace dev_academy_server_library
 
                 countQuery += " AND name_se LIKE @name_se";
 
-                parameters.Add("name_se", "%" + queryParameters.NameSe + "%", DbType.String, ParameterDirection.Input);
+                parameters.Add("name_se", "%" + queryParameters.NameSe + "%");
             }
 
             if (String.IsNullOrEmpty(queryParameters.NameEn) == false)
@@ -44,7 +42,7 @@ namespace dev_academy_server_library
 
                 countQuery += " AND name_en LIKE @Name_en";
 
-                parameters.Add("Name_en", "%" + queryParameters.NameEn + "%", DbType.String, ParameterDirection.Input);
+                parameters.Add("Name_en", "%" + queryParameters.NameEn + "%");
             }
 
             if (String.IsNullOrEmpty(queryParameters.AddressFi) == false)
@@ -53,7 +51,7 @@ namespace dev_academy_server_library
 
                 countQuery += " AND address_fi LIKE @Address_fi";
 
-                parameters.Add("Address_fi", "%" + queryParameters.AddressFi + "%", DbType.String, ParameterDirection.Input);
+                parameters.Add("Address_fi", "%" + queryParameters.AddressFi + "%");
             }
 
             if (String.IsNullOrEmpty(queryParameters.AddressSe) == false)
@@ -62,7 +60,7 @@ namespace dev_academy_server_library
 
                 countQuery += " AND address_se LIKE @Address_se";
 
-                parameters.Add("Address_se", "%" + queryParameters.AddressSe + "%", DbType.String, ParameterDirection.Input);
+                parameters.Add("Address_se", "%" + queryParameters.AddressSe + "%");
             }
 
             if (String.IsNullOrEmpty(queryParameters.Operator) == false)
@@ -71,7 +69,7 @@ namespace dev_academy_server_library
 
                 countQuery += " AND operator LIKE @Operator";
 
-                parameters.Add("Operator", "%" + queryParameters.Operator + "%", DbType.String, ParameterDirection.Input);
+                parameters.Add("Operator", "%" + queryParameters.Operator + "%");
             }
 
             if (queryParameters.CapacityFrom is not null)
@@ -80,7 +78,7 @@ namespace dev_academy_server_library
 
                 countQuery += " AND capacity >= @CapacityFrom";
 
-                parameters.Add("CapacityFrom", queryParameters.CapacityFrom, DbType.Int64, ParameterDirection.Input);
+                parameters.Add("CapacityFrom", queryParameters.CapacityFrom);
             }
 
             if (queryParameters.CapacityTo is not null)
@@ -89,7 +87,7 @@ namespace dev_academy_server_library
 
                 countQuery += " AND capacity <= @CapacityTo";
 
-                parameters.Add("CapacityTo", queryParameters.CapacityTo, DbType.Int64, ParameterDirection.Input);
+                parameters.Add("CapacityTo", queryParameters.CapacityTo);
             }
 
             // ORDER BY, needed for OFFSET.
@@ -115,7 +113,7 @@ namespace dev_academy_server_library
                 queryString += " FETCH FIRST 20 ROWS ONLY;";
             }
 
-            parameters.Add("Offset", offset, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("Offset", offset);
 
             // Include the count in the same query.
 
@@ -134,10 +132,10 @@ namespace dev_academy_server_library
         {
             var parameters = new DynamicParameters();
 
-            parameters.Add("Id", id, DbType.String, ParameterDirection.Input);
+            parameters.Add("Id", id);
 
-            var queryString = $@"SELECT TOP 1 *
-                FROM stations
+            var queryString = $@"SELECT *
+                FROM stations 
                 WHERE id = @Id;
 
                 SELECT COUNT(1)
@@ -148,11 +146,11 @@ namespace dev_academy_server_library
                 FROM journeys
                 WHERE return_station_id = @Id;
 
-                SELECT AVG(Covered_distance)
+                SELECT AVG(covered_distance)
                 FROM journeys 
                 WHERE departure_station_id = @Id;
 
-                SELECT AVG(Covered_distance)
+                SELECT AVG(covered_distance)
                 FROM journeys 
                 WHERE return_station_id = @Id;
 
@@ -163,24 +161,28 @@ namespace dev_academy_server_library
                     SELECT id 
                     FROM 
                     ( 
-                        SELECT TOP 5 departure_station_id id, 
+                        SELECT departure_station_id id, 
                         COUNT(departure_station_id) c 
                         FROM journeys 
                         WHERE return_station_id = @Id 
                         GROUP BY departure_station_id 
-                        ORDER BY c DESC 
+                        ORDER BY c DESC
+                        OFFSET 0 ROWS 
+                        FETCH FIRST 5 ROWS ONLY
                     ) ids
                 );
 
                 SELECT *
                 FROM 
                 ( 
-                    SELECT TOP 5 departure_station_id id, 
-                    COUNT(departure_station_id) c 
+                    SELECT departure_station_id id, 
+                    COUNT(departure_station_id) ""count"" 
                     FROM journeys 
                     WHERE return_station_id = @Id
                     GROUP BY departure_station_id 
-                    ORDER BY c DESC 
+                    ORDER BY ""count"" DESC 
+                    OFFSET 0 ROWS 
+                    FETCH FIRST 5 ROWS ONLY
                 ) id_count;
 
                 SELECT * 
@@ -190,25 +192,29 @@ namespace dev_academy_server_library
                     SELECT id 
                     FROM 
                     ( 
-                        SELECT TOP 5 return_station_id id, 
+                        SELECT return_station_id id, 
                         COUNT(return_station_id) c 
                         FROM journeys 
                         WHERE departure_station_id = @Id 
                         GROUP BY return_station_id 
-                        ORDER BY c DESC 
+                        ORDER BY c DESC
+                        OFFSET 0 ROWS 
+                        FETCH FIRST 5 ROWS ONLY
                     ) ids
                 );
     
                 SELECT *
                 FROM 
                 ( 
-                    SELECT TOP 5 return_station_id id, 
-                    COUNT(return_station_id) c 
+                    SELECT return_station_id id, 
+                    COUNT(return_station_id) ""count"" 
                     FROM journeys 
                     WHERE departure_station_id = @Id
                     GROUP BY return_station_id 
-                    ORDER BY c DESC 
-                ) id_count;
+                    ORDER BY ""count"" DESC 
+                    OFFSET 0 ROWS 
+                    FETCH FIRST 5 ROWS ONLY
+                ) id_count
                 ";
 
             var query = new Query()
@@ -244,7 +250,7 @@ namespace dev_academy_server_library
 
             if (String.IsNullOrEmpty(queryParameters.DepartureStationNameFi) == false)
             {
-                parameters.Add("DepartureStationNameFi", "%" + queryParameters.DepartureStationNameFi + "%", DbType.String, ParameterDirection.Input);
+                parameters.Add("DepartureStationNameFi", "%" + queryParameters.DepartureStationNameFi + "%");
 
                 queryString += " AND ds.name_fi LIKE @DepartureStationNameFi";
 
@@ -253,7 +259,7 @@ namespace dev_academy_server_library
 
             if (String.IsNullOrEmpty(queryParameters.DepartureStationNameSe) == false)
             {
-               parameters.Add("DepartureStationNameSe", "%" + queryParameters.DepartureStationNameSe + "%", DbType.String, ParameterDirection.Input);
+                parameters.Add("DepartureStationNameSe", "%" + queryParameters.DepartureStationNameSe + "%");
 
                 queryString += " AND ds.name_se LIKE @DepartureStationNameSe";
 
@@ -262,7 +268,7 @@ namespace dev_academy_server_library
 
             if (String.IsNullOrEmpty(queryParameters.DepartureStationNameEn) == false)
             {
-               parameters.Add("DepartureStationNameEn", "%" + queryParameters.DepartureStationNameEn + "%" , DbType.String, ParameterDirection.Input);
+                parameters.Add("DepartureStationNameEn", "%" + queryParameters.DepartureStationNameEn + "%");
 
                 queryString += " AND ds.name_en LIKE @DepartureStationNameEn";
 
@@ -273,7 +279,7 @@ namespace dev_academy_server_library
 
             if (String.IsNullOrEmpty(queryParameters.ReturnStationNameFi) == false)
             {
-               parameters.Add("ReturnStationNameFi", "%" + queryParameters.ReturnStationNameFi + "%" , DbType.String, ParameterDirection.Input);
+                parameters.Add("ReturnStationNameFi", "%" + queryParameters.ReturnStationNameFi + "%");
 
                 queryString += " AND rs.name_fi LIKE @ReturnStationNameFi";
 
@@ -282,7 +288,7 @@ namespace dev_academy_server_library
 
             if (String.IsNullOrEmpty(queryParameters.ReturnStationNameSe) == false)
             {
-               parameters.Add("ReturnStationNameSe", "%" + queryParameters.ReturnStationNameSe + "%" , DbType.String, ParameterDirection.Input);
+                parameters.Add("ReturnStationNameSe", "%" + queryParameters.ReturnStationNameSe + "%");
 
                 queryString += " AND rs.name_se LIKE @ReturnStationNameSe";
 
@@ -291,7 +297,7 @@ namespace dev_academy_server_library
 
             if (String.IsNullOrEmpty(queryParameters.ReturnStationNameEn) == false)
             {
-               parameters.Add("ReturnStationNameEn", "%" + queryParameters.ReturnStationNameEn + "%" , DbType.String, ParameterDirection.Input);
+                parameters.Add("ReturnStationNameEn", "%" + queryParameters.ReturnStationNameEn + "%");
 
                 queryString += " AND rs.name_en LIKE @ReturnStationNameEn";
 

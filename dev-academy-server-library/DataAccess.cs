@@ -19,6 +19,34 @@ namespace dev_academy_server_library
             database = configuration["Database"];
         }
 
+        public async Task<JourneysPage> GetJourneysPage(Query query)
+        {
+            var journeysPage = new JourneysPage();
+
+            using IDbConnection connection = database switch
+            {
+                "SQL Server" => new SqlConnection(connectionString),
+                "PostgreSQL" => new NpgsqlConnection(connectionString),
+                _ => new SqlConnection(connectionString)
+            };
+
+            var reader = await connection.QueryMultipleAsync(query.QueryString, query.Parameters, commandTimeout: 120);
+
+            var readJourneys = reader.ReadAsync<Journey>();
+
+            var readCount = reader.ReadSingleAsync<int>();
+
+            var journeys = (await readJourneys).ToList();
+
+            var count = await readCount;
+
+            journeysPage.Journeys = journeys;
+
+            journeysPage.Count = count;
+
+            return journeysPage;
+        }
+
         public async Task<StationsPage> GetStationsPage(Query query)
         {
             var stationsPage = new StationsPage();
@@ -47,34 +75,6 @@ namespace dev_academy_server_library
             return stationsPage;
         }
 
-        public async Task<JourneysPage> GetJourneysPage(Query query) 
-        { 
-            var journeysPage = new JourneysPage();
-
-            using IDbConnection connection = database switch
-            {
-                "SQL Server" => new SqlConnection(connectionString),
-                "PostgreSQL" => new NpgsqlConnection(connectionString),
-                _ => new SqlConnection(connectionString)
-            };
-
-            var reader = await connection.QueryMultipleAsync(query.QueryString, query.Parameters, commandTimeout: 120);
-
-            var readJourneys = reader.ReadAsync<Journey>();
-
-            var readCount = reader.ReadSingleAsync<int>();
-
-            var journeys = (await readJourneys).ToList();
-
-            var count = await readCount;
-
-            journeysPage.Journeys = journeys;
-
-            journeysPage.Count = count;
-
-            return journeysPage;
-        }
-
         public async Task<DetailedStation?> GetDetailedStation(Query query)
         {
             using IDbConnection connection = database switch
@@ -93,6 +93,8 @@ namespace dev_academy_server_library
                 return null;
             }
 
+            // Read async.
+
             var readDepartureCount = reader.ReadSingleAsync<int>();
 
             var readReturnCount = reader.ReadSingleAsync<int>();
@@ -109,25 +111,31 @@ namespace dev_academy_server_library
 
             var readTopDestinationStationsIdCount = reader.ReadAsync<StationIdCount>();
 
-            var departureCount = await readDepartureCount;
+            // Await and assign.
 
-            station.DepartureCount = departureCount;
+            var departureCount = await readDepartureCount;
 
             var returnCount = await readReturnCount;
 
-            station.ReturnCount = returnCount;
-
             var departureDistanceAverage = await readDepartureDistanceAverage;
 
-            station.DepartureDistanceAverage = departureDistanceAverage;
-
             var returnDistanceAverage = await readReturnDistanceAverage;
-
-            station.ReturnDistanceAverage = returnDistanceAverage;
 
             var topOriginStations = await readTopOriginStations;
 
             var topOriginStationsIdCount = await readTopOriginStationsIdCount;
+
+            // 
+            
+            station.DepartureCount = departureCount;            
+
+            station.ReturnCount = returnCount;
+
+            station.DepartureDistanceAverage = departureDistanceAverage;
+
+            station.ReturnDistanceAverage = returnDistanceAverage;
+
+            // Top origin stations with count.
 
             var topOriginStationsWithCount = new List<PopularStation>();
 
@@ -157,6 +165,8 @@ namespace dev_academy_server_library
             }
 
             station.TopOriginStations = topOriginStationsWithCount;
+
+            // Top destination stations with count.
 
             var topDestinationStations = await readTopDestinationStations;
 
