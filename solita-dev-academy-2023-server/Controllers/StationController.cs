@@ -132,7 +132,7 @@ namespace solita_dev_academy_2023_server.Controllers
 
             string? previous = null;
 
-            if (queryParameters.Page > 1 && stationsPage.Count > 0)
+            if (queryParameters.Page > 1 && stationsPage.Count > 20)
             {
                 currentPage = (int)queryParameters.Page;
 
