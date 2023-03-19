@@ -127,5 +127,95 @@ namespace dev_academy_server_library
 
             return query;
         }
+    
+        public Query GetStationQueryString(string id)
+        {
+            var parameters = new DynamicParameters();
+
+            parameters.Add("Id", id, DbType.String, ParameterDirection.Input);
+
+            var queryString = $@"SELECT TOP 1 *
+                FROM stations
+                WHERE id = @Id;
+
+                SELECT COUNT(1)
+                FROM journeys
+                WHERE departure_station_id = @Id;
+
+                SELECT COUNT(1)
+                FROM journeys
+                WHERE return_station_id = @Id;
+
+                SELECT AVG(Covered_distance)
+                FROM journeys 
+                WHERE departure_station_id = @Id;
+
+                SELECT AVG(Covered_distance)
+                FROM journeys 
+                WHERE return_station_id = @Id;
+
+                SELECT * 
+                FROM stations 
+                WHERE id IN 
+                ( 
+                    SELECT id 
+                    FROM 
+                    ( 
+                        SELECT TOP 5 departure_station_id id, 
+                        COUNT(departure_station_id) c 
+                        FROM journeys 
+                        WHERE return_station_id = @Id 
+                        GROUP BY departure_station_id 
+                        ORDER BY c DESC 
+                    ) ids
+                );
+
+                SELECT *
+                FROM 
+                ( 
+                    SELECT TOP 5 departure_station_id id, 
+                    COUNT(departure_station_id) c 
+                    FROM journeys 
+                    WHERE return_station_id = @Id
+                    GROUP BY departure_station_id 
+                    ORDER BY c DESC 
+                ) id_count;
+
+                SELECT * 
+                FROM Stations 
+                WHERE id IN 
+                ( 
+                    SELECT id 
+                    FROM 
+                    ( 
+                        SELECT TOP 5 return_station_id id, 
+                        COUNT(return_station_id) c 
+                        FROM journeys 
+                        WHERE departure_station_id = @Id 
+                        GROUP BY return_station_id 
+                        ORDER BY c DESC 
+                    ) ids
+                );
+    
+                SELECT *
+                FROM 
+                ( 
+                    SELECT TOP 5 return_station_id id, 
+                    COUNT(return_station_id) c 
+                    FROM journeys 
+                    WHERE departure_station_id = @Id
+                    GROUP BY return_station_id 
+                    ORDER BY c DESC 
+                ) id_count;
+                ";
+
+            var query = new Query()
+            {
+                QueryString = queryString,
+                Parameters = parameters
+            };
+
+            return query;
+        }
     }
 }

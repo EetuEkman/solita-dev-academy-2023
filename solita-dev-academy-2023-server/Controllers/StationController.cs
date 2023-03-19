@@ -22,8 +22,8 @@ namespace solita_dev_academy_2023_server.Controllers
         [HttpGet("{Id}", Name = "GetStation")]
         [Produces("application/json")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(204)]
         [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> Index([FromRoute] string Id)
         {
@@ -48,10 +48,6 @@ namespace solita_dev_academy_2023_server.Controllers
                     break;
             }
 
-            var parameters = new DynamicParameters();
-
-            parameters.Add("Id", Id, DbType.String, ParameterDirection.Input);
-
             /*
               
             Functionality
@@ -74,91 +70,12 @@ namespace solita_dev_academy_2023_server.Controllers
 
             */
 
-            var queryString = $@"SELECT TOP 1 *
-                FROM Stations S
-                WHERE Id = @Id;
-
-                SELECT COUNT(1)
-                FROM Journeys
-                WHERE Departure_station_id = @Id;
-
-                SELECT COUNT(1)
-                FROM Journeys
-                WHERE Return_station_id = @Id;
-
-                SELECT AVG(Covered_distance)
-                FROM Journeys 
-                WHERE Departure_station_id = @Id;
-
-                SELECT AVG(Covered_distance)
-                FROM Journeys 
-                WHERE Return_station_id = @Id;
-
-                SELECT * 
-                FROM Stations 
-                WHERE Id IN 
-                ( 
-                    SELECT Id 
-                    FROM 
-                    ( 
-                        SELECT TOP 5 Departure_station_id Id, 
-                        COUNT(Departure_station_id) C 
-                        FROM Journeys 
-                        WHERE Return_station_id = @Id 
-                        GROUP BY Departure_station_id 
-                        ORDER BY C DESC 
-                    ) Ids
-                );
-
-                SELECT *
-                FROM 
-                ( 
-                    SELECT TOP 5 Departure_station_id Id, 
-                    COUNT(Departure_station_id) Count 
-                    FROM Journeys 
-                    WHERE Return_station_id = @Id
-                    GROUP BY Departure_station_id 
-                    ORDER BY Count DESC 
-                ) Id_Count;
-
-                SELECT * 
-                FROM Stations 
-                WHERE Id IN 
-                ( 
-                    SELECT Id 
-                    FROM 
-                    ( 
-                        SELECT TOP 5 Return_station_id Id, 
-                        COUNT(Return_station_id) C 
-                        FROM Journeys 
-                        WHERE Departure_station_id = @Id 
-                        GROUP BY Return_station_id 
-                        ORDER BY C DESC 
-                    ) Ids
-                );
-    
-                SELECT *
-                FROM 
-                ( 
-                    SELECT TOP 5 Return_station_id Id, 
-                    COUNT(Return_station_id) Count 
-                    FROM Journeys 
-                    WHERE Departure_station_id = @Id
-                    GROUP BY Return_station_id 
-                    ORDER BY Count DESC 
-                ) Id_Count;
-                ";
-
             DetailedStation? station;
+
+            var query = queryBuilder.GetStationQueryString(Id);
 
             try
             {
-                var query = new Query()
-                {
-                    QueryString = queryString,
-                    Parameters = parameters
-                };
-
                 station = await dataAccess.GetDetailedStation(query);
             }
             catch (Exception exception)
