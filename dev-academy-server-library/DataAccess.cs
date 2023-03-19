@@ -19,7 +19,7 @@ namespace dev_academy_server_library
             database = configuration["Database"];
         }
 
-        public async Task<StationsPage> GetStationsPage(string query, DynamicParameters parameters)
+        public async Task<StationsPage> GetStationsPage(Query query)
         {
             var stationsPage = new StationsPage();
 
@@ -30,7 +30,7 @@ namespace dev_academy_server_library
                 _ => new SqlConnection(connectionString)
             };
 
-            var reader = await connection.QueryMultipleAsync(query, parameters);
+            var reader = await connection.QueryMultipleAsync(query.QueryString, query.Parameters, commandTimeout: 120);
 
             var readStations = reader.ReadAsync<Station>();
 
@@ -47,7 +47,7 @@ namespace dev_academy_server_library
             return stationsPage;
         }
 
-        public async Task<JourneysPage> GetJourneysPage(string query, DynamicParameters parameters) 
+        public async Task<JourneysPage> GetJourneysPage(Query query) 
         { 
             var journeysPage = new JourneysPage();
 
@@ -58,7 +58,7 @@ namespace dev_academy_server_library
                 _ => new SqlConnection(connectionString)
             };
 
-            var reader = await connection.QueryMultipleAsync(query, parameters);
+            var reader = await connection.QueryMultipleAsync(query.QueryString, query.Parameters, commandTimeout: 120);
 
             var readJourneys = reader.ReadAsync<Journey>();
 
@@ -75,7 +75,7 @@ namespace dev_academy_server_library
             return journeysPage;
         }
 
-        public async Task<DetailedStation?> GetDetailedStation(string query, DynamicParameters parameters)
+        public async Task<DetailedStation?> GetDetailedStation(Query query)
         {
             using IDbConnection connection = database switch
             {
@@ -84,7 +84,7 @@ namespace dev_academy_server_library
                 _ => new SqlConnection(connectionString)
             };
 
-            var reader = await connection.QueryMultipleAsync(query, parameters, commandTimeout: 120);
+            var reader = await connection.QueryMultipleAsync(query.QueryString, query.Parameters, commandTimeout: 120);
 
             var station = await reader.ReadSingleOrDefaultAsync<DetailedStation>();
 

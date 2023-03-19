@@ -4,7 +4,6 @@ using dev_academy_server_library.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 
 namespace solita_dev_academy_2023_server.Controllers
 {
@@ -13,6 +12,7 @@ namespace solita_dev_academy_2023_server.Controllers
     public class StationController : Controller
     {
         private readonly DataAccess dataAccess;
+        private readonly QueryBuilder queryBuilder = new();
 
         public StationController(IConfiguration configuration)
         {
@@ -74,7 +74,7 @@ namespace solita_dev_academy_2023_server.Controllers
 
             */
 
-            var query = $@"SELECT TOP 1 *
+            var queryString = $@"SELECT TOP 1 *
                 FROM Stations S
                 WHERE Id = @Id;
 
@@ -153,7 +153,13 @@ namespace solita_dev_academy_2023_server.Controllers
 
             try
             {
-                station = await dataAccess.GetDetailedStation(query, parameters);
+                var query = new Query()
+                {
+                    QueryString = queryString,
+                    Parameters = parameters
+                };
+
+                station = await dataAccess.GetDetailedStation(query);
             }
             catch (Exception exception)
             {
@@ -187,126 +193,13 @@ namespace solita_dev_academy_2023_server.Controllers
                 return BadRequest(ModelState);
             }
 
-            var parameters = new DynamicParameters();
-
-            var query = "SELECT *" +
-                " FROM stations" +
-                " WHERE 1=1";
-
-            var countQuery = " SELECT COUNT(1) " +
-                " FROM stations" +
-                " WHERE 1=1";
-
-            if (String.IsNullOrEmpty(queryParameters.NameFi) == false)
-            {
-                query += " AND name_fi LIKE @Name_fi";
-
-                countQuery += " AND name_fi LIKE @Name_fi";
-
-                parameters.Add("Name_fi", "%" + queryParameters.NameFi + "%", DbType.String, ParameterDirection.Input);
-            }
-
-            if (String.IsNullOrEmpty(queryParameters.NameSe) == false)
-            {
-                query += " AND name_se LIKE @Name_se";
-
-                countQuery += " AND name_se LIKE @Name_se";
-
-                parameters.Add("Name_se", "%" + queryParameters.NameSe + "%", DbType.String, ParameterDirection.Input);
-            }
-
-            if (String.IsNullOrEmpty(queryParameters.NameEn) == false)
-            {
-                query += " AND name_en LIKE @Name_en";
-
-                countQuery += " AND name_en LIKE @Name_en";
-
-                parameters.Add("Name_en", "%" + queryParameters.NameEn + "%", DbType.String, ParameterDirection.Input);
-            }
-
-            if (String.IsNullOrEmpty(queryParameters.AddressFi) == false)
-            {
-                query += " AND address_fi LIKE @Address_fi";
-
-                countQuery += " AND address_fi LIKE @Address_fi";
-
-                parameters.Add("Address_fi", "%" + queryParameters.AddressFi + "%", DbType.String, ParameterDirection.Input);
-            }
-
-            if (String.IsNullOrEmpty(queryParameters.AddressSe) == false)
-            {
-                query += " AND address_se LIKE @Address_se";
-
-                countQuery += " AND address_se LIKE @Address_se";
-
-                parameters.Add("Address_se", "%" + queryParameters.AddressSe + "%", DbType.String, ParameterDirection.Input);
-            }
-
-            if (String.IsNullOrEmpty(queryParameters.Operator) == false)
-            {
-                query += " AND operator LIKE @Operator";
-
-                countQuery += " AND operator LIKE @Operator";
-
-                parameters.Add("Operator", "%" + queryParameters.Operator + "%", DbType.String, ParameterDirection.Input);
-            }
-
-            if (queryParameters.CapacityFrom is not null)
-            {
-                query += " AND Capacity >= @CapacityFrom";
-
-                countQuery += " AND Capacity >= @CapacityFrom";
-
-                parameters.Add("CapacityFrom", queryParameters.CapacityFrom, DbType.Int64, ParameterDirection.Input);
-            }
-
-            if (queryParameters.CapacityTo is not null)
-            {
-                query += " AND Capacity <= @CapacityTo";
-
-                countQuery += " AND Capacity <= @CapacityTo";
-
-                parameters.Add("CapacityTo", queryParameters.CapacityTo, DbType.Int64, ParameterDirection.Input);
-            }
-
-            // ORDER BY, needed for OFFSET.
-
-            query += " ORDER BY Id ASC";
-
-            var currentPage = 1;
-
-            // Offset.
-
-            query += " OFFSET @Offset ROWS";
-
-            var offset = 0;
-
-            // Use the keyword "FIRST" instead of "NEXT" for the first page.
-
-            if (queryParameters.Page is not null && queryParameters.Page > 1)
-            {
-                offset = 20 * ((int)queryParameters.Page - 1);
-
-                currentPage = (int)queryParameters.Page;
-
-                query += " FETCH NEXT 20 ROWS ONLY;";
-            }
-            else
-            {
-                query += " FETCH FIRST 20 ROWS ONLY;";
-            }
-
-            parameters.Add("Offset", offset, DbType.Int32, ParameterDirection.Input);
-
-            // Include the count in the same query.
-
-            query += countQuery;
+            var query = queryBuilder.GetStationsQueryString(queryParameters);
 
             StationsPage stationsPage = new();
 
             try
             {
-                stationsPage = await dataAccess.GetStationsPage(query, parameters);
+                stationsPage = await dataAccess.GetStationsPage(query);
             }
 
             catch (Exception exception)
@@ -314,14 +207,18 @@ namespace solita_dev_academy_2023_server.Controllers
                 return StatusCode(500, exception.Message);
             }
 
+            var currentPage = 1;
+
             var scheme = Url.ActionContext.HttpContext.Request.Scheme;
 
             // Set the url to the previous page as null if there is no previous page.
 
             string? previous = null;
 
-            if (currentPage > 1 && stationsPage.Count > 0)
+            if (queryParameters.Page > 1 && stationsPage.Count > 0)
             {
+                currentPage = (int)queryParameters.Page;
+
                 queryParameters.Page -= 1;
 
                 previous = Url.Action("Index", "Station", queryParameters, scheme);
