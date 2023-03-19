@@ -1,33 +1,12 @@
 ﻿using Dapper;
+using dev_academy_server_library;
+using dev_academy_server_library.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using solita_dev_academy_2023_server.Models;
 using System.Text.Json;
 
 namespace solita_dev_academy_2023_server.Controllers
 {
-    [Serializable]
-    public class JourneyQueryParameters
-    {
-        public DateTime? DepartureDateFrom { get; set; }
-        public DateTime? DepartureDateTo { get; set; }
-        public DateTime? ReturnDateFrom { get; set; }
-        public DateTime? ReturnDateTo { get; set; }
-        public int? CoveredDistanceFrom { get; set; }
-        public int? CoveredDistanceTo { get; set; }
-        public double? DurationFrom { get; set; }
-        public double? DurationTo { get; set; }
-        public string? DepartureStationNameFi { get; set; }
-        public string? DepartureStationNameSe { get; set; }
-        public string? DepartureStationNameEn { get; set; }
-        public string? ReturnStationNameFi { get; set; }
-        public string? ReturnStationNameSe { get; set; }
-        public string? ReturnStationNameEn { get; set; }
-        public string? OrderBy { get; set; }
-        public string? Order { get; set; }
-        public int? Page { get; set; }
-    }
-
     [ApiController]
     [Route("api/[controller]")]
     public class JourneyController : Controller
@@ -62,9 +41,15 @@ namespace solita_dev_academy_2023_server.Controllers
 
         private readonly IConfiguration configuration;
 
+        private readonly DataAccess dataAccess;
+
+        private readonly QueryBuilder queryBuilder = new();
+
         public JourneyController(IConfiguration configuration)
         {
             this.configuration = configuration;
+
+            dataAccess = new DataAccess(configuration);
         }
 
         [HttpGet(Name = "GetJourneys")]
@@ -104,6 +89,8 @@ namespace solita_dev_academy_2023_server.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            /*
 
             // For building dynamic parameters.
 
@@ -232,6 +219,8 @@ namespace solita_dev_academy_2023_server.Controllers
 
             */
 
+            /*
+
             // Using comparison operators.
 
             if (queryParameters.DepartureDateFrom is not null)
@@ -314,6 +303,8 @@ namespace solita_dev_academy_2023_server.Controllers
 
            */
 
+            /*
+
             // Using comparison operators.
 
             if (queryParameters.ReturnDateFrom is not null)
@@ -387,6 +378,8 @@ namespace solita_dev_academy_2023_server.Controllers
 
             */
 
+            /*
+
             // Duration.
 
             if (queryParameters.DurationFrom is not null)
@@ -447,6 +440,8 @@ namespace solita_dev_academy_2023_server.Controllers
 
             */
 
+            /*
+
             // Covered distance.
 
             if (queryParameters.CoveredDistanceFrom is not null)
@@ -504,8 +499,6 @@ namespace solita_dev_academy_2023_server.Controllers
 
                 dictionary.Add("@Covered_distanceTo", queryParameters.CoveredDistanceTo);
             }
-
-            */
 
             // Ordering.
 
@@ -601,12 +594,22 @@ namespace solita_dev_academy_2023_server.Controllers
 
             var parameters = new DynamicParameters(dictionary);
 
-            List<Journey> journeys;
+            */
 
-            var count = 0;
+            //List<Journey> journeys;
+
+            //var count = 0;
+
+            var query = queryBuilder.GetJourneysQueryString(queryParameters);
+
+            JourneysPage journeysPage;
 
             try
             {
+                journeysPage = await dataAccess.GetJourneysPage(query);
+
+
+                /*
                 var connectionString = configuration.GetConnectionString("Citybikes");
 
                 using (var connection = new SqlConnection(connectionString))
@@ -621,17 +624,22 @@ namespace solita_dev_academy_2023_server.Controllers
 
                     count = (await readCount);
                 }
+                */
             }
             catch (Exception exception)
             {
                 return StatusCode(500, exception.Message);
             }
 
+            /*
+
             var result = new JourneyPage();
 
             result.Journeys = journeys;
 
             result.Count = count;
+
+            */
 
             // For building the absolute url.
 
@@ -654,9 +662,13 @@ namespace solita_dev_academy_2023_server.Controllers
                 previous = Url.Action("Index", "Journey", queryParameters, scheme);
             }
 
-            result.Previous = previous;
+            journeysPage.Previous = previous;
 
-            result.CurrentPage = currentPage;
+            //result.Previous = previous;
+
+            journeysPage.CurrentPage = currentPage;
+
+            //result.CurrentPage = currentPage;
 
             // Build the url for the next page.
 
@@ -681,6 +693,15 @@ namespace solita_dev_academy_2023_server.Controllers
             // 23 pages == current page 23. There are no more pages,
             // keep the next null.
 
+            if ((int)Math.Ceiling((double)(journeysPage.Count / 20)) >= currentPage)
+            {
+                queryParameters.Page = currentPage + 1;
+
+                next = Url.Action("Index", "Journey", queryParameters, scheme);
+            }
+
+            /*
+
             if ((int)Math.Ceiling((double)(count / 20)) >= currentPage)
             {
                 queryParameters.Page = currentPage + 1;
@@ -688,11 +709,17 @@ namespace solita_dev_academy_2023_server.Controllers
                 next = Url.Action("Index", "Journey", queryParameters, scheme);
             }
 
-            result.Next = next;
+            */
 
-            var page = JsonSerializer.Serialize(result);
+            journeysPage.Next = next;
 
-            return Content(page, "application/json", System.Text.Encoding.UTF8);
+            //result.Next = next;
+
+            //var page = JsonSerializer.Serialize(result);
+
+            var json = JsonSerializer.Serialize(journeysPage);
+
+            return Content(json, "application/json", System.Text.Encoding.UTF8);
         }
     }
 }
