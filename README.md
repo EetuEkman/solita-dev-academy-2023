@@ -23,7 +23,9 @@ The purpose of the project is to show off basic web developing skills:
     * Building and sending HTTP requests and handling the response.
     * Displaying the response payload.
 
-For the database, I chose the Microsoft SQL Server for it's robustness and wide userbase. I have been asked about T-SQL recently, which is a Microsoft's extension of SQL. I went with the Developer edition for it's licensed use as a development and test database in a non-production environment.
+For the database, I initially chose the Microsoft SQL Server for it's robustness and wide userbase. I have been asked about T-SQL recently, which is a Microsoft's extension of SQL. I went with the Developer edition for it's licensed use as a development and test database in a non-production environment.
+
+After issued with bulk importing data with ä's and ö's from the flat files I added the option for the PostgreSQL database, which is another robust and popular relational database.
 
 For the backend, I chose to use ASP.NET Core WebApi for it's familiarity.
 
@@ -31,19 +33,9 @@ For the frontend, I chose the TypeScript and React set up with my own Powershell
 
 ## Database
 
-The SQL Server database is set up in a docker Linux container.
+Both database options are set up in Docker Linux containers.
 
-Database, tables and stored procecures are then created by the setup.sql script-file copied to the /usr/init directory and executed with the sqlcmd-utility.
-
-Journeys contains data about the journeys made on the city bikes, such as departure date and time, as well as duration and distance covered.
-
-Stations contains data about the bike stations, such as the name and address.
-
-Bulk data is imported from the .csv files in the /flatfiles directory. /flatfiles is a docker volume created in the setup script. The files are also downloaded with the wget and curl applications in the setup script.
-
-The bulk importing is done by the stored procedures called with the sqlcmd and the docker exec.
-
-The stored procedures import the data by bulk inserting the rows from the .csv flat files to a temporary staging table, from which the data is then inserted into the permanent table. 
+Both scripts create a docker volume to store the downloaded the flat files. The volume is mounted as /flatfiles. The files are downloaded with the wget and curl applications.
 
 The files
 
@@ -56,6 +48,24 @@ contain data about the journeys, and
 * <https://opendata.arcgis.com/datasets/726277c507ef4914b0aec3cbcfcbfafc_0.csv>
 
 contains information about the Helsinki Region Transport's city bicycle stations.
+
+Journeys table contains data about the journeys made on the city bikes, such as departure date and time, as well as duration and distance covered.
+
+Stations table contains data about the bike stations, such as the name and address.
+
+### PostgreSQL
+
+Database tables and stored procedures are defined inside the init.sql script ran on the Docker container creation.
+
+The data importing from the .csv-files is done with the COPY-command inside the stored procedure to a temporary table from which the data is then inserted into proper tables.
+
+### SQL Server
+
+Database, tables and stored procecures are then created by the setup.sql script-file copied to the /usr/init directory and executed with the sqlcmd-utility.
+
+The bulk importing is done by the stored procedures called with the sqlcmd and the docker exec.
+
+The stored procedures import the data by bulk inserting the rows from the .csv flat files to a temporary staging table, from which the data is then inserted into the permanent table. 
 
 ## Backend
 
@@ -82,15 +92,24 @@ I decided to use [Tailwind CSS framework](https://tailwindcss.com/) for this pro
 Requirements
 
 * Docker
-* Powershell 7
+* Powershell
 
 The solution uses docker containers for convenient and consistent setup.
 
 The containers are setup with a PowerShell script.
 
-On Windows and Mac systems, use Unblock-File cmdlet to allow the script to run with the command `PS> Unblock-File ./setup_sqlserver.ps1`.
+There are two scripts
 
-Run the setup_sqlserver.ps1 script in PowerShell 7 with the command `PS> ./setup_sqlserver.ps1`.
+* setup_postgresql.ps1
+* setup_sqlserver.ps1
+
+The former setups the solution with a postgresql database and the latter with a sql server database.
+
+Reasoning for adding Postgres is SQL Server's lack of tools to bulk import UTF-8 encoded .CSV files. 
+
+On Windows and Mac systems, use Unblock-File cmdlet to allow the script to run with the command `PS> Unblock-File ./setup_postgresql.ps1` or `PS> Unblock-File ./setup_sqlserver.ps1`.
+
+Run either of the scripts in PowerShell with command `PS> ./setup_postgresql.ps1` or `PS> ./setup_sqlserver.ps1`.
 
 Make sure the docker is up and running.
 
@@ -101,6 +120,8 @@ The client is hosted [here](https://victorious-bay-04e773803.2.azurestaticapps.n
 :point_right: Please note that the SQL Server basic tier instance used for this demo is quite limited especially for the complex queries used for the detailed station page. For the best performance, please test the project locally.
 
 # Issues
+
+## SQL Server
 
 SQL Server BULK INSERT with Codepage = 65001 is unsupported on Linux systems and rows from the .CSV are inserted with Codepage = "RAW" option instead.
 
