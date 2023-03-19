@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "solita-dev-academy-2023-server", "solita-dev-academy-2023-server.csproj", "{BC638C32-0974-4F36-B641-E07EE3ACA4DC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dev-academy-server-library", "dev-academy-server-library\dev-academy-server-library.csproj", "{69E002CE-C42E-4AF2-BE46-A54FEB2DF20B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dev-academy-server-library", "..\dev-academy-server-library\dev-academy-server-library.csproj", "{688D6614-0B34-485D-8B29-8CC1DFA80F6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{BC638C32-0974-4F36-B641-E07EE3ACA4DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC638C32-0974-4F36-B641-E07EE3ACA4DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC638C32-0974-4F36-B641-E07EE3ACA4DC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{69E002CE-C42E-4AF2-BE46-A54FEB2DF20B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{69E002CE-C42E-4AF2-BE46-A54FEB2DF20B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{69E002CE-C42E-4AF2-BE46-A54FEB2DF20B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{69E002CE-C42E-4AF2-BE46-A54FEB2DF20B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{688D6614-0B34-485D-8B29-8CC1DFA80F6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{688D6614-0B34-485D-8B29-8CC1DFA80F6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{688D6614-0B34-485D-8B29-8CC1DFA80F6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{688D6614-0B34-485D-8B29-8CC1DFA80F6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

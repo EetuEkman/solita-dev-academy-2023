@@ -1,8 +1,6 @@
-﻿using Dapper;
-using dev_academy_server_library;
+﻿using dev_academy_server_library;
 using dev_academy_server_library.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 using System.Text.Json;
 
 namespace solita_dev_academy_2023_server.Controllers
@@ -83,7 +81,7 @@ namespace solita_dev_academy_2023_server.Controllers
             }
             catch (Exception exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message + "connectionString: " + configuration.GetConnectionString("DefaultConnection"));
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
             }
 
             if (station == null)
@@ -124,7 +122,7 @@ namespace solita_dev_academy_2023_server.Controllers
 
             catch (Exception exception)
             {
-                return StatusCode(500, exception.Message + "connectionString: " + configuration.GetConnectionString("DefaultConnection"));
+                return StatusCode(500, exception.Message);
             }
 
             var currentPage = 1;

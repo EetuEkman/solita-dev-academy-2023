@@ -6,7 +6,7 @@ docker stop dev-academy-server | Out-Null
 
 docker stop dev-academy-client | Out-Null
 
-Start-Sleep 1;
+Start-Sleep 1
 
 docker rm dev-academy-db | Out-Null
 
@@ -14,7 +14,7 @@ docker rm dev-academy-server | Out-Null
 
 docker rm dev-academy-client | Out-Null
 
-Start-Sleep 1;
+Start-Sleep 1
 
 docker network rm dev-academy-network | Out-Null
 
@@ -26,19 +26,19 @@ docker rmi dev-academy-server-image:1.0.0 | Out-Null
 
 docker rmi dev-academy-server-client-image:1.0.0 | Out-Null
 
-Start-Sleep 1;
+Start-Sleep 1
 
-docker network create --driver bridge dev-academy-network
+docker network create --driver bridge dev-academy-network | Out-Null
 
 #docker volume create dev-academy-db-volume
 
-Set-Location (Join-Path $PSScriptRoot database);
+Set-Location (Join-Path $PSScriptRoot database)
 
 docker build -t dev-academy-db-image:1.0.0 .
 
-docker run --name dev-academy-db -p 1433:1433 --detach --network dev-academy-network -v dev-academy-db-volume:/flatfiles dev-academy-db-image:1.0.0
+docker run --name dev-academy-db -p 1433:1433 --detach --network dev-academy-network -v dev-academy-db-volume:/flatfiles dev-academy-db-image:1.0.0 | Out-Null
 
-Start-Sleep 10;
+Start-Sleep 15
 
 docker exec -t dev-academy-db /opt/mssql-tools/bin/sqlcmd -P E14DxqSMBq -U sa -i /usr/init/setup.sql
 
@@ -50,7 +50,7 @@ docker exec -t dev-academy-db wget -nc https://dev.hsl.fi/citybikes/od-trips-202
 
 docker exec -t dev-academy-db curl https://opendata.arcgis.com/datasets/726277c507ef4914b0aec3cbcfcbfafc_0.csv --output /flatfiles/stations.csv -L
 
-Start-Sleep 1;
+Start-Sleep 1
 
 # .CSV-files contain ä's and ö's.
 
@@ -89,16 +89,18 @@ Id = 5, Name = "Aalto university, Address = tietotie", extra column causing the 
 
 #>
 
-Set-Location (Join-Path $PSScriptRoot solita-dev-academy-2023-server);
+Set-Location (Join-Path $PSScriptRoot solita-dev-academy-2023-server)
 
 docker build -t dev-academy-server-image:1.0.0 .
 
-docker run --name dev-academy-server -p 5222:80 --detach --network dev-academy-network dev-academy-server-image:1.0.0
+docker run --name dev-academy-server -p 5222:80 --detach --network dev-academy-network dev-academy-server-image:1.0.0 | Out-Null;
 
-Set-Location (Join-Path $PSScriptRoot solita-dev-academy-2023-client);
+Set-Location (Join-Path $PSScriptRoot solita-dev-academy-2023-client)
 
 docker build -t dev-academy-client-image:1.0.0 .
 
-docker run --name dev-academy-client -p 5000:80 --detach dev-academy-client-image:1.0.0
+docker run --name dev-academy-client -p 5000:80 --detach dev-academy-client-image:1.0.0 | Out-Null;
 
-Set-Location $PSScriptRoot;
+Write-Host "Done. Open your browser at http://localhost:5000" -ForegroundColor DarkYellow
+
+Set-Location $PSScriptRoot

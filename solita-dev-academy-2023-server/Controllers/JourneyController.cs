@@ -1,7 +1,6 @@
 ﻿using dev_academy_server_library;
 using dev_academy_server_library.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 
 namespace solita_dev_academy_2023_server.Controllers
@@ -40,11 +39,9 @@ namespace solita_dev_academy_2023_server.Controllers
 
         private readonly DataAccess dataAccess;
         private readonly QueryBuilder queryBuilder = new();
-        private readonly IConfiguration configuration;
 
         public JourneyController(IConfiguration configuration)
         {
-            this.configuration = configuration;
 
             dataAccess = new DataAccess(configuration);
         }
@@ -99,7 +96,7 @@ namespace solita_dev_academy_2023_server.Controllers
             }
             catch (Exception exception)
             {
-                return StatusCode(500, exception.Message + "connectionString: " + configuration.GetConnectionString("DefaultConnection"));
+                return StatusCode(500, exception.Message);
             }
 
             // For building the absolute url.

@@ -1,0 +1,12 @@
+F:\general-projects\solita-dev-academy-2023\webapi\webapi_library\obj\Debug\net7.0\webapi_library.csproj.AssemblyReference.cache
+F:\general-projects\solita-dev-academy-2023\webapi\webapi_library\obj\Debug\net7.0\webapi_library.GeneratedMSBuildEditorConfig.editorconfig
+F:\general-projects\solita-dev-academy-2023\webapi\webapi_library\obj\Debug\net7.0\webapi_library.AssemblyInfoInputs.cache
+F:\general-projects\solita-dev-academy-2023\webapi\webapi_library\obj\Debug\net7.0\webapi_library.AssemblyInfo.cs
+F:\general-projects\solita-dev-academy-2023\webapi\webapi_library\obj\Debug\net7.0\webapi_library.csproj.CoreCompileInputs.cache
+F:\general-projects\solita-dev-academy-2023\webapi\webapi_library\bin\Debug\net7.0\webapi_library.deps.json
+F:\general-projects\solita-dev-academy-2023\webapi\webapi_library\bin\Debug\net7.0\webapi_library.dll
+F:\general-projects\solita-dev-academy-2023\webapi\webapi_library\bin\Debug\net7.0\webapi_library.pdb
+F:\general-projects\solita-dev-academy-2023\webapi\webapi_library\obj\Debug\net7.0\webapi_library.dll
+F:\general-projects\solita-dev-academy-2023\webapi\webapi_library\obj\Debug\net7.0\refint\webapi_library.dll
+F:\general-projects\solita-dev-academy-2023\webapi\webapi_library\obj\Debug\net7.0\webapi_library.pdb
+F:\general-projects\solita-dev-academy-2023\webapi\webapi_library\obj\Debug\net7.0\ref\webapi_library.dll
