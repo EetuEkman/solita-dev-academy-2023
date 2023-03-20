@@ -20,7 +20,7 @@ Start-Sleep 0.5
 
 docker network rm dev-academy-network | Out-Null
 
-docker volume rm dev-academy-volume | Out-Null
+#docker volume rm dev-academy-volume | Out-Null
 
 docker rmi dev-academy-postgres-image:1.0.0 | Out-Null
 

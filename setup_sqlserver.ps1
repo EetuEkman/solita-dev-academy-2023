@@ -20,7 +20,7 @@ Start-Sleep 1
 
 docker network rm dev-academy-network | Out-Null
 
-docker volume rm dev-academy-db-volume | Out-Null
+#docker volume rm dev-academy-db-volume | Out-Null
 
 docker rmi dev-academy-db-image:1.0.0 | Out-Null
 
@@ -95,7 +95,9 @@ Set-Location (Join-Path $PSScriptRoot webapi)
 
 docker build -t webapi-image:1.0.0 --file webapi/Dockerfile .
 
-docker run --name webapi -p 5222:80 --detach --network dev-academy-network webapi-image:1.0.0 | Out-Null;
+docker run --name webapi -p 5222:80 --detach --network dev-academy-network `
+-e ConnectionStrings__DefaultConnection="Server=dev-academy-db;TrustServerCertificate=True;Database=citybikes;User Id=sa;Password=E14DxqSMBq" `
+-e Database="sql server" webapi-image:1.0.0 | Out-Null;
 
 Set-Location (Join-Path $PSScriptRoot solita-dev-academy-2023-client)
 
