@@ -9,7 +9,7 @@ namespace webapi_library
         {
             var parameters = new DynamicParameters();
 
-            var queryString = "SELECT *" +
+            var queryString = "SELECT id, name_fi, name_se, name_en, address_fi, address_se, city_fi, city_se, operator, capacity, x, y " +
                 " FROM stations" +
                 " WHERE 1=1";
 
@@ -132,7 +132,7 @@ namespace webapi_library
 
             parameters.Add("Id", id);
 
-            var queryString = $@"SELECT *
+            var queryString = $@"SELECT id, name_fi, name_se, name_en, address_fi, address_se, city_fi, city_se, operator, capacity, x, y 
                 FROM stations 
                 WHERE id = @Id;
 
@@ -152,7 +152,7 @@ namespace webapi_library
                 FROM journeys 
                 WHERE return_station_id = @Id;
 
-                SELECT * 
+                SELECT id, name_fi, name_se, name_en, address_fi, address_se, city_fi, city_se, operator, capacity, x, y  
                 FROM stations 
                 WHERE id IN 
                 ( 
@@ -170,7 +170,7 @@ namespace webapi_library
                     ) ids
                 );
 
-                SELECT *
+                SELECT id, ""count""
                 FROM 
                 ( 
                     SELECT departure_station_id id, 
@@ -183,7 +183,7 @@ namespace webapi_library
                     FETCH FIRST 5 ROWS ONLY
                 ) id_count;
 
-                SELECT * 
+                SELECT id, name_fi, name_se, name_en, address_fi, address_se, city_fi, city_se, operator, capacity, x, y 
                 FROM Stations 
                 WHERE id IN 
                 ( 
@@ -201,7 +201,7 @@ namespace webapi_library
                     ) ids
                 );
     
-                SELECT *
+                SELECT id, ""count""
                 FROM 
                 ( 
                     SELECT return_station_id id, 
