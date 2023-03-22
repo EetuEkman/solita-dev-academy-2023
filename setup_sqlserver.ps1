@@ -20,7 +20,7 @@ Start-Sleep 1
 
 docker network rm dev-academy-network | Out-Null
 
-#docker volume rm dev-academy-db-volume | Out-Null
+#docker volume rm dev-academy-volume | Out-Null
 
 docker rmi dev-academy-db-image:1.0.0 | Out-Null
 
@@ -32,13 +32,13 @@ Start-Sleep 1
 
 docker network create --driver bridge dev-academy-network | Out-Null
 
-docker volume create dev-academy-db-volume | Out-Null
+docker volume create dev-academy-volume | Out-Null
 
 Set-Location (Join-Path $PSScriptRoot database)
 
 docker build -t dev-academy-db-image:1.0.0 .
 
-docker run --name dev-academy-db -p 1433:1433 --detach --network dev-academy-network -v dev-academy-db-volume:/flatfiles dev-academy-db-image:1.0.0 | Out-Null
+docker run --name dev-academy-db -p 1433:1433 --detach --network dev-academy-network -v dev-academy-volume:/flatfiles dev-academy-db-image:1.0.0 | Out-Null
 
 Start-Sleep 15
 
