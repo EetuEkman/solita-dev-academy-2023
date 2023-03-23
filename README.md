@@ -23,9 +23,9 @@ The purpose of the project is to show off basic web developing skills:
     * Building and sending HTTP requests and handling the response.
     * Displaying the response payload.
 
-For the database, I initially chose the Microsoft SQL Server for it's robustness and wide userbase. I have been asked about T-SQL recently, which is a Microsoft's extension of SQL. I went with the Developer edition for it's licensed use as a development and test database in a non-production environment.
+For the database, initially I chose the Microsoft SQL Server for it's robustness and wide userbase. I have been asked about T-SQL recently, which is a Microsoft's extension of SQL. I went with the Developer edition for it's licensed use as a development and test database in a non-production environment.
 
-After issued with bulk importing data with ä's and ö's from the flat files I added the option for the PostgreSQL database, which is another robust and popular relational database.
+After issues with bulk importing the data from the .csv-files with UTF-8 encoding (ä's and ö's), I added the option for the PostgreSQL database, which is another robust and popular relational database.
 
 For the backend, I chose to use ASP.NET Core WebApi for it's familiarity.
 
@@ -109,7 +109,9 @@ Reasoning for adding Postgres is SQL Server's lack of tools to bulk import UTF-8
 
 On Windows and Mac systems, use Unblock-File cmdlet to allow the script to run with the command `PS> Unblock-File ./setup_postgresql.ps1` or `PS> Unblock-File ./setup_sqlserver.ps1`.
 
-Run either of the scripts in PowerShell with command `PS> ./setup_postgresql.ps1` or `PS> ./setup_sqlserver.ps1`.
+My recommendation is the postgresql option with the command `PS> ./setup_postgresql.ps1`.
+
+Setup the SQL Server option with the command `PS> ./setup_sqlserver.ps1`.
 
 Make sure the docker is up and running.
 
