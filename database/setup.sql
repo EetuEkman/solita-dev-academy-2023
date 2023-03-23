@@ -42,22 +42,32 @@ CREATE TABLE journeys
 GO
 
 ALTER TABLE journeys
-ADD CONSTRAINT FK_departure_id
+ADD CONSTRAINT fk_departure_id
 FOREIGN KEY (departure_station_id)
 REFERENCES stations (id);
 
 ALTER TABLE journeys
-ADD CONSTRAINT FK_return_id
-FOREIGN KEY ([return_station_id])
+ADD CONSTRAINT fk_return_id
+FOREIGN KEY (return_station_id)
 REFERENCES stations (id);
 
 GO
 
-CREATE INDEX FK_Stations ON journeys (departure_station_id, [return_station_id]);
-
-GO
+CREATE INDEX fk_stations ON journeys (departure_station_id, return_station_id);
 
 CREATE INDEX covered_distance ON journeys (covered_distance);
+
+CREATE INDEX fk_stations ON journeys (departure_station_id, return_station_id);
+
+CREATE INDEX journey_dates ON journeys (departure, "return");
+
+CREATE INDEX duration ON journeys (duration);
+
+CREATE INDEX station_names ON stations (name_fi, name_se, name_en);
+
+CREATE INDEX station_addresses ON stations (address_fi, address_se);
+
+CREATE INDEX station_capacity ON stations (capacity);
 
 GO
 
@@ -200,18 +210,18 @@ BEGIN
     ORDER BY Departure_station_id ASC;
 
     INSERT INTO stations (id, name_fi, name_en)
-    SELECT DISTINCT [Return_station_id], [Return_station_name], [Return_station_name]
+    SELECT DISTINCT Return_station_id, [Return_station_name], [Return_station_name]
     FROM #journeys
     WHERE NOT EXISTS
     (
     	SELECT id
     	FROM stations
-    	WHERE stations.id = #journeys.[Return_station_id]
+    	WHERE stations.id = #journeys.Return_station_id
     )
-    ORDER BY [Return_station_id] ASC;
+    ORDER BY Return_station_id ASC;
 
-    INSERT INTO journeys (departure, [return], departure_station_id, departure_station_name, [return_station_id], [return_station_name], covered_distance, duration)
-    SELECT Departure, [Return], Departure_station_id, Departure_station_name, [Return_station_id], [Return_station_name], Covered_distance, Duration
+    INSERT INTO journeys (departure, [return], departure_station_id, departure_station_name, return_station_id, [return_station_name], covered_distance, duration)
+    SELECT Departure, [Return], Departure_station_id, Departure_station_name, Return_station_id, [Return_station_name], Covered_distance, Duration
     FROM #journeys
     WHERE NOT Duration < 10
     AND NOT Covered_distance < 10
@@ -234,8 +244,8 @@ GO
 CREATE PROCEDURE BulkInsertJourneysFromTempTable
 AS
 BEGIN
-    INSERT INTO journeys (departure, [return], departure_station_id, departure_station_name, [return_station_id], [return_station_name], covered_distance, duration)
-    SELECT Departure, [Return], Departure_station_id, Departure_station_name, [Return_station_id], [Return_station_name], Covered_distance, Duration
+    INSERT INTO journeys (departure, [return], departure_station_id, departure_station_name, return_station_id, [return_station_name], covered_distance, duration)
+    SELECT Departure, [Return], Departure_station_id, Departure_station_name, Return_station_id, [Return_station_name], Covered_distance, Duration
     FROM tempJourneys
     WHERE NOT Duration < 10
     AND NOT Covered_distance < 10;

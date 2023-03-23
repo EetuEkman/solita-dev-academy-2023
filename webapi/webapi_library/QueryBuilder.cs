@@ -123,6 +123,7 @@ namespace webapi_library
                 QueryString = queryString,
                 Parameters = parameters,
             };
+
             return query;
         }
 
